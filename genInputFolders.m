@@ -1,5 +1,5 @@
-X = 5;
-N = 3;
+X = 5; % number of cores
+N = 3; 
 
 allcases = zeros(0, 6);
 for a1 = -N: N
