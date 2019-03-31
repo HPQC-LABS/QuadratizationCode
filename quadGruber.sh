@@ -5,6 +5,8 @@
 #g++ isquad.cpp -o isquad
 
 file="input_coeff_$1.txt"
+rm "noquad_$1.txt" ||:
+rm "hasquad_$1.txt" ||:
 while IFS="," read -r f1 f2 f3 f4 f5 f6
 do
 ./qcone --n=5 --m=1 --a1234=$f1 --a2345=$f2 --a3451=$f3 --a4512=$f4 --a5123=$f5 --a12345=$f6 --lrs > temp.ine
