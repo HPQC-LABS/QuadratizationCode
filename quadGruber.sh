@@ -1,7 +1,7 @@
 #!/bin/sh
-g++ qcone.cpp -o qcone
-make lrs
-g++ isquad.cpp -o isquad
+#g++ qcone.cpp -o qcone
+#make lrs
+#g++ isquad.cpp -o isquad
 
 file="input_coeff_$1.txt"
 while IFS="," read -r f1 f2 f3 f4 f5 f6
