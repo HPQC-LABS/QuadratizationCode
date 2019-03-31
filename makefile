@@ -48,7 +48,8 @@ CFLAGS=-O3
 CPPFLAGS= -DTIMES -DSIGNALS
 
 # set to something more useful if your system has a ranlib command
-RANLIB ?= /usr/bin/true
+RANLIB ?= /usr/bin/ranlib
+#RANLIB ?= /usr/bin/true
 
 # default set of executables to build
 BINARIES=2nash lrs lrs1 lrsnash redund redund1 setnash setnash2

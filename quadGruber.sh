@@ -1,4 +1,5 @@
 #!/bin/sh
+#module swap intel gcc
 #g++ qcone.cpp -o qcone
 #make lrs
 #g++ isquad.cpp -o isquad
