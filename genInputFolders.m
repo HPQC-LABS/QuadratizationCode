@@ -1,4 +1,4 @@
-X = 5; % number of cores
+X = 500; % number of cores
 N = 3; 
 
 allcases = zeros(0, 6);
