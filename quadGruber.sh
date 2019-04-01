@@ -2,7 +2,7 @@
 #module swap intel gcc
 #g++ qcone.cpp -o qcone
 #make lrs
-#g++ isquad.cpp -o isquad
+#g++ -std=c++11 isquad.cpp -o isquad
 
 file="input_coeff_$1.txt"
 rm "noquad_$1.txt" ||:
