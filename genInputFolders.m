@@ -1,6 +1,8 @@
-X = 500; % number of cores
-N = 3; 
-
+function genInputFolders(X, N) % X the number cores, N the range of coeff
+if nargin == 0
+    X = 500;
+    N = 3;
+end
 allcases = zeros(0, 6);
 for a1 = -N: N
     for a2 = a1 : N
@@ -29,4 +31,4 @@ for fileno = 1 : X
     end  
     cd ..
 end
-
+end
