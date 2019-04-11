@@ -4,6 +4,13 @@
 #make lrs
 #g++ -std=c++11 isquad.cpp -o isquad
 
+rm -f temp.ine
+rm -f temp.ext
+rm -f temp.vtx0
+rm -f temp.vtx
+rm -f temp.bd
+rm -f temp.gd
+
 file="input_coeff_$1.txt"
 rm -f "noquad_$1.txt" 
 rm -f "hasquad_$1.txt" 
