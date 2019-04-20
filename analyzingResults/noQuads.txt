@@ -81,7 +81,7 @@
 -3 -2 -2 3 3 0 job_114/noquad_114.txt
 -3 -2 -2 3 3 1 job_114/noquad_114.txt
 -3 -2 -2 3 3 2 job_114/noquad_114.txt
--3 -2 -2 3 3 3 job_114/noquad_114.txt where's 115?
+-3 -2 -2 3 3 3 job_114/noquad_114.txt where's 115? 6 of them have quads!
 -3 -2 -1 -1 0 3 job_116/noquad_116.txt
 -3 -2 -1 -1 1 -3 job_116/noquad_116.txt
 -3 -2 -1 -1 1 -2 job_117/noquad_117.txt
@@ -324,7 +324,7 @@
 -3 -2 3 3 3 0 job_152/noquad_152.txt
 -3 -2 3 3 3 1 job_152/noquad_152.txt
 -3 -2 3 3 3 2 job_152/noquad_152.txt
--3 -2 3 3 3 3 job_152/noquad_152.txt  where's 153 ???
+-3 -2 3 3 3 3 job_152/noquad_152.txt  where's 153 ??? 6 of them have quads!!
 -3 -1 -1 -1 0 3 job_154/noquad_154.txt
 -3 -1 -1 -1 1 -3 job_154/noquad_154.txt
 -3 -1 -1 -1 1 -2 job_154/noquad_154.txt
@@ -809,14 +809,14 @@
 -3 3 3 3 3 0 job_227/noquad_227.txt
 -3 3 3 3 3 1 job_227/noquad_227.txt
 -3 3 3 3 3 2 job_228/noquad_228.txt
--3 3 3 3 3 3 job_228/noquad_228.txt  where's 229 ??
+-3 3 3 3 3 3 job_228/noquad_228.txt  where's 229 ?? 7 of them have quads!
 -3 -3 -3 0 1 -1 job_22/noquad_22.txt
 -3 -3 -3 0 1 0 job_22/noquad_22.txt
 -3 -3 -3 0 1 1 job_22/noquad_22.txt
 -3 -3 -3 0 1 2 job_22/noquad_22.txt
 -3 -3 -3 0 1 3 job_22/noquad_22.txt
 -3 -3 -3 0 2 -3 job_22/noquad_22.txt
--3 -3 -3 0 2 -2 job_22/noquad_22.txt where's 230 ??
+-3 -3 -3 0 2 -2 job_22/noquad_22.txt where's 230 ?? 6 of them have quads!
 -2 -2 -2 -2 1 -3 job_231/noquad_231.txt
 -2 -2 -2 -2 1 -2 job_231/noquad_231.txt
 -2 -2 -2 -2 1 -1 job_231/noquad_231.txt
@@ -837,7 +837,7 @@
 -2 -2 -2 -2 3 0 job_234/noquad_234.txt
 -2 -2 -2 -2 3 1 job_234/noquad_234.txt
 -2 -2 -2 -2 3 2 job_234/noquad_234.txt
--2 -2 -2 -2 3 3 job_234/noquad_234.txt where's 235, 256 ??
+-2 -2 -2 -2 3 3 job_234/noquad_234.txt where's 235, 236 ?? 6 have quads and 7 have quads!
 -2 -2 -2 -1 1 -3 job_237/noquad_237.txt
 -2 -2 -2 -1 1 -2 job_237/noquad_237.txt
 -2 -2 -2 -1 1 -1 job_237/noquad_237.txt
@@ -935,7 +935,7 @@
 -2 -2 -2 3 3 0 job_250/noquad_250.txt
 -2 -2 -2 3 3 1 job_250/noquad_250.txt
 -2 -2 -2 3 3 2 job_250/noquad_250.txt
--2 -2 -2 3 3 3 job_250/noquad_250.txt where's 251, 252 ??
+-2 -2 -2 3 3 3 job_250/noquad_250.txt where's 251, 252 ?? 6 have quads and 6 have quads!
 -2 -2 -1 -1 0 3 job_253/noquad_253.txt
 -2 -2 -1 -1 1 -3 job_253/noquad_253.txt
 -2 -2 -1 -1 1 -2 job_253/noquad_253.txt
@@ -1184,7 +1184,7 @@
 -3 -3 -3 2 2 -1 job_28/noquad_28.txt
 -3 -3 -3 2 2 0 job_28/noquad_28.txt
 -3 -3 -3 2 2 1 job_28/noquad_28.txt
--3 -3 -3 2 2 2 job_28/noquad_28.txt  where's 290 ??
+-3 -3 -3 2 2 2 job_28/noquad_28.txt  where's 290 ?? 6 have quads
 -2 -1 -1 -1 0 3 job_291/noquad_291.txt
 -2 -1 -1 -1 1 -3 job_291/noquad_291.txt
 -2 -1 -1 -1 1 -2 job_291/noquad_291.txt
@@ -1670,7 +1670,7 @@
 -2 3 3 3 3 0 job_364/noquad_364.txt
 -2 3 3 3 3 1 job_364/noquad_364.txt
 -2 3 3 3 3 2 job_364/noquad_364.txt
--2 3 3 3 3 3 job_364/noquad_364.txt where's 365 ??
+-2 3 3 3 3 3 job_364/noquad_364.txt where's 365 ?? 6 have quads
 -1 -1 -1 -1 0 3 job_366/noquad_366.txt
 -1 -1 -1 -1 1 -3 job_366/noquad_366.txt
 -1 -1 -1 -1 1 -2 job_367/noquad_367.txt
@@ -2555,7 +2555,7 @@
 2 2 2 2 3 2 job_496/noquad_496.txt
 2 2 2 2 3 3 job_496/noquad_496.txt
 2 2 2 3 3 -3 job_496/noquad_496.txt
-2 2 2 3 3 -2 job_496/noquad_496.txt where's 497, 498??
+2 2 2 3 3 -2 job_496/noquad_496.txt where's 497, 498?? still running !!
 2 3 3 3 3 -2 job_499/noquad_499.txt
 2 3 3 3 3 -1 job_499/noquad_499.txt
 2 3 3 3 3 0 job_499/noquad_499.txt
@@ -2601,7 +2601,7 @@
 -3 -3 -2 3 3 0 job_53/noquad_53.txt
 -3 -3 -2 3 3 1 job_53/noquad_53.txt
 -3 -3 -2 3 3 2 job_53/noquad_53.txt
--3 -3 -2 3 3 3 job_54/noquad_54.txt where's 55 ?
+-3 -3 -2 3 3 3 job_54/noquad_54.txt where's 55 ? 6 have quads!
 -3 -3 -1 -1 0 3 job_56/noquad_56.txt
 -3 -3 -1 -1 1 -3 job_56/noquad_56.txt
 -3 -3 -1 -1 1 -2 job_56/noquad_56.txt
@@ -2843,7 +2843,7 @@
 -3 -3 3 3 3 0 job_91/noquad_91.txt
 -3 -3 3 3 3 1 job_91/noquad_91.txt
 -3 -3 3 3 3 2 job_91/noquad_91.txt
--3 -3 3 3 3 3 job_91/noquad_91.txt where's 92, 93, 94 ??
+-3 -3 3 3 3 3 job_91/noquad_91.txt where's 92, 93, 94 ?? 7 have quads and 6 have quads and 6 have quads
 -3 -2 -2 -2 1 -3 job_95/noquad_95.txt
 -3 -2 -2 -2 1 -2 job_95/noquad_95.txt
 -3 -2 -2 -2 1 -1 job_95/noquad_95.txt
@@ -2864,4 +2864,4 @@
 -3 -2 -2 -2 3 0 job_97/noquad_97.txt
 -3 -2 -2 -2 3 1 job_98/noquad_98.txt
 -3 -2 -2 -2 3 2 job_98/noquad_98.txt
--3 -2 -2 -2 3 3 job_98/noquad_98.txt where's 99 ??
+-3 -2 -2 -2 3 3 job_98/noquad_98.txt where's 99 ?? 7 have quads!
