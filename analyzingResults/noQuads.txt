@@ -105,8 +105,8 @@
 -3 -2 -1 -1 3 2 job_119/noquad_119.txt
 -3 -3 -3 -2 1 -3 job_11/noquad_11.txt
 -3 -2 -1 -1 3 3 job_120/noquad_120.txt
--3 -2 -1 0 0 2 job_120/noquad_120.txt
--3 -2 -1 0 0 3 job_121/noquad_121.txt
+-3 -2 -1 0 0 2 job_120/noquad_120.txt > all negative except for quintic
+-3 -2 -1 0 0 3 job_121/noquad_121.txt > all negative except for quintic
 -3 -2 -1 0 1 -3 job_121/noquad_121.txt
 -3 -2 -1 0 1 -2 job_121/noquad_121.txt
 -3 -2 -1 0 1 -1 job_121/noquad_121.txt
@@ -176,9 +176,9 @@
 -3 -2 -1 3 3 1 job_130/noquad_130.txt
 -3 -2 -1 3 3 2 job_130/noquad_130.txt
 -3 -2 -1 3 3 3 job_130/noquad_130.txt
--3 -2 0 0 0 1 job_131/noquad_131.txt
--3 -2 0 0 0 2 job_131/noquad_131.txt
--3 -2 0 0 0 3 job_131/noquad_131.txt
+-3 -2 0 0 0 1 job_131/noquad_131.txt > all negative except for quintic
+-3 -2 0 0 0 2 job_131/noquad_131.txt > all negative except for quintic
+-3 -2 0 0 0 3 job_131/noquad_131.txt > all negative except for quintic
 -3 -2 0 0 1 -3 job_132/noquad_132.txt
 -3 -2 0 0 1 -2 job_132/noquad_132.txt
 -3 -2 0 0 1 -1 job_132/noquad_132.txt
@@ -325,7 +325,7 @@
 -3 -2 3 3 3 1 job_152/noquad_152.txt
 -3 -2 3 3 3 2 job_152/noquad_152.txt
 -3 -2 3 3 3 3 job_152/noquad_152.txt  where's 153 ??? 6 of them have quads!!
--3 -1 -1 -1 0 3 job_154/noquad_154.txt
+-3 -1 -1 -1 0 3 job_154/noquad_154.txt > all negative except for quintic
 -3 -1 -1 -1 1 -3 job_154/noquad_154.txt
 -3 -1 -1 -1 1 -2 job_154/noquad_154.txt
 -3 -1 -1 -1 1 -1 job_155/noquad_155.txt
@@ -347,8 +347,8 @@
 -3 -1 -1 -1 3 1 job_157/noquad_157.txt
 -3 -1 -1 -1 3 2 job_157/noquad_157.txt
 -3 -1 -1 -1 3 3 job_157/noquad_157.txt
--3 -1 -1 0 0 2 job_158/noquad_158.txt
--3 -1 -1 0 0 3 job_159/noquad_159.txt
+-3 -1 -1 0 0 2 job_158/noquad_158.txt > all negative except for quintic
+-3 -1 -1 0 0 3 job_159/noquad_159.txt > all negative except for quintic
 -3 -1 -1 0 1 -3 job_159/noquad_159.txt
 -3 -1 -1 0 1 -2 job_159/noquad_159.txt
 -3 -1 -1 0 1 -1 job_159/noquad_159.txt
@@ -413,9 +413,9 @@
 -3 -1 -1 3 3 1 job_168/noquad_168.txt
 -3 -1 -1 3 3 2 job_168/noquad_168.txt
 -3 -1 -1 3 3 3 job_168/noquad_168.txt
--3 -1 0 0 0 1 job_169/noquad_169.txt
--3 -1 0 0 0 2 job_169/noquad_169.txt
--3 -1 0 0 0 3 job_169/noquad_169.txt
+-3 -1 0 0 0 1 job_169/noquad_169.txt > all negative except for quintic
+-3 -1 0 0 0 2 job_169/noquad_169.txt > all negative except for quintic
+-3 -1 0 0 0 3 job_169/noquad_169.txt > all negative except for quintic
 -3 -1 0 0 1 -3 job_169/noquad_169.txt
 -3 -1 0 0 1 -2 job_170/noquad_170.txt
 -3 -1 0 0 1 -1 job_170/noquad_170.txt
@@ -936,7 +936,7 @@
 -2 -2 -2 3 3 1 job_250/noquad_250.txt
 -2 -2 -2 3 3 2 job_250/noquad_250.txt
 -2 -2 -2 3 3 3 job_250/noquad_250.txt where's 251, 252 ?? 6 have quads and 6 have quads!
--2 -2 -1 -1 0 3 job_253/noquad_253.txt
+-2 -2 -1 -1 0 3 job_253/noquad_253.txt > all negative except for quintic
 -2 -2 -1 -1 1 -3 job_253/noquad_253.txt
 -2 -2 -1 -1 1 -2 job_253/noquad_253.txt
 -2 -2 -1 -1 1 -1 job_253/noquad_253.txt
@@ -958,8 +958,8 @@
 -2 -2 -1 -1 3 1 job_256/noquad_256.txt
 -2 -2 -1 -1 3 2 job_256/noquad_256.txt
 -2 -2 -1 -1 3 3 job_256/noquad_256.txt
--2 -2 -1 0 0 2 job_257/noquad_257.txt
--2 -2 -1 0 0 3 job_257/noquad_257.txt
+-2 -2 -1 0 0 2 job_257/noquad_257.txt > all negative except for quintic
+-2 -2 -1 0 0 3 job_257/noquad_257.txt > all negative except for quintic
 -2 -2 -1 0 1 -3 job_257/noquad_257.txt
 -2 -2 -1 0 1 -2 job_257/noquad_257.txt
 -2 -2 -1 0 1 -1 job_257/noquad_257.txt
@@ -1029,9 +1029,9 @@
 -2 -2 -1 3 3 1 job_266/noquad_266.txt
 -2 -2 -1 3 3 2 job_267/noquad_267.txt
 -2 -2 -1 3 3 3 job_267/noquad_267.txt
--2 -2 0 0 0 1 job_268/noquad_268.txt
--2 -2 0 0 0 2 job_268/noquad_268.txt
--2 -2 0 0 0 3 job_268/noquad_268.txt
+-2 -2 0 0 0 1 job_268/noquad_268.txt > all negative except for quintic
+-2 -2 0 0 0 2 job_268/noquad_268.txt > all negative except for quintic
+-2 -2 0 0 0 3 job_268/noquad_268.txt > all negative except for quintic
 -2 -2 0 0 1 -3 job_268/noquad_268.txt
 -2 -2 0 0 1 -2 job_268/noquad_268.txt
 -2 -2 0 0 1 -1 job_268/noquad_268.txt
@@ -1185,7 +1185,7 @@
 -3 -3 -3 2 2 0 job_28/noquad_28.txt
 -3 -3 -3 2 2 1 job_28/noquad_28.txt
 -3 -3 -3 2 2 2 job_28/noquad_28.txt  where's 290 ?? 6 have quads
--2 -1 -1 -1 0 3 job_291/noquad_291.txt
+-2 -1 -1 -1 0 3 job_291/noquad_291.txt > all negative except for quintic
 -2 -1 -1 -1 1 -3 job_291/noquad_291.txt
 -2 -1 -1 -1 1 -2 job_291/noquad_291.txt
 -2 -1 -1 -1 1 -1 job_291/noquad_291.txt
@@ -1207,8 +1207,8 @@
 -2 -1 -1 -1 3 1 job_293/noquad_293.txt
 -2 -1 -1 -1 3 2 job_294/noquad_294.txt
 -2 -1 -1 -1 3 3 job_294/noquad_294.txt
--2 -1 -1 0 0 2 job_295/noquad_295.txt
--2 -1 -1 0 0 3 job_295/noquad_295.txt
+-2 -1 -1 0 0 2 job_295/noquad_295.txt > all negative except for quintic
+-2 -1 -1 0 0 3 job_295/noquad_295.txt > all negative except for quintic
 -2 -1 -1 0 1 -3 job_295/noquad_295.txt
 -2 -1 -1 0 1 -2 job_295/noquad_295.txt
 -2 -1 -1 0 1 -1 job_295/noquad_295.txt
@@ -1278,9 +1278,9 @@
 -2 -1 -1 3 3 1 job_304/noquad_304.txt
 -2 -1 -1 3 3 2 job_304/noquad_304.txt
 -2 -1 -1 3 3 3 job_305/noquad_305.txt
--2 -1 0 0 0 1 job_305/noquad_305.txt
--2 -1 0 0 0 2 job_306/noquad_306.txt
--2 -1 0 0 0 3 job_306/noquad_306.txt
+-2 -1 0 0 0 1 job_305/noquad_305.txt > all negative except for quintic
+-2 -1 0 0 0 2 job_306/noquad_306.txt > all negative except for quintic
+-2 -1 0 0 0 3 job_306/noquad_306.txt > all negative except for quintic
 -2 -1 0 0 1 -3 job_306/noquad_306.txt
 -2 -1 0 0 1 -2 job_306/noquad_306.txt
 -2 -1 0 0 1 -1 job_306/noquad_306.txt
@@ -1423,7 +1423,7 @@
 -2 -1 3 3 3 1 job_326/noquad_326.txt
 -2 -1 3 3 3 2 job_326/noquad_326.txt
 -2 -1 3 3 3 3 job_326/noquad_326.txt
--2 0 0 0 0 3 job_327/noquad_327.txt
+-2 0 0 0 0 3 job_327/noquad_327.txt > all negative except for quintic
 -2 0 0 0 1 -3 job_327/noquad_327.txt
 -2 0 0 0 1 -2 job_328/noquad_328.txt
 -2 0 0 0 1 -1 job_328/noquad_328.txt
@@ -1671,7 +1671,7 @@
 -2 3 3 3 3 1 job_364/noquad_364.txt
 -2 3 3 3 3 2 job_364/noquad_364.txt
 -2 3 3 3 3 3 job_364/noquad_364.txt where's 365 ?? 6 have quads
--1 -1 -1 -1 0 3 job_366/noquad_366.txt
+-1 -1 -1 -1 0 3 job_366/noquad_366.txt > all negative except for quintic
 -1 -1 -1 -1 1 -3 job_366/noquad_366.txt
 -1 -1 -1 -1 1 -2 job_367/noquad_367.txt
 -1 -1 -1 -1 1 -1 job_367/noquad_367.txt
@@ -1699,8 +1699,8 @@
 -3 -3 -2 -2 2 3 job_36/noquad_36.txt
 -3 -3 -2 -2 3 -3 job_36/noquad_36.txt
 -1 -1 -1 -1 3 3 job_370/noquad_370.txt
--1 -1 -1 0 0 2 job_370/noquad_370.txt
--1 -1 -1 0 0 3 job_371/noquad_371.txt
+-1 -1 -1 0 0 2 job_370/noquad_370.txt > all negative except for quintic
+-1 -1 -1 0 0 3 job_371/noquad_371.txt > all negative except for quintic
 -1 -1 -1 0 1 -3 job_371/noquad_371.txt
 -1 -1 -1 0 1 -2 job_371/noquad_371.txt
 -1 -1 -1 0 1 -1 job_371/noquad_371.txt
@@ -1906,8 +1906,8 @@
 -1 -1 3 3 3 1 job_402/noquad_402.txt
 -1 -1 3 3 3 2 job_402/noquad_402.txt
 -1 -1 3 3 3 3 job_402/noquad_402.txt
--1 0 0 0 0 2 job_403/noquad_403.txt
--1 0 0 0 0 3 job_403/noquad_403.txt
+-1 0 0 0 0 2 job_403/noquad_403.txt > all negative except for quintic
+-1 0 0 0 0 3 job_403/noquad_403.txt > all negative except for quintic
 -1 0 0 0 1 -3 job_403/noquad_403.txt
 -1 0 0 0 1 -2 job_403/noquad_403.txt
 -1 0 0 0 1 -1 job_404/noquad_404.txt
@@ -2222,7 +2222,7 @@
 0 0 0 2 3 0 job_449/noquad_449.txt
 0 0 0 2 3 1 job_449/noquad_449.txt
 0 0 0 2 3 2 job_449/noquad_449.txt
--3 -3 -2 0 0 3 job_44/noquad_44.txt
+-3 -3 -2 0 0 3 job_44/noquad_44.txt > all negative except for quintic
 -3 -3 -2 0 1 -3 job_44/noquad_44.txt
 -3 -3 -2 0 1 -2 job_44/noquad_44.txt
 -3 -3 -2 0 1 -1 job_44/noquad_44.txt
@@ -2628,8 +2628,8 @@
 -3 -3 -3 -3 1 -2 job_5/noquad_5.txt
 -3 -3 -3 -3 1 -1 job_5/noquad_5.txt
 -3 -3 -3 -3 1 0 job_5/noquad_5.txt
--3 -3 -1 0 0 2 job_60/noquad_60.txt
--3 -3 -1 0 0 3 job_60/noquad_60.txt
+-3 -3 -1 0 0 2 job_60/noquad_60.txt > all negative except for quintic
+-3 -3 -1 0 0 3 job_60/noquad_60.txt > all negative except for quintic
 -3 -3 -1 0 1 -3 job_60/noquad_60.txt
 -3 -3 -1 0 1 -2 job_60/noquad_60.txt
 -3 -3 -1 0 1 -1 job_60/noquad_60.txt
@@ -2698,9 +2698,9 @@
 -3 -3 -3 -3 2 -1 job_6/noquad_6.txt
 -3 -3 -1 3 3 2 job_70/noquad_70.txt
 -3 -3 -1 3 3 3 job_70/noquad_70.txt
--3 -3 0 0 0 1 job_71/noquad_71.txt
--3 -3 0 0 0 2 job_71/noquad_71.txt
--3 -3 0 0 0 3 job_71/noquad_71.txt
+-3 -3 0 0 0 1 job_71/noquad_71.txt > all negative except for quintic
+-3 -3 0 0 0 2 job_71/noquad_71.txt > all negative except for quintic
+-3 -3 0 0 0 3 job_71/noquad_71.txt > all negative except for quintic
 -3 -3 0 0 1 -3 job_71/noquad_71.txt
 -3 -3 0 0 1 -2 job_71/noquad_71.txt
 -3 -3 0 0 1 -1 job_71/noquad_71.txt
