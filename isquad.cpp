@@ -31,15 +31,24 @@ inline int bit (int x, int i)
 
 // f(x) = c \prod_{i=1}^n x_i
 //
-int f (int n, int x, int a1234, int a2345, int a3451, int a4512, int a5123, int a12345)
+int f (int n, int x, double a[])
 {
     int b[n+1];
     for(int i = 1; i <= n; i++){
         b[i] = bit(x, i-1);
     }
-    return a1234*b[1]*b[2]*b[3]*b[4] + a2345*b[2]*b[3]*b[4]*b[5] + a3451*b[3]*b[4]*b[5]*b[1] + a4512*b[4]*b[5]*b[1]*b[2] + a5123*b[5]*b[1]*b[2]*b[3] + a12345*b[1]*b[2]*b[3]*b[4]*b[5];
+    int ans = 0;
+    for(int i = 0; i<(1<<n); i++){
+        int prod = 1;
+        for(int j = 1; j<=n; j++){
+            if(((i>>(j-1)) & 1)== 1){
+                prod *= b[j];
+            }
+        }
+        ans += a[i] * prod;
+    }
+    return ans;
 }
-
 // ERH : understand why written like this ???
 //
 string bin2str (int n, int k)
@@ -51,7 +60,7 @@ string bin2str (int n, int k)
 
 //
 //
-bool isquad (int n, int m, int pn, int pm, double c[], double a1234, double a2345, double a3451, double a4512, double a5123, double a12345)
+bool isquad (int n, int m, int pn, int pm, double c[], double a[])
 {
   int i, j, k, x, y;
   double fx, g, gxy;
@@ -60,7 +69,7 @@ bool isquad (int n, int m, int pn, int pm, double c[], double a1234, double a234
     //c0 + c1 b1 + c2 b2 +... + c4 b4 + c5ba + c6 b1b2 +...
   // ERH : loop over every point
   for (x = 0; x < pn; ++x) {
-    fx = f(n,x,a1234, a2345, a3451, a4512, a5123, a12345);
+    fx = f(n,x,a);
     g  = c[0];
     for (i = 1; i <= n; ++i) g += c[i]*(int)bit(x,i-1);
 
@@ -117,8 +126,8 @@ double input(){ // new input method on 5 March 2019
 int main (int argc, char* argv[])
 {
   int d, i, j, m, n;
-  char a;
-  double c[Q], a1234, a2345, a3451, a4512, a5123, a12345;
+  char achar;
+  double c[Q], a[1<<8];
   ofstream vtx, ray;
   string vtxname, rayname;
   
@@ -132,16 +141,27 @@ int main (int argc, char* argv[])
   vtx.open (vtxname.c_str());
   ray.open (rayname.c_str());
 
-    cin >> n >> m >> a1234 >> a2345 >> a3451 >> a4512 >> a5123 >> a12345;
+    cin >> n >> m ;
+    for (int k = 0; k < (1<<n); k++){
+    cin >> a[k];
+}
   d = (1+n+m+((n+m)*(n+m-1)/2));
 
-  vtx << n << " " << m << " " << a1234 << " "<< a2345 <<" "<< a3451 <<" "<< a4512 <<" "<< a5123 <<" "<< a12345<<endl;
-    ray << n << " " << m << " " << a1234 << " "<< a2345 <<" "<< a3451 <<" "<< a4512 <<" "<< a5123 <<" "<< a12345<<endl;
+    vtx << n << " " << m ;
+    for (int k = 0; k < (1<<n); k++){
+        vtx <<" " << a[k];
+    }
+    vtx << endl;
+    ray << n << " " << m;
+    for (int k = 0; k < (1<<n); k++){
+        ray <<" " << a[k];
+    }
+    ray <<endl;
   
   // ERH : for (;;) do this forever 
   for (;;) {
-    cin >> a;
-    if (a == '$') break;
+    cin >> achar;
+    if (achar == '$') break;
     cin.unget();
 
     cin >> i; // ignores the first column
@@ -149,7 +169,7 @@ int main (int argc, char* argv[])
         c[i] = input();
     }
 
-    if (isquad (n, m, pow2(n), pow2(m), c, a1234, a2345, a3451, a4512, a5123, a12345)) {
+    if (isquad (n, m, pow2(n), pow2(m), c, a)) {
       //cerr << "yes" << endl;
       print (vtx, d, c);
     }

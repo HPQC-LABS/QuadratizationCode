@@ -1,6 +1,6 @@
 //
 //  qcone.cpp
-//  
+//  to run: ./qcone n m a[0] a[1] ... a[2^n - 1] --lrs >temp.ine
 
 #include <cstdio>
 #include <cassert>
@@ -43,24 +43,34 @@ inline int pow2 (int j)
 // comparing x == (pow2(n)-1) is comparing if x == 3, that is (1, 1) and
 // therefore, the value of the monomial is 1 too
 //
-int f (int n, int x, int a1234, int a2345, int a3451, int a4512, int a5123, int a12345)
+int f (int n, int x, int a[])
 {
     int b[n+1];
     for(int i = 1; i <= n; i++){
         b[i] = bit(x, i-1);
     }
-    return a1234*b[1]*b[2]*b[3]*b[4] + a2345*b[2]*b[3]*b[4]*b[5] + a3451*b[3]*b[4]*b[5]*b[1] + a4512*b[4]*b[5]*b[1]*b[2] + a5123*b[5]*b[1]*b[2]*b[3] + a12345*b[1]*b[2]*b[3]*b[4]*b[5];
+    int ans = 0;
+    for(int i = 0; i<(1<<n); i++){
+        int prod = 1;
+        for(int j = 1; j<=n; j++){
+            if(((i>>(j-1)) & 1)== 1){
+                prod *= b[j];
+            }
+        }
+        ans += a[i] * prod;
+    }
+    return ans;
 }
 
 // ERH : p and q are pn (2^n) and pm (2^m) respectively, in the input
 //
-void print_fx (int n,  int p, int q, int a1234=0, int a2345=0, int a3451=0, int a4512=0, int a5123=0, int a12345=1)
+void print_fx (int n,  int p, int q, int a[])
 {
     int k = 0;
     cout << "param fx := ";
     for (int x = 0; x < p; ++x)
         for (int y = 0; y < q; ++y)
-            cout << ++k << " " << f(n, x,a1234, a2345, a3451, a4512, a5123, a12345) << " ";
+            cout << ++k << " " << f(n, x, a) << " ";
     cout << ";" << endl << endl;
 }
 
@@ -91,7 +101,7 @@ inline int srnd (int x)
 //            + \sum_{i=1}^n \sum_{j=1}^m f_{i,j} x_i y_j
 //
 // ERH : in the input, p = pn*pm, q = d
-void print_cmatrix (int n, int m, int p, int q, int lrs = 0, int a1234=0, int a2345=0, int a3451=0, int a4512=0, int a5123=0, int a12345=1)
+void print_cmatrix (int n, int m, int p, int q, int lrs, int a[])
 {
   int i, j, k, l, x, y, p2n, p2m, b[P];
   bool M[P][Q];
@@ -130,7 +140,7 @@ void print_cmatrix (int n, int m, int p, int q, int lrs = 0, int a1234=0, int a2
           M[k][l++] = bit(x,i) && bit(y,j);
       
       // finally we compute value of f in the point to get the ineq array
-        b[k] = f(n,x, a1234, a2345, a3451, a4512, a5123, a12345);
+        b[k] = f(n,x, a);
       ++k;
     }
   
@@ -264,13 +274,17 @@ int main (int argc, char* argv[])
   //       what are preamble commands ??? vble verb, option --nocmd
   int d, k, m, n, x, y, pn, pm, verb = 1, L = 10, hum=0, lrs=0;
   int c;
-    int a1234=0, a2345=0, a3451=0, a4512=0, a5123=0, a12345=1;
+    int a[1<<8];
 
   n = 4, m = 1;
   // ERH : initializes random number generator
   srand ((unsigned int) time (0));
   c = rnd (20);
-  
+    sscanf(argv[1], "%d", &n);
+    sscanf(argv[2], "%d", &m);
+    for(int i = 0; i<(1<<n); i++){
+        sscanf(argv[i+3], "%d", &a[i]);
+    }
   for (--argc; argc > 0; --argc)
     if (!strcmp(argv[argc], "--help")) {
       cout << "qcone : conical polyhedron description of quadratic pBfs" << endl << endl;
@@ -278,12 +292,6 @@ int main (int argc, char* argv[])
       cout << "  --n=%d           (  4) : number of x variables" << endl;
       cout << "  --m=%d           (  1) : number of y variables" << endl;
       cout << "  --c=%d           (rnd) : coefficient of f(x)" << endl;
-      cout << "  --a1234=%d           (rnd) : coefficient of f(x)" << endl;
-        cout << "  --a2345=%d           (rnd) : coefficient of f(x)" << endl;
-        cout << "  --a3451=%d           (rnd) : coefficient of f(x)" << endl;
-        cout << "  --a4512=%d           (rnd) : coefficient of f(x)" << endl;
-        cout << "  --a5123=%d           (rnd) : coefficient of f(x)" << endl;
-        cout << "  --a12345=%d          (rnd) : coefficient of f(x)" << endl;
       cout << "  --nocmd                : does not print prerambule commands" << endl;
       cout << "  --L=%d           ( 10) : coefficients in [-L..L]" << endl;
       cout << "  --hum            ( nd) : human format" << endl;
@@ -295,12 +303,6 @@ int main (int argc, char* argv[])
     else if (sscanf(argv[argc], "--n=%d", &n)) assert (n >= 1);
     else if (sscanf(argv[argc], "--m=%d", &m)) assert (m >= 1);
     else if (sscanf(argv[argc], "--c=%d", &c));
-    else if (sscanf(argv[argc], "--a1234=%d", &a1234));
-    else if (sscanf(argv[argc], "--a2345=%d", &a2345));
-    else if (sscanf(argv[argc], "--a3451=%d", &a3451));
-    else if (sscanf(argv[argc], "--a4512=%d", &a4512));
-    else if (sscanf(argv[argc], "--a5123=%d", &a5123));
-    else if (sscanf(argv[argc], "--a12345=%d", &a12345));
     else if (sscanf(argv[argc], "--L=%d", &L));
     else if (!strcmp (argv[argc], "--nocmd")) verb = 0;
     else if (!strcmp (argv[argc], "--hum")) hum = 1;
@@ -317,7 +319,7 @@ int main (int argc, char* argv[])
     cout << "H-representation" << endl;
     cout << "begin" << endl;
     cout << pn*pm /*+n+m-2*/ << " " << d+1 << " rational" << endl;
-    print_cmatrix (n, m, pn*pm, d, 1, a1234, a2345, a3451, a4512, a5123, a12345);
+    print_cmatrix (n, m, pn*pm, d, 1, a);
     // break_symmetry_lrs (n, m, d);
     cout << "end" << endl;
     return 0;
@@ -335,8 +337,8 @@ int main (int argc, char* argv[])
     cout << "param aa{1..CTR,0..DIM-1};" << endl;
     cout << "set XSET;" << endl;
     cout << "data;" << endl;
-    print_cmatrix (n, m, pn*pm, d);
-    print_fx (n, c, pn, pm);
+    print_cmatrix (n, m, pn*pm, d, 0, 0);
+    print_fx (n, c, pn, &pm);
     print_a (d, L);
     print_aa (pn*pm, d, L);
     cout << "model;" << endl;
@@ -367,7 +369,7 @@ int main (int argc, char* argv[])
       for (y = 0; y < pm; ++y) {
         cout << "subject to t_" << x << "_" << y << "_" << ++k << ": ";
         print_g (n, x, m, y);
-        cout << ">=" << f(n, x, a1234, a2345, a3451, a4512, a5123, a12345) << ";" << endl;
+        cout << ">=" << f(n, x, a) << ";" << endl;
       }
   }
   // break_symmetry (n, m);
