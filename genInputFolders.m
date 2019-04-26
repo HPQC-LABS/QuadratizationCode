@@ -1,7 +1,7 @@
 function genInputFolders(X, N, filehasno) % X the number cores, N the range of coeff, file has no. if fileno = 1
 tic
 if nargin == 0
-    X = 5;
+    X = 500;
     N = 1;
     filehasno = 0;
 end
