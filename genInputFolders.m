@@ -1,4 +1,4 @@
-function genInputFolders(X, N, filehasno) % X the number cores, N the range of coeff, file has no. if fileno = 1
+function genInputFolders(X, N, filehasno) % X the number cores, N the range of coeff, file has no. if filehasno = 1
 tic
 if nargin == 0
     X = 500;
