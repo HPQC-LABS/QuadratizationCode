@@ -5,12 +5,12 @@ fileID = fopen(s, 'r');
 temp = fgetl(fileID);
 
 A = sscanf(temp, "%f");
-a1234 = A(3);
-a2345 = A(4);
-a3451 = A(5);
-a4512 = A(6);
-a5123 = A(7);
-a12345 = A(8);
+a1234 = A(1);
+a2345 = A(2);
+a3451 = A(3);
+a4512 = A(4);
+a5123 = A(5);
+a12345 = A(6);
 
 n = 6;
 allCombos=dec2bin(0:2^n-1) -'0';
