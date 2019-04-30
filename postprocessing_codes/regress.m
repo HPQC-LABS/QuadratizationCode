@@ -4,7 +4,7 @@
 % -8 -3 -3 -3  6:     0   0   8   0   3   0  -8   0  -3  -8   0  -3   8  -8   8  -3
 %
 
-f = fopen("hasquad.txt");
+f = fopen("4varCasesNotDone.txt");
 
 A = fscanf(f, "%f %f %f %f %f: %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f", [21, Inf]);
 A = A';
@@ -26,10 +26,9 @@ for i = 1:m
     z = A(i, 3); 
     w = A(i, 4);
     k = A(i, 5);
-    % filter out lines of satisfying a condition, then use following:
-    % explained = [explained; LHS]; explained = unique(explained, 'row')
-    %
 
+    %manually find the correct grouping
+    
     if x<=-k && -k/2<=y && z<=0 && 0<=w && A(i, 6) == 0 && A(i, 7) == -x 
         caseno = 1;
     end
@@ -58,17 +57,24 @@ for i = 1:m
         caseno = 7;
     end
     
-    if -k<=x && w<=0 && A(i, 7) < 0 && A(i, 6) == -A(i, 7) && A(i, 8) > 0
+    if -k<=x && w<=0 && A(i, 7) <= 0 && A(i, 6) == -A(i, 7) && A(i, 8) > 0 && A(i, 9) > 0
         caseno = 8; 
     end
     
-    if caseno ~= 0
+    if caseno ~= 0 %ignore some quad because only need one quad per function
         LHS{caseno} = [LHS{caseno}; A(i, 1:5)];
         RHS{caseno} = [RHS{caseno}; A(i, 6:21)];
     end
 end
 
+%check whether have got all cases in the file
+explained = zeros(0, 5);
 for i = 1:8
     quadCoeff{i} = LHS{i}\RHS{i};
     quadCoeff{i}
+    explained = [explained; LHS{i}];
 end
+explained = unique(explained, 'row');
+allcase = unique(A(:, 1:5), 'row');
+
+isequal(explained, allcase)
