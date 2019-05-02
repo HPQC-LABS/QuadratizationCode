@@ -1,0 +1,331 @@
+\documentclass[11pt]{scrartcl}
+\usepackage[sexy]{evan}
+\newcommand{\vc}[1]{\boldsymbol{#1}}
+
+\begin{document}
+\title{Proof of 4-var 1-aux Quadratisations} \date{2 MAY 2018}
+
+We would like to quadratise 
+\[f = x b_1 b_2 b_3 + y b_2 b_3 b_4 + z b_3 b_4 b_1 + w b_4 b_1 b_2 + k b_1 b_2 b_3 b_4.\] Also assume $k \ge 0$ for now and write $\vc b = b_1 b_2 b_3 b_4$.
+
+\begin{lemma}
+	If $x\le -k$ and $-\frac{k}{2} \le y \le z \le 0 \le w$, then 
+	$g = b_a(x(b_1-b_2-b_3)+y(-b_2-b_3+b_4)+z(1-b_1+b_3-b_4)+w(1-b_1+b_2-b_4)+k(1-b_1-b_4))
++x(-b_1+b_1 b_2+b_1 b_3)+y(-b_4+b_2 b_4+b_3 b_4)+z b_1 b_4 +w b_1 b_4 +k b_1 b_4 $ is a quadratisation.
+
+\end{lemma}
+\begin{proof}
+If $\vc b = 0000$, then $g = b_a(k + w + z)$. Since $w \ge 0$ and $k + z \ge 0$, the minimiser is $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0001$, then $g = b_ay - y$. Since $y \le 0$, $b_a^*= 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0010$, then $g = b_a(k + w - x - y + 2z)$. Since $k + 2z \ge 0$ and $ w \ge 0 $ and $- x\ge 0$ and $-y \ge 0$, $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0011$, then $g = b_a(z - x)$. Since $z \ge x$, $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0100$, then $g = b_a(k + 2w - x - y + z)$. Since $k +2z \ge 0$ and $w \ge 0$ and $-x \ge 0 $ and $-y \ge 0$, $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0101$, then $g = b_a(w - x)$. Since $w \ge x$, $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0110$, then $g = b_a(k + 2w - 2x - 2y + 2z)$. Since $k + 2z \ge 0$ and $w \ge 0$ and $-x \ge 0$ and $-y \ge 0$, $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0111$, then $g = y + b_a(w - 2x - y + z)$. Since $w \ge 0$ and $z - y \ge 0$ and $-x \ge 0$, $b_a^*= 0$, so $\min g = y = f$.
+
+If $\vc b = 1000$, then $g = b_ax - x$. Since $x \le 0$, $b_a^*= 1$, so $\min g = 0 = f$.
+
+If $\vc b = 1001$, then $g = k + w - x - y + z +b_a(-k - w + x + y - z)$. Since $-k \le 0 $ and $-w \le 0 $ and $y \le z$ and $-x \le 0$, $b_a^*= 1$, so $\min g = 0 = f$.
+
+If $\vc b = 1010$, then $g = b_a(z - y)$. Since $ z \ge y$, $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 1011$, then $g = k + w + z + b_a(-k - w)$. Since $- k \le 0$ and $-w \le 0$, $b_a^*= 1$, so $\min g = z = f$.
+
+If $\vc b = 1100$, then $g = b_a(w - y)$. Since $w \ge y$, $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 1101$, then $g = k + w + z - b_a(k + z)$. Since $-(k + z) \le 0$, $b_a^*= 1$, so $\min g = w = f$.
+
+If $\vc b = 1110$, then $g = x + b_a(w - x - 2y + z)$. Since $w + z \ge 0$ and $-x \ge 0$ and $-y \ge 0$, $b_a^* = 0$, so $\min g = x = f$.
+
+If $\vc b = 1111$, then $g = k + w + x + y + z - b_a(k + x + y)$. Since $-(k + x) \ge 0$ and $-y \ge 0$, $b_a^*= 0$, so $\min g = k+w+x+y+z = f$.
+
+\end{proof}
+
+\begin{lemma}
+	If  $x\le -k$ and $-k/2\le y \le z \le w \le 0$, then 
+$b_a(x(-b_1+b_2+b_3)+y(+b_2+b_3-b_4)+z(-1+b_1-b_3+b_4)+w(-1+b_1-b_2+b_4)+k(-1+b_1+b_4))+x(-b_2-b_3+b_1b_2+b_1b_3)+y(-b_2-b_3+b_2b_4+b_3b_4)+z(+1-b_1+b_3-b_4+b_1b_4)+w(+1-b_1+b_2-b_4+b_1b_4)+k(+1-b_1-b_4+b_1b_4)$
+	is a quadratisation.
+
+\end{lemma}
+
+\begin{proof}
+	If $\vc b = 0000$, then $g = k + w + z - b_a(k + w + z)$. Since $-\frac{k}{2} - w \le 0$ and $-\frac{k}{2} - z \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0001$, then $g = -b_ay$. Since $-y \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0010$, then $g = k + w - x - y + 2z + b_a(-k - w + x + y - 2z)$. Since $-k - w\le 0$ and $y \le z$ and $x \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0011$, then $g = z - x + b_a(x - z)$. Since $x \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0100$, then $g = k + 2w - x - y + z + b_a(-k - 2w + x + y - z)$. Since $-k - 2w \le 0$ and $x \le 0$ and $y \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0101$, then $g = w - x + b_a(x - w)$. Since $x \le w$, $b_a^* = 1$, so $\min g = 0 = f$. 
+
+If $\vc b = 0110$, then $g = k + 2w - 2x - 2y + 2z + b_a(-k - 2w +2x + 2y - 2z)$. Since $-k - 2w \le 0$ and $x \le 0$ and $y \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+
+If $\vc b = 0111$, then $g = w - 2x + z + b_a (-w + 2x + y - z)$. Since $x \le z$ and $y \le w$ and $x \le 0$, $b_a^* = 1$, so $\min g = y = f$.
+
+If $\vc b = 1000$, then $g = -b_ax$. Since $-x \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 1001$, then $g = b_a(k + w - x - y + z)$. Since $\frac{k}{2} + w \ge 0 $ and $\frac{k}{2} + z \ge 0$ and $x \ge 0 $ and $y \ge 0$, $b_a^* = 0$, 
+so $\min g = 0 = f$.
+
+If $\vc b = 1010$, then $g = z - y + b_a(y - z)$. Since $y \le z$, $b_a^* = 1$, so $\min g = 0  = f$.
+
+If $\vc b = 1011$, then $g = z + b_a(k + w)$. Since $k + w \ge 0$, $b_a^* = 0$, so $\min g = z = f$.
+
+If $\vc b = 1100$, then $g = w - y + b_a(y -w)$. Since $y \le w$, $b_a^* = 1$, so $\min g = 0 = f$. 
+
+If $\vc b = 1101$, then $g = w + b_a(k + z)$. Since $k+z \ge 0$, $b_a^* = 0$, so $\min g = w = f$.
+
+If $\vc b = 1110$, then $g = w - 2y + z + b_a(-w + x + 2y - z)$. Since $x \le w$ and $y \le z$ and $y \le 0$, $b_a^* = 1$, so $\min g = x = f$.
+
+If $\vc b = 1111$, then $g = w + z + b_a(k + x + y)$. Since $k + x \le 0$ and $y \le 0 $, $b_a^* = 1$, so $\min g = x = f$.
+
+\end{proof}	
+
+
+\begin{lemma}
+ If \textcolor{red}{???}, then $b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ is a quadratisation.\\
+ \end{lemma}
+
+\begin{proof}
+If $\vc b = 0000$, then $g = 3k + w + x + y + z - b_a(3k + w + x + y + z)$.
+
+If $\vc b = 0001$, then $g = k + x - b_a(k + x)$.
+
+If $\vc b = 0010$, then $g = k + w - b_a(k + w)$.
+
+If $\vc b = 0011$, then $g = b_a(k + y + z)$.
+
+If $\vc b = 0100$, then $g = k + z - b_a(k + z)$.
+
+If $\vc b = 0101$, then $g = b_a(k + w + y)$.
+
+If $\vc b = 0110$, then $g = b_a(k + x + y)$.
+
+If $\vc b = 0111$, then $g = y + b_a(3k + w + x + 2y + z)$.
+
+If $\vc b = 1000$, then $g = k + y - b_a(k + y)$.
+
+If $\vc b = 1001$, then $g = b_a(k + w + z)$.
+
+If $\vc b = 1010$, then $g = b_a(k + x + z)$.
+
+If $\vc b = 1011$, then $g = z + b_a(3k + w + x + y + 2z)$.
+
+If $\vc b = 1100$, then $g = b_a(k + w + x)$.
+
+If $\vc b = 1101$, then $g = w + b_a(3k + 2w + x + y + z)$.
+
+If $\vc b = 1110$, then $g = x + b_a(3k + w + 2x + y + z)$.
+
+If $\vc b = 1111$, then $g = k + w + x + y + z + b_a(5k + 2w + 2x + 2y + 2z)$.
+
+\end{proof}
+
+\begin{lemma}
+ If \textcolor{red}{???}, then $b_a(x(+b_1-b_2-b_3)+y(-b_2-b_3+b_4)+z(1-b_1+b_3-b_4)+w(1-b_1+b_2-b_4)+k(1-b_1-b_4))+x(-b_1+b_1b_2+b_1b_3)+y(-b_4+b_2b_4+b_3b_4)+z(+b_1b_4)+w(+b_1b_4)+k(+b_1b_4)$ is a quadratisation.\\
+ \end{lemma}
+
+\begin{proof}
+If $\vc b = 0000$, then $g = b_a(k + w + z)$.
+
+If $\vc b = 0001$, then $g = b_ay - y$.
+
+If $\vc b = 0010$, then $g = b_a(k + w - x - y + 2z)$.
+
+If $\vc b = 0011$, then $g = -b_a(x - z)$.
+
+If $\vc b = 0100$, then $g = b_a(k + 2w - x - y + z)$.
+
+If $\vc b = 0101$, then $g = b_a(w - x)$.
+
+If $\vc b = 0110$, then $g = b_a(k + 2w - 2x - 2y + 2z)$.
+
+If $\vc b = 0111$, then $g = y + b_a(w - 2x - y + z)$.
+
+If $\vc b = 1000$, then $g = b_ax - x$.
+
+If $\vc b = 1001$, then $g = k + w - x - y + z - b_a(k + w - x - y + z)$.
+
+If $\vc b = 1010$, then $g = -b_a(y - z)$.
+
+If $\vc b = 1011$, then $g = k + w + z - b_a(k + w)$.
+
+If $\vc b = 1100$, then $g = b_a(w - y)$.
+
+If $\vc b = 1101$, then $g = k + w + z - b_a(k + z)$.
+
+If $\vc b = 1110$, then $g = x + b_a(w - x - 2y + z)$.
+
+If $\vc b = 1111$, then $g = k + w + x + y + z - b_a(k + x + y)$.
+
+\end{proof}
+
+\begin{lemma}
+ If \textcolor{red}{???}, then $b_a(x(+b_1-b_2-b_3)+y(-b_2-b_3+b_4)+z(1-b_1+b_3-b_4)+w(1-b_1+b_2-b_4)+k(1-b_1-b_4))+x(-b_1+b_1b_2+b_1b_3)+y(-b_4+b_2b_4+b_3b_4)+z(+b_1b_4)+w(+b_1b_4)+k(+b_1b_4)$ is a quadratisation.\\
+ \end{lemma}
+
+\begin{proof}
+If $\vc b = 0000$, then $g = b_a(k + w + z)$.
+
+If $\vc b = 0001$, then $g = b_ay - y$.
+
+If $\vc b = 0010$, then $g = b_a(k + w - x - y + 2z)$.
+
+If $\vc b = 0011$, then $g = -b_a(x - z)$.
+
+If $\vc b = 0100$, then $g = b_a(k + 2w - x - y + z)$.
+
+If $\vc b = 0101$, then $g = b_a(w - x)$.
+
+If $\vc b = 0110$, then $g = b_a(k + 2w - 2x - 2y + 2z)$.
+
+If $\vc b = 0111$, then $g = y + b_a(w - 2x - y + z)$.
+
+If $\vc b = 1000$, then $g = b_ax - x$.
+
+If $\vc b = 1001$, then $g = k + w - x - y + z - b_a(k + w - x - y + z)$.
+
+If $\vc b = 1010$, then $g = -b_a(y - z)$.
+
+If $\vc b = 1011$, then $g = k + w + z - b_a(k + w)$.
+
+If $\vc b = 1100$, then $g = b_a(w - y)$.
+
+If $\vc b = 1101$, then $g = k + w + z - b_a(k + z)$.
+
+If $\vc b = 1110$, then $g = x + b_a(w - x - 2y + z)$.
+
+If $\vc b = 1111$, then $g = k + w + x + y + z - b_a(k + x + y)$.
+
+\end{proof}
+
+\begin{lemma}
+ If \textcolor{red}{???}, then $b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ is a quadratisation.\\
+ \end{lemma}
+
+\begin{proof}
+If $\vc b = 0000$, then $g = 3k + w + x + y + z - b_a(3k + w + x + y + z)$.
+
+If $\vc b = 0001$, then $g = k + x - b_a(k + x)$.
+
+If $\vc b = 0010$, then $g = k + w - b_a(k + w)$.
+
+If $\vc b = 0011$, then $g = b_a(k + y + z)$.
+
+If $\vc b = 0100$, then $g = k + z - b_a(k + z)$.
+
+If $\vc b = 0101$, then $g = b_a(k + w + y)$.
+
+If $\vc b = 0110$, then $g = b_a(k + x + y)$.
+
+If $\vc b = 0111$, then $g = y + b_a(3k + w + x + 2y + z)$.
+
+If $\vc b = 1000$, then $g = k + y - b_a(k + y)$.
+
+If $\vc b = 1001$, then $g = b_a(k + w + z)$.
+
+If $\vc b = 1010$, then $g = b_a(k + x + z)$.
+
+If $\vc b = 1011$, then $g = z + b_a(3k + w + x + y + 2z)$.
+
+If $\vc b = 1100$, then $g = b_a(k + w + x)$.
+
+If $\vc b = 1101$, then $g = w + b_a(3k + 2w + x + y + z)$.
+
+If $\vc b = 1110$, then $g = x + b_a(3k + w + 2x + y + z)$.
+
+If $\vc b = 1111$, then $g = k + w + x + y + z + b_a(5k + 2w + 2x + 2y + 2z)$.
+
+\end{proof}
+
+\begin{lemma}
+ If \textcolor{red}{???}, then $b_a(x(1-b_1-b_2-b_3)+y(1-b_2-b_3-b_4)+z(1-b_1-b_3-b_4)+w(1-b_1-b_2-b_4)+k(3-2b_1-2b_2-2b_3-2b_4))+x(+b_1b_2+b_1b_3+b_2b_3)+y(+b_2b_3+b_2b_4+b_3b_4)+z(+b_1b_3+b_1b_4+b_3b_4)+w(+b_1b_2+b_1b_4+b_2b_4)+k(+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ is a quadratisation.\\
+ \end{lemma}
+
+\begin{proof}
+If $\vc b = 0000$, then $g = b_a(3k + w + x + y + z)$.
+
+If $\vc b = 0001$, then $g = b_a(k + x)$.
+
+If $\vc b = 0010$, then $g = b_a(k + w)$.
+
+If $\vc b = 0011$, then $g = k + y + z - b_a(k + y + z)$.
+
+If $\vc b = 0100$, then $g = b_a(k + z)$.
+
+If $\vc b = 0101$, then $g = k + w + y - b_a(k + w + y)$.
+
+If $\vc b = 0110$, then $g = k + x + y - b_a(k + x + y)$.
+
+If $\vc b = 0111$, then $g = 3k + w + x + 3y + z - b_a(3k + w + x + 2y + z)$.
+
+If $\vc b = 1000$, then $g = b_a(k + y)$.
+
+If $\vc b = 1001$, then $g = k + w + z - b_a(k + w + z)$.
+
+If $\vc b = 1010$, then $g = k + x + z - b_a(k + x + z)$.
+
+If $\vc b = 1011$, then $g = 3k + w + x + y + 3z - b_a(3k + w + x + y + 2z)$.
+
+If $\vc b = 1100$, then $g = k + w + x - b_a(k + w + x)$.
+
+If $\vc b = 1101$, then $g = 3k + 3w + x + y + z - b_a(3k + 2w + x + y + z)$.
+
+If $\vc b = 1110$, then $g = 3k + w + 3x + y + z - b_a(3k + w + 2x + y + z)$.
+
+If $\vc b = 1111$, then $g = 6k + 3w + 3x + 3y + 3z - b_a(5k + 2w + 2x + 2y + 2z)$.
+
+\end{proof}
+
+\begin{lemma}
+ If \textcolor{red}{???}, then $b_a(x(-b_1+b_2+b_3)+y(+b_2+b_3-b_4)+z(-1+b_1-b_3+b_4)+w(-1+b_1-b_2+b_4)+k(-1+b_1+b_4))+x(-b_2-b_3+b_1b_2+b_1b_3)+y(-b_2-b_3+b_2b_4+b_3b_4)+z(+1 -b_1+b_3-b_4+b_1b_4)+w(+1 -b_1+b_2-b_4+b_1b_4)+k(+1 -b_1-b_4+b_1b_4)$ is a quadratisation.\\
+ \end{lemma}
+
+\begin{proof}
+If $\vc b = 0000$, then $g = k + w + z - b_a(k + w + z)$.
+
+If $\vc b = 0001$, then $g = -b_ay$.
+
+If $\vc b = 0010$, then $g = k + w - x - y + 2z - b_a(k + w - x - y + 2z)$.
+
+If $\vc b = 0011$, then $g = z - x + b_a(x - z)$.
+
+If $\vc b = 0100$, then $g = k + 2w - x - y + z - b_a(k + 2w - x - y + z)$.
+
+If $\vc b = 0101$, then $g = w - x - b_a(w - x)$.
+
+If $\vc b = 0110$, then $g = k + 2w - 2x - 2y + 2z - b_a(k + 2w - 2x - 2y + 2z)$.
+
+If $\vc b = 0111$, then $g = w - 2x + z - b_a(w - 2x - y + z)$.
+
+If $\vc b = 1000$, then $g = -b_ax$.
+
+If $\vc b = 1001$, then $g = b_a(k + w - x - y + z)$.
+
+If $\vc b = 1010$, then $g = z - y + b_a(y - z)$.
+
+If $\vc b = 1011$, then $g = z + b_a(k + w)$.
+
+If $\vc b = 1100$, then $g = w - y - b_a(w - y)$.
+
+If $\vc b = 1101$, then $g = w + b_a(k + z)$.
+
+If $\vc b = 1110$, then $g = w - 2y + z - b_a(w - x - 2y + z)$.
+
+If $\vc b = 1111$, then $g = w + z + b_a(k + x + y)$.
+
+\end{proof}
+
+\end{document}
