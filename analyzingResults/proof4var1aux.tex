@@ -5,8 +5,83 @@
 \begin{document}
 \title{Proof of 4-var 1-aux Quadratisations} \date{MAY 2018}
 
+
 We would like to quadratise 
-\[f = x b_1 b_2 b_3 + y b_2 b_3 b_4 + z b_3 b_4 b_1 + w b_4 b_1 b_2 + k b_1 b_2 b_3 b_4.\] Also assume $k \ge 0$ for now and write $\vc b = b_1 b_2 b_3 b_4$.
+\[f = x b_1 b_2 b_3 + y b_2 b_3 b_4 + z b_3 b_4 b_1 + w b_4 b_1 b_2 + k b_1 b_2 b_3 b_4.\] We shall write $\vc b = b_1 b_2 b_3 b_4$.
+
+\begin{lemma}
+	\label{allpositive}
+	If $k \ge 0$ and $x, y, z, w \ge -\frac{k}{2}$, then $g = b_a((3k+x+y+z+w) - (2k+x+z+w)b_1 - (2k+x+y+w)b_2 - (2k+x+y+z)b_3 - (2k+y+z+w)b_4) + k(b_1b_2+b_1b_3+b_1 b_4+ b_2b_3+b_2b_4+b_3b_4) + x(b_1b_2+b_1b_3+b_2b_3) + y(b_2b_3+b_2b_4+b_3b_4) + z(b_1b_3+b_1b_4+b_3b_4) + w(b_1b_2+b_1b_4+b_2b_4)$ is a quadratisation of $f$.
+\end{lemma}
+
+\begin{proof}
+
+Using the symmetry in the condition that $x, y, z, w$ satisfy and the symmetry in the quadratisation, WLOG consider $b_1\le b_2\le b_3\le b_4$, so we only need to check $5$ cases: $\vc b = 0000, 0001, 0011, 0111, $ or $1111$. 
+
+If $\vc b = 0000$, then $g = b_a(3k + w + x + y + z)$. Since $k + w + x \ge 0$ and $k + y + z \ge 0$, the minimiser is $b_a^*= 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0001$, then $g = b_a(k + x)$. Since $k + x \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0011$, then $g = k + y + z - b_a(k + y + z)$. Since $-(k+y + z) \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0111$, then $g = 3k + w + x + 3y + z - b_a(3k + w + x + 2y + z)$. Since $-(k+w+x) \le 0$ and $-(k+2y) \le 0$ and $-(k+z) \le 0$, $b_a^* = 1$, so $\min g = y = f$.
+
+If $\vc b = 1111$, then $g = 6k + 3w + 3x + 3y + 3z - b_a(5k + 2w + 2x + 2y + 2z)$. Since $-k -2w \le 0$ and $-k - 2x \le 0$ and $-k -2y \le 0$ and $-k - 2z \le 0$ and $-k \le 0$, $b_a^* = 1$, so $\min g = k + w + x + y + z = f$.
+
+\end{proof}
+
+\begin{lemma}
+	If $ k, x, y, z, w \le 0 $, then $g = b_a(k(b_1+b_2+b_3+b_4-3) + 
+	x(b_1+b_2+b_3-2) + y(b_2+b_3+b_4-2) + z(b_3+b_4+b_1-2) + w(b_4+b_1+b_2-2))$ is a quadratisation of $f$.
+\end{lemma}
+
+\begin{remark}
+	Using the standard quadratisation for the negative monomial, we can quadratise $ -b_1b_2b_3b_4 $ as $(3-b_1-b_2-b_3-b_4)b_a$, and quadratise
+	$-b_1b_2b_3$ as $(2-b_1-b_2-b_3)b_a'$. Here we are saying that we can add them together and use the \textit{same} auxiliary variable.
+\end{remark}
+
+\begin{proof}
+By symmetry, it suffices to check the cases when $\vc b = 0000, 0001, 0011, 0111, $ or $1111$.
+
+If $\vc b = 0000$, then $g = -b_a(3k + 2w + 2x + 2y + 2z)$. Since $-k \ge 0$ and $-x \ge 0$ and $-y \ge 0$ and $-z \ge 0$ and $-w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0001$, then $g = -b_a(2k + w + 2x + y + z)$. Similar to the case when $\vc b = 0000$ we have $\min g = 0 = f$.
+
+If $\vc b = 0011$, then $g = -b_a(k + w + x)$. Since $-k \ge 0$ and $-w \ge 0$ and $\x \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0111$, then $g = b_ay$. Since $y \le 0$, $b_a^* = 1$, so $\min g = y = f$.
+
+If $\vc b = 1111$, then $g = b_a(k + w + x + y + z)$. Since $k \le 0$ and $\w \le 0$ and $x \le 0$ and $y \le 0$ and $z \le 0$, $b_a^* = 1$, so $\min g = k + w + x + y + z  = f$.
+
+\end{proof}
+
+Next we consider some substitutions that reduce other cases to the two cases above that we know how to quadratise.
+
+If we consider the substitution $b_1' = 1-b_1$ and $b_2' = 1-b_2$, then
+\begin{align*} 
+	f &= (kb_3b_4 - kb_2'b_3b_4 -kb_1'b_3b_4 + kb_1'b_2'b_3b_4) + (xb_3 - xb_1'b_3 - xb_2'b_3 +  xb_1'b_2'b_3)  \\ 
+	&\phantom{=}\ + (yb_3b_4 - yb_2'b_3b_4) + (zb_3b_4 - zb_1'b_3b_4) + (wb_4 - wb_1'b_4 - wb_2'b_4 + wb_1'b_2'b_4),\end{align*}
+so ignoring all linear and quadratic terms it is
+\begin{align*} f' &= kb_1'b_2'b_3b_4 + xb_1'b_2'b_3 + (-y-k)b_2'b_3b_4 + (-z-k)b_3b_4b_1' + wb_4b_1'b_2'\\ 
+	&=k'b_1'b_2'b_3b_4 + x'b_1'b_2'b_3 + y'b_2'b_3b_4 + z'b_3b_4b_1' + w'b_4b_1'b_2'
+\end{align*}
+This is of the original form with $y'=-y-k$ and $z'=-z-k$ and other coefficients unchanged. 
+If we have a 1-auxiliary quadratisation for $f$ in terms of $b_1, b_2, b_3, b_4, b_a$, 
+then after the substitution and taking care of the linear and quadratic terms in $f$, we obtain a 1-aux quadratisation for $f'$ in terms of $b_1', b_2', b_3, b_4, b_a$.
+
+If $f$ has $k \ge 0$ and $w, x, y , z \ge -\frac{k}{2}$ as in \ref{allpositive}, then $f'$ has $k' \ge 0$ and $w', x' \ge -\frac{k}{2}$ and $y', w' \le -\frac{k}{2}$. And this correspondence is invertible, so given any $f'$ with  $k' \ge 0$ and $w', x' \ge -\frac{k}{2}$ and $y', w' \le -\frac{k}{2}$,
+we know that it has a 1-aux quadratisation. We can also do the same substitution on the other pair of variables $b_3, b_4$ to prove that any $f''$ with $k'' \ge 0$ and $w'', x'', y'', z'' \le -\frac{k}{2}$ has a 1-aux quadratisation. 
+
+To sum up, if $k\ge 0$, an even number of $x, y, z, w$ are at least $-\frac{k}{2}$, and an even number of them are most $-\frac{k}{2}$, then $f$ has a quadratisation in 1 auxiliary.
+
+\textcolor{red}{some cases to add here}
+\begin{lemma}
+\end{lemma}
+
+\begin{lemma}
+\end{lemma}
+
+Below we assume $k \ge 0$.
 
 \begin{lemma}
 	If $x\le -k$ and $-\frac{k}{2} \le y \le z \le 0 \le w$, then 
