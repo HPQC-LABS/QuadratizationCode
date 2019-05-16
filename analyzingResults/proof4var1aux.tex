@@ -1,6 +1,8 @@
 \documentclass[11pt]{scrartcl}
 \usepackage[sexy]{evan}
 \newcommand{\vc}[1]{\boldsymbol{#1}}
+\usepackage{array,multirow}
+
 
 \begin{document}
 \title{Proof of 4-var 1-aux Quadratisations} \date{MAY 2018}
@@ -31,6 +33,7 @@ If $\vc b = 1111$, then $g = 6k + 3w + 3x + 3y + 3z - b_a(5k + 2w + 2x + 2y + 2z
 \end{proof}
 
 \begin{lemma}
+	\label{allnegative}
 	If $ k, x, y, z, w \le 0 $, then $g = b_a(k(b_1+b_2+b_3+b_4-3) + 
 	x(b_1+b_2+b_3-2) + y(b_2+b_3+b_4-2) + z(b_3+b_4+b_1-2) + w(b_4+b_1+b_2-2))$ is a quadratisation of $f$.
 \end{lemma}
@@ -47,11 +50,11 @@ If $\vc b = 0000$, then $g = -b_a(3k + 2w + 2x + 2y + 2z)$. Since $-k \ge 0$ and
 
 If $\vc b = 0001$, then $g = -b_a(2k + w + 2x + y + z)$. Similar to the case when $\vc b = 0000$ we have $\min g = 0 = f$.
 
-If $\vc b = 0011$, then $g = -b_a(k + w + x)$. Since $-k \ge 0$ and $-w \ge 0$ and $\x \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+If $\vc b = 0011$, then $g = -b_a(k + w + x)$. Since $-k \ge 0$ and $-w \ge 0$ and $x \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
 
 If $\vc b = 0111$, then $g = b_ay$. Since $y \le 0$, $b_a^* = 1$, so $\min g = y = f$.
 
-If $\vc b = 1111$, then $g = b_a(k + w + x + y + z)$. Since $k \le 0$ and $\w \le 0$ and $x \le 0$ and $y \le 0$ and $z \le 0$, $b_a^* = 1$, so $\min g = k + w + x + y + z  = f$.
+If $\vc b = 1111$, then $g = b_a(k + w + x + y + z)$. Since $k \le 0$ and $w \le 0$ and $x \le 0$ and $y \le 0$ and $z \le 0$, $b_a^* = 1$, so $\min g = k + w + x + y + z  = f$.
 
 \end{proof}
 
@@ -74,19 +77,104 @@ we know that it has a 1-aux quadratisation. We can also do the same substitution
 
 To sum up, if $k\ge 0$, an even number of $x, y, z, w$ are at least $-\frac{k}{2}$, and an even number of them are most $-\frac{k}{2}$, then $f$ has a quadratisation in 1 auxiliary.
 
-\textcolor{red}{some cases to add here}
-\begin{lemma}
-\end{lemma}
+We can also consider substituting $b_1' = 1-b_1$ but not flipping $b_2$, then 
+\[ f = k(b_2b_3b_4 - b_1'b_2b_3b_4) + x(b_2b_3 - b_1'b_2b_3) + yb_2 b_3 b_4 + z (b_3b_4 - b_3b_4b_1') + w(b_2b_4 - b_4b_1'b_2), \]
+so ignoring quadratic and linear terms we are left with 
+\[ f' = -k b_1'b_2b_3b_4 -xb_1'b_2b_3 + (k+y)b_2b_3b_4 -zb_3b_4b_1' -w b_4 b_1' b_2 .\]
+
+If $k \ge 0$ and $y \le -k$ and $x, z, w \ge 0$, then $f'$ is of the form in \ref{allnegative}, so we can quadratise $f'$. Putting back in the quadratic and linear terms and substitute back, we can obtain a quadratisation of $f$.
+ 
+By flipping another pair $b_2'=1-b_2$ and $b_3'=1-b_3$ as before, we also see that if $k \ge 0$ and three of $x, y, z, w$ are at most $ -k$ and the remaining one is at least $0$, then $f$ can be quadratised with 1 auxiliary.
+
+Therefore, we have proved the following. 
+\begin{proposition}
+	\label{oldcases}
+	If $k \ge 0$ and either of the following holds:
+	\begin{enumerate}
+		\item  $x, y, z, w \ge -\frac{k}{2}$;
+		\item three of them are at least 0 and the other one is at most $-k$;
+		\item two are at least $ -\frac{k}{2}$ and the other two are at most $ -\frac{k}{2}$;
+		\item one is at least $0$ and the other three are at most $-k$; or
+		\item $x, y, z, w \le -\frac{k}{2}$;
+	\end{enumerate}
+	Then $f$ has a quadratisation with 1 auxiliary.
+\end{proposition}
+
 
 \begin{lemma}
+	\label{1small3large}
+	If $k\ge 0$, $-k\le x \le -\frac{k}{2}$, and $w, y, z \ge 0$, then$g = b_a((3k+x+y+z+w) - (2k+x+z+w)b_1 - (2k+x+y+w)b_2 - (2k+x+y+z)b_3 - (2k+y+z+w)b_4) + k(b_1b_2+b_1b_3+b_1 b_4+ b_2b_3+b_2b_4+b_3b_4) + x(b_1b_2+b_1b_3+b_2b_3) + y(b_2b_3+b_2b_4+b_3b_4) + z(b_1b_3+b_1b_4+b_3b_4) + w(b_1b_2+b_1b_4+b_2b_4)$  is a quadratisation of $f$.
 \end{lemma}
+
+\begin{remark}
+This is the same quadratisation as in \ref{allpositive}.
+\end{remark}
+
+\begin{proof}
+	By symmetry, WLOG $b_1 \le b_2 \le b_3$ (we cannot make assumption on $b_4$ because $x$ is special among $x, y, z, w$).
+If $\vc b = 0000$, then $g = b_a(3k + w + x + y + z)$. Since $k + x \ge 0 $ and $k, y, z, w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0001$, then $g = b_a(k + x)$. Since $k + x\ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0010$, then $g = b_a(k + w)$. Since $k, w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+
+If $\vc b = 0011$, then $g = -(b_a - 1)(k + y + z)$. Since $-k \le 0$ and $-y \le 0$ and $-z \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0110$, then $g = -(b_a - 1)(k + x + y)$. Since $-(k+x) \le 0$ and $-y \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
+
+If $\vc b = 0111$, then $g = 3k + w + x + 3y + z - b_a(3k + w + x + 2y + z)$.
+Since $-(k+x) \le 0$ and $-k, -w, -y, -z \le 0$, $b_a^* = 1$, so $\min g = y = f$.
+
+If $\vc b = 1110$, then $g = 3k + w + 3x + y + z - b_a(3k + w + 2x + y + z)$.
+Since $-2(k+x) \le 0$ and $-k, -w, -y, -z \le 0$, $b_a^* = 1$, so $\min g = x = f$.
+
+If $\vc b = 1111$, then $g = 6k + 3w + 3x + 3y + 3z - b_a(5k + 2w + 2x + 2y + 2z)$.
+Since $-2(k+x) \le 0$ and $-k, -w, -y, -z \le 0$, $b_a^* = 1$, so $\min g = k+ w+ x + y + z = f$.
+\end{proof}
+
+For $k \ge 0$, we have shown that $f$ has a 1-auxiliary quadratisation if  $x, y, z, w \ge -\frac{k}{2}$, 
+or if $x\le -k$ and $w, y, z \ge 0$ (both cases are sumarised in \ref{oldcases}), so we can combine them 
+with \ref{1small3large} (for $-k\le x \le -\frac{k}{2}$, and $w, y, z \ge 0$) to conclude:
+\begin{proposition}
+$f$ can be quadratised with 1 auxiliary if $k, y, z, w \ge 0$, whatever the value of $x$ is.
+\end{proposition}
+
+Recall that we can substitute $b_1'=1-b_1$ and $b_2'=1-b_2$ to transform $y$ to $ -k-y $ and $z$ to $-k-z$. This means we can flip a pair of the cubic coefficients in the range $[0, +\infty)$ to $(-\infty, -k]$ or vice versa. (e.g. since we have a quadratisation for $w \ge 0$, $y \ge 0$, $z\ge 0$,
+we can find a quadratisation for $w\le -k, y \le -k, z \ge 0$) 
+Or we may as well flip x and flip one other coefficient in the proposition above. Since the above proposition does not place any condition on $x$, we can e.g. go from  $w\ge 0, y\ge 0, z\ge 0$ to $w\le -k, y\ge 0, z\ge 0$. This gives the following
+
+\begin{proposition}
+	\label{insidebox}
+If $k \ge 0$ and three of the cubic coefficients are in $(-\infty, -k] \cup [0, +\infty)$, then $f$ has a quadratisation with 1 auxiliary.
+\end{proposition}
+
+If some $f$ has $k \ge 0$ but is not covered by \ref{insidebox}, then at least two of the cubic coefficients are in $[-k, 0]$. 
+If it is not covered by \ref{oldcases} either, then an odd number of cubic coefficients lie on each side of $-\frac{k}{2}$
+(WLOG $x \le -\frac{k}{2}$ and $y, z, w \ge -\frac{k}{2}$). This is what we will break down into a further $6$ cases.
 
 Below we assume $k \ge 0$.
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{Cases} &\multirow{2}{*}{$x \le -k$} &  \multicolumn{2}{c|}{$-k \le x \le -\frac{k}{2}$} \\\cline{3-4}
+	
+	& & $k + x + y \le 0$& $k + x + y \ge 0$ \\
+		\hline 
+		$ -\frac{k}{2} \le y \le 0 \le z \le w$ & \ref{insidebox}: only $y \in [-k,0]$ &  \multirow{2}{*}{\ref{case4}} & 
+		\ref{case3}\\\cline{1-2}\cline{4-4}
+		$ -\frac{k}{2} \le y \le z \le 0 \le w$ &  \ref{case1}& & \ref{case5}\\
+		\hline 
+		$ -\frac{k}{2} \le y \le z \le w \le 0$ & \multicolumn{2}{c|}{\ref{case2}}  & \ref{case6} \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \begin{lemma}
+	\label{case1}
 	If $x\le -k$ and $-\frac{k}{2} \le y \le z \le 0 \le w$, then 
 	$g = b_a(x(b_1-b_2-b_3)+y(-b_2-b_3+b_4)+z(1-b_1+b_3-b_4)+w(1-b_1+b_2-b_4)+k(1-b_1-b_4))
-+x(-b_1+b_1 b_2+b_1 b_3)+y(-b_4+b_2 b_4+b_3 b_4)+z b_1 b_4 +w b_1 b_4 +k b_1 b_4 $ is a quadratisation.
++x(-b_1+b_1 b_2+b_1 b_3)+y(-b_4+b_2 b_4+b_3 b_4)+z b_1 b_4 +w b_1 b_4 +k b_1 b_4 $ is a quadratisation of $f$.
 
 \end{lemma}
 \begin{proof}
@@ -125,52 +213,9 @@ If $\vc b = 1111$, then $g = k + w + x + y + z - b_a(k + x + y)$. Since $-(k + x
 \end{proof}
 
 \begin{lemma}
-	If  $x\le -k$ and $-k/2\le y \le z \le w \le 0$, then 
-$b_a(x(-b_1+b_2+b_3)+y(+b_2+b_3-b_4)+z(-1+b_1-b_3+b_4)+w(-1+b_1-b_2+b_4)+k(-1+b_1+b_4))+x(-b_2-b_3+b_1b_2+b_1b_3)+y(-b_2-b_3+b_2b_4+b_3b_4)+z(+1-b_1+b_3-b_4+b_1b_4)+w(+1-b_1+b_2-b_4+b_1b_4)+k(+1-b_1-b_4+b_1b_4)$
-	is a quadratisation.
-
-\end{lemma}
-
-\begin{proof}
-	If $\vc b = 0000$, then $g = k + w + z - b_a(k + w + z)$. Since $-\frac{k}{2} - w \le 0$ and $-\frac{k}{2} - z \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0001$, then $g = -b_ay$. Since $-y \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0010$, then $g = k + w - x - y + 2z + b_a(-k - w + x + y - 2z)$. Since $-k - w\le 0$ and $y \le z$ and $x \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0011$, then $g = z - x + b_a(x - z)$. Since $x \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0100$, then $g = k + 2w - x - y + z + b_a(-k - 2w + x + y - z)$. Since $-k - 2w \le 0$ and $x \le 0$ and $y \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0101$, then $g = w - x + b_a(x - w)$. Since $x \le w$, $b_a^* = 1$, so $\min g = 0 = f$. 
-
-If $\vc b = 0110$, then $g = k + 2w - 2x - 2y + 2z + b_a(-k - 2w +2x + 2y - 2z)$. Since $-k - 2w \le 0$ and $x \le 0$ and $y \le z$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-
-If $\vc b = 0111$, then $g = w - 2x + z + b_a (-w + 2x + y - z)$. Since $x \le z$ and $y \le w$ and $x \le 0$, $b_a^* = 1$, so $\min g = y = f$.
-
-If $\vc b = 1000$, then $g = -b_ax$. Since $-x \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 1001$, then $g = b_a(k + w - x - y + z)$. Since $\frac{k}{2} + w \ge 0 $ and $\frac{k}{2} + z \ge 0$ and $x \ge 0 $ and $y \ge 0$, $b_a^* = 0$, 
-so $\min g = 0 = f$.
-
-If $\vc b = 1010$, then $g = z - y + b_a(y - z)$. Since $y \le z$, $b_a^* = 1$, so $\min g = 0  = f$.
-
-If $\vc b = 1011$, then $g = z + b_a(k + w)$. Since $k + w \ge 0$, $b_a^* = 0$, so $\min g = z = f$.
-
-If $\vc b = 1100$, then $g = w - y + b_a(y -w)$. Since $y \le w$, $b_a^* = 1$, so $\min g = 0 = f$. 
-
-If $\vc b = 1101$, then $g = w + b_a(k + z)$. Since $k+z \ge 0$, $b_a^* = 0$, so $\min g = w = f$.
-
-If $\vc b = 1110$, then $g = w - 2y + z + b_a(-w + x + 2y - z)$. Since $x \le w$ and $y \le z$ and $y \le 0$, $b_a^* = 1$, so $\min g = x = f$.
-
-If $\vc b = 1111$, then $g = w + z + b_a(k + x + y)$. Since $k + x \le 0$ and $y \le 0 $, $b_a^* = 1$, so $\min g = x = f$.
-
-\end{proof}	
-
-
-\begin{lemma}
-	If $-k\le x \le -\frac{k}{2} \le y \le 0 \le z \le w $ and $k + x + y \ge 0$, then $b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ is a quadratisation.\\
+	\label{case3}
+	If $-k\le x \le -\frac{k}{2} \le y \le 0 \le z \le w $ and $k + x + y \ge 0$, then $g = b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ 
+	is a quadratisation of $f$.
  \end{lemma}
 
 \begin{proof}
@@ -223,62 +268,8 @@ Since $2k + 2x \ge 0$ and $2k + 2y \ge 0$ and $k \ge 0$ and $w \ge z \ge 0$, $b_
 \end{proof}
 
 \begin{lemma}
- If $-k\le x \le -\frac{k}{2} \le y \le 0 \le z \le w $ and $k + x + y \le 0$, then $b_a(x(+b_1-b_2-b_3)+y(-b_2-b_3+b_4)+z(1-b_1+b_3-b_4)+w(1-b_1+b_2-b_4)+k(1-b_1-b_4))+x(-b_1+b_1b_2+b_1b_3)+y(-b_4+b_2b_4+b_3b_4)+z(+b_1b_4)+w(+b_1b_4)+k(+b_1b_4)$ is a quadratisation.\\
- \end{lemma}
-
-\begin{proof}
-If $\vc b = 0000$, then $g = b_a(k + w + z)$.
-Since $k$ and $ w $ and $z \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0001$, then $g = b_ay - y$.
-Since $y \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0010$, then $g = b_a(k + w - x - y + 2z)$.
-Since $-x, -y, z, w,$ and $k$ are all non-negative, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0011$, then $g = b_a(z - x)$.
-Since $z \ge x$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0100$, then $g = b_a(k + 2w - x - y + z)$.
-For the same reason as with $\vc b = 0010$ we have $\min g = 0 = f$.
-
-If $\vc b = 0101$, then $g = b_a(w - x)$.
-Since $w \ge x$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0110$, then $g = b_a(k + 2w - 2x - 2y + 2z)$.
-For the same reason as with $\vc b = 0010$ we have $\min g = 0 = f$.
-
-If $\vc b = 0111$, then $g = y + b_a(w - 2x - y + z)$.
-For the same reason as with $\vc b = 0010$ we have $\min g = y = f$.
-
-
-If $\vc b = 1000$, then $g = b_ax - x$.
-Since $x \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 1001$, then $g = k + w - x - y + z - b_a(k + w - x - y + z)$.
-Since $-k, -w, x, y $ and $-z$ are all non-positive, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 1010$, then $g = b_a(z - y)$.
-Since $z \ge y$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 1011$, then $g = k + w + z - b_a(k + w)$.
-Since $-k$ and $-w \le 0$, $b_a^* = 1$, so $\min g = z = f$.
-
-If $\vc b = 1100$, then $g = b_a(w - y)$.
-Since $w \ge y$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 1101$, then $g = k + w + z - b_a(k + z)$.
-Since $-k$ and $-z \le 0$, $b_a^* = 1$, so $\min g = w = f$.
-
-If $\vc b = 1110$, then $g = x + b_a(w - x - 2y + z)$.
-For the same reason as with $\vc b = 0010$ we have $\min g = y = f$.
-
-If $\vc b = 1111$, then $g = k + w + x + y + z - b_a(k + x + y)$.
-Since $-(k+x+y) \ge 0$, $b_a^* = 0$, so $\min g = k + w + x + y + z = f$.
-\end{proof}
-
-\begin{lemma}
-	If $-k\le x \le -\frac{k}{2} \le y \le z \le 0 \le w$ and $k + x+ y \le 0$, then $b_a(x(+b_1-b_2-b_3)+y(-b_2-b_3+b_4)+z(1-b_1+b_3-b_4)+w(1-b_1+b_2-b_4)+k(1-b_1-b_4))+x(-b_1+b_1b_2+b_1b_3)+y(-b_4+b_2b_4+b_3b_4)+z(+b_1b_4)+w(+b_1b_4)+k(+b_1b_4)$ is a quadratisation.\\
+	\label{case4}
+	If $-k\le x \le -\frac{k}{2} \le y \le 0 \le w$ and $y \le z \le w$ and $k+x+y \le 0$, then $g = b_a(x(+b_1-b_2-b_3)+y(-b_2-b_3+b_4)+z(1-b_1+b_3-b_4)+w(1-b_1+b_2-b_4)+k(1-b_1-b_4))+x(-b_1+b_1b_2+b_1b_3)+y(-b_4+b_2b_4+b_3b_4)+z(+b_1b_4)+w(+b_1b_4)+k(+b_1b_4)$ is a quadratisation of $f$.
  \end{lemma}
 
 \begin{proof}
@@ -333,7 +324,9 @@ Since $-(k + x + y) \ge 0$, $b_a^* = 0$, so $\min g = k + w + x + y + z = f$.
 \end{proof}
 
 \begin{lemma}
- If $-k\le x \le -\frac{k}{2} \le y \le z \le 0 \le w$ and $k + x+ y \ge 0$, then $b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ is a quadratisation.\\
+	\label{case5}
+ If $-k\le x \le -\frac{k}{2} \le y \le z \le 0 \le w$ and $k + x+ y \ge 0$, then $g = b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$
+ is a quadratisation of $f$.
  \end{lemma}
 
 \begin{proof}
@@ -389,7 +382,8 @@ Since $2k + 2x \ge 0$ and $ k + 2y \ge 0$ and $k + 2z \ge 0$ and $k \ge 0$ and $
 \end{proof}
 
 \begin{lemma}
-	If $-k\le x \le -\frac{k}{2} \le y \le z \le w \le 0$ and $k+x+y \ge 0$, then $b_a(x(1-b_1-b_2-b_3)+y(1-b_2-b_3-b_4)+z(1-b_1-b_3-b_4)+w(1-b_1-b_2-b_4)+k(3-2b_1-2b_2-2b_3-2b_4))+x(+b_1b_2+b_1b_3+b_2b_3)+y(+b_2b_3+b_2b_4+b_3b_4)+z(+b_1b_3+b_1b_4+b_3b_4)+w(+b_1b_2+b_1b_4+b_2b_4)+k(+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ is a quadratisation.\\
+	\label{case6}
+	If $-k\le x \le -\frac{k}{2} \le y \le z \le w \le 0$ and $k+x+y \ge 0$, then $g = b_a(x(1-b_1-b_2-b_3)+y(1-b_2-b_3-b_4)+z(1-b_1-b_3-b_4)+w(1-b_1-b_2-b_4)+k(3-2b_1-2b_2-2b_3-2b_4))+x(+b_1b_2+b_1b_3+b_2b_3)+y(+b_2b_3+b_2b_4+b_3b_4)+z(+b_1b_3+b_1b_4+b_3b_4)+w(+b_1b_2+b_1b_4+b_2b_4)+k(+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ is a quadratisation of $f$.
  \end{lemma}
 
 \begin{proof}
@@ -444,7 +438,8 @@ Since $-2k - 2x \le 0$ and $-k - 2y \le 0$ and $-k -2z \le 0$ and $-k -2w \le 0$
 \end{proof}
 
 \begin{lemma}
- If $-k\le x \le -\frac{k}{2} \le y \le z \le w \le 0$ and $k+x+y \le 0$, then $b_a(x(-b_1+b_2+b_3)+y(+b_2+b_3-b_4)+z(-1+b_1-b_3+b_4)+w(-1+b_1-b_2+b_4)+k(-1+b_1+b_4))+x(-b_2-b_3+b_1b_2+b_1b_3)+y(-b_2-b_3+b_2b_4+b_3b_4)+z(+1 -b_1+b_3-b_4+b_1b_4)+w(+1 -b_1+b_2-b_4+b_1b_4)+k(+1 -b_1-b_4+b_1b_4)$ is a quadratisation.\\
+	\label{case2}
+ If $x \le -\frac{k}{2} \le y \le z \le w \le 0$ and $k+x+y \le 0$, then $g = b_a(x(-b_1+b_2+b_3)+y(+b_2+b_3-b_4)+z(-1+b_1-b_3+b_4)+w(-1+b_1-b_2+b_4)+k(-1+b_1+b_4))+x(-b_2-b_3+b_1b_2+b_1b_3)+y(-b_2-b_3+b_2b_4+b_3b_4)+z(+1 -b_1+b_3-b_4+b_1b_4)+w(+1 -b_1+b_2-b_4+b_1b_4)+k(+1 -b_1-b_4+b_1b_4)$ is a quadratisation of $f$.
  \end{lemma}
 
 \begin{proof}
@@ -497,4 +492,7 @@ If $\vc b = 1111$, then $g = w + z + b_a(k + x + y)$.
 Since $k+x + y \le 0$, $b_a^* = 1$, so $\min g = k + w + x + y + z = f$.
 \end{proof}
 
+
+Hence we have shown that every $f$ with $k\ge 0$ has a quadratisation with 1 auxiliary. Using the substitution $b_1'=1-b_1$,
+we can go between cases with $k \ge 0$ and $k \le 0$, so all 4-variable pseudo-boolean functions has a quadratisation with 1 auxiliary.
 \end{document}
