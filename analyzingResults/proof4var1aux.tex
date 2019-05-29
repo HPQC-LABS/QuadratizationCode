@@ -58,6 +58,33 @@ If $\vc b = 1111$, then $g = b_a(k + w + x + y + z)$. Since $k \le 0$ and $w \le
 
 \end{proof}
 
+This has a natural generalisation to $n$ variables.
+
+\begin{theorem}
+	Let $a_0, a_1, \cdots a_n \le 0$ and $f = a_0 \prod_{i = 1}^n b_i + \sum_{i = 1}^n \left( a_i \prod_{j \neq i} b_j\right)$ has quadratisation $g = b_a \left(a_0\left(\sum_{i=1}^n b_i - (n-1)\right) + \sum_{i=1}^n a_i \left( \sum_{j \neq i} b_j - (n-2)\right) \right) $
+\end{theorem}
+
+\begin{proof}
+	Again WLOG $b_1 = b_2 = \cdots = b_k = 0$ and $b_{k+1} = b_{k+2} = \cdots = b_n = 1$ for some $k \in \{0, 1, \cdots, n\}$.
+	Then \[
+ f = \begin{dcases*}
+        0,  & if $k \ge 2$,\\
+        a_1, & if $k = 1$,\\
+	\sum_{i=0}^n a_i, & if $k = 0$.
+        \end{dcases*}
+\]
+
+For $k \ge 2$, we have \[
+	\sum_{j\neq i } b_j \le n-2 \quad \forall j, \text{ and} \sum_{j = 1}^n b_j \le n-2,
+\]
+so the coefficient of $b_a$ in $g$ is non-negative, so the minimiser is $b_a^* = 0$ and $\min g = 0 = f$.
+
+If $k = 1$, then $g = b_a a_1$, so $b_a^* = 1$ and $\min g = a_1 = f$.
+
+If $k = 0$, then $g = b_a \sum_{i=0}^n a_i$, so $b_a^* = 1$ and $\min g = \sum_{i=0}^n a_i = f$.
+
+\end{proof}
+
 Next we consider some substitutions that reduce other cases to the two cases above that we know how to quadratise.
 
 If we consider the substitution $b_1' = 1-b_1$ and $b_2' = 1-b_2$, then
