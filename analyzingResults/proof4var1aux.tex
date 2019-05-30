@@ -7,9 +7,47 @@
 \begin{document}
 \title{Proof of 4-var 1-aux Quadratisations} \date{MAY 2018}
 
-
-We would like to quadratise 
+WLOG $x \le y \le z \le w$, and  $k \ge 0$ unless otherwise stated (by flipping one bit if necessary). We would like to quadratise 
 \[f = x b_1 b_2 b_3 + y b_2 b_3 b_4 + z b_3 b_4 b_1 + w b_4 b_1 b_2 + k b_1 b_2 b_3 b_4.\] We shall write $\vc b = b_1 b_2 b_3 b_4$.
+
+
+{\LARGE \bf List of Cases:}
+\begin{enumerate}
+	\item An even number of $x, y, z, w$ lie on each side of $-\frac{k}{2}$, i.e. 
+		$-\frac{k}{2} \le x \le y \le z \le w$ or $x \le y \le -\frac{k}{2} \le z \le w$ or 
+		$x \le y \le z \le w \le -\frac{k}{2}$.
+		Done by lemma \ref{allpositive} and flipping pairs of bits.
+	\item At least three of $x, y, z, w$ lie in $(-\infty, -k] \cup [0, \infty)$. 
+			By flipping bits WLOG $y, z, w \ge 0$. Summarised in proposition \ref{insidebox}.
+		\begin{enumerate}
+			\item $x \ge -\frac{k}{2}$. Then we are in a previous case.
+			\item $-k \le x \le -\frac{k}{2}$. Done by lemma \ref{1small3large}.
+			\item $x \le -k$. Done by lemma \ref{allnegative} and flipping one bit.
+		\end{enumerate}
+	\item An odd number of $x, y, z, w$ lie on each side of $-\frac{k}{2}$ and at least two of $x, y, z, w$ lie in $[-k, 0]$. 
+		WLOG $x \le -\frac{k}{2}, y, z, w \ge -\frac{k}{2}$.
+		\begin{enumerate}
+			\item $-\frac{k}{2} \le y \le 0 \le z \le w$. Note that $x \ge -k$ in this cases 
+				because at least two of $x, y, z, w$ lie in $[-k, 0]$.
+				\begin{enumerate}
+					\item $k+x+y \le 0$. Done by \ref{case4}.
+					\item $k+x+y \ge 0$. Done by \ref{case3}.
+				\end{enumerate}
+			\item $-\frac{k}{2} \le y \le z \le 0 \le w$.
+				\begin{enumerate}
+					\item $x \le -k$. Done by \ref{case1}.
+					\item $x \ge -k$ and $k+x+y \le 0$. Done by \ref{case4}.
+					\item $x \ge -k$ and $k+x+y \ge 0$. Done by \ref{case5}.
+				\end{enumerate}
+			\item $-\frac{k}{2} \le y \le z \le w \le 0$.
+				\begin{enumerate}
+					\item $k+x+y \le 0$. Done by \ref{case2}.
+					\item $k+x+y \ge 0$. Done by \ref{case6}.
+				\end{enumerate}
+		\end{enumerate}
+\end{enumerate}
+
+
 
 \begin{lemma}
 	\label{allpositive}
