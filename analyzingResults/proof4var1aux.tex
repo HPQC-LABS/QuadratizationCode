@@ -11,7 +11,7 @@ WLOG $x \le y \le z \le w$, and  $k \ge 0$ unless otherwise stated (by flipping 
 \[f = x b_1 b_2 b_3 + y b_2 b_3 b_4 + z b_3 b_4 b_1 + w b_4 b_1 b_2 + k b_1 b_2 b_3 b_4.\] We shall write $\vc b = b_1 b_2 b_3 b_4$.
 
 
-{\LARGE \bf List of Cases:}
+{\LARGE \textbf{ List of Cases:}}
 \begin{enumerate}
 	\item An even number of $x, y, z, w$ lie on each side of $-\frac{k}{2}$, i.e. 
 		$-\frac{k}{2} \le x \le y \le z \le w$ or $x \le y \le -\frac{k}{2} \le z \le w$ or 
@@ -560,4 +560,18 @@ Since $k+x + y \le 0$, $b_a^* = 1$, so $\min g = k + w + x + y + z = f$.
 
 Hence we have shown that every $f$ with $k\ge 0$ has a quadratisation with 1 auxiliary. Using the substitution $b_1'=1-b_1$,
 we can go between cases with $k \ge 0$ and $k \le 0$, so all 4-variable pseudo-boolean functions has a quadratisation with 1 auxiliary.
+
+\begin{theorem}[A sufficient condition for existence of 1-aux quadratisation]
+Let $f = f(\vc b)$ be fully symmetric in the $n$ bits $b_1, \cdots, b_n$. Write $|\vc b|=\sum b_i$ and $h(|b|) = f(\vc b)$. (Note that $h$ 
+is well-defined because $f$ is symmetric. Suppose $h(0), \cdots, h(n)$ is an arithmetic progression but with all positive terms replaced by 0, 
+i.e. $h(i) = (ai+d)^- = \min(ai+d, 0)$ for some constant $a, d$, then $f$ is quadratisable with one auxiliary.  
+\end{theorem}
+
+\begin{proof}
+	In fact we have a quadratisation that is also symmetric in $b_1, \cdots, b_n$.
+	Let $g = b_a(a|\vc b| + d) = b_a (a(\sum b_i) + d)$. This is quadratic in $\bc b, b_a$ and 
+	\[\min_{b_a} g = f \quad \forall \vc b \in \{0, 1\}^n\]
+	using the property of $f$.
+\end{proof}
+
 \end{document}
