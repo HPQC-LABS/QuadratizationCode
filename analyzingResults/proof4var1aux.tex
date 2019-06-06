@@ -37,7 +37,7 @@ WLOG $x \le y \le z \le w$, and  $k \ge 0$ unless otherwise stated (by flipping 
 				\begin{enumerate}
 					\item $x \le -k$. Done by \ref{case1}.
 					\item $x \ge -k$ and $k+x+y \le 0$. Done by \ref{case4}.
-					\item $x \ge -k$ and $k+x+y \ge 0$. Done by \ref{case5}.
+					\item $x \ge -k$ and $k+x+y \ge 0$. Done by \ref{case3}.
 				\end{enumerate}
 			\item $-\frac{k}{2} \le y \le z \le w \le 0$.
 				\begin{enumerate}
@@ -227,8 +227,8 @@ Below we assume $k \ge 0$.
 	& & $k + x + y \le 0$& $k + x + y \ge 0$ \\
 		\hline 
 		$ -\frac{k}{2} \le y \le 0 \le z \le w$ & \ref{insidebox}: only $y \in [-k,0]$ &  \multirow{2}{*}{\ref{case4}} & 
-		\ref{case3}\\\cline{1-2}\cline{4-4}
-		$ -\frac{k}{2} \le y \le z \le 0 \le w$ &  \ref{case1}& & \ref{case5}\\
+		 \multirow{2}{*}{\ref{case3}}\\\cline{1-2}
+		$ -\frac{k}{2} \le y \le z \le 0 \le w$ &  \ref{case1}& &  \\
 		\hline 
 		$ -\frac{k}{2} \le y \le z \le w \le 0$ & \multicolumn{2}{c|}{\ref{case2}}  & \ref{case6} \\
 		\hline
@@ -279,13 +279,13 @@ If $\vc b = 1111$, then $g = k + w + x + y + z - b_a(k + x + y)$. Since $-(k + x
 
 \begin{lemma}
 	\label{case3}
-	If $-k\le x \le -\frac{k}{2} \le y \le 0 \le z \le w $ and $k + x + y \ge 0$, then $g = b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ 
+	If $-k\le x \le -\frac{k}{2} \le y \le 0  \le w $, $y \le z \le w$, and $k + x + y \ge 0$, then $g = b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$ 
 	is a quadratisation of $f$.
  \end{lemma}
 
 \begin{proof}
-If $\vc b = 0000$, then $g = 3k + w + x + y + z - b_a(3k + w + x + y + z)$. Since $-x - k \le 0$ and $-y - k \le 0$ and $-k \le 0$ 
-and $-z \le 0$ and $-w \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
+	If $\vc b = 0000$, then $g = 3k + w + x + y + z - b_a(3k + w + x + y + z)$. Since $-x - k \le 0$ and $ -\frac{k}{2} - y \le 0$ and $-\frac{k}{2} - z \le 0$ 
+and $-k \le 0$ and $-w \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
 
 If $\vc b = 0001$, then $g = k + x - b_a(k + x)$. 
 Since $-k -x \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
@@ -294,41 +294,41 @@ If $\vc b = 0010$, then $g = k + w - b_a(k + w)$.
 Since $-k \le 0$ and $-w \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
 
 If $\vc b = 0011$, then $g = b_a(k + y + z)$.
-Since $k + y \ge 0 $ and $z \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+Since $k + y + z \ge k + 2y \ge 0 $, $b_a^* = 0$, so $\min g = 0 = f$.
 
 If $\vc b = 0100$, then $g = k + z - b_a(k + z)$.
-Since $-k \le 0$ and $-z \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
+Since $-k - z \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
 
 If $\vc b = 0101$, then $g = b_a(k + w + y)$.
 Since $k + y \ge 0 $ and $w \ge 0$, $b_a^* = 0 $, so $\min g = 0 = f$.
 
 If $\vc b = 0110$, then $g = b_a(k + x + y)$. Since $k + x + y \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
 
-If $\vc b = 0111$, then $g = y + b_a(3k + w + x + 2y + z)$. Since $k + x \ge 0$ and $k + 2y \ge 0$ and $k \ge 0 $ and $w \ge z \ge 0$, 
+If $\vc b = 0111$, then $g = y + b_a(3k + w + x + 2y + z)$. Since $k + x \ge 0$ and $k + 2y \ge 0$ and $k + z\ge 0 $ and $w  \ge 0$, 
 $b_a^* = 0$, so $\min g = y = f$.
 
 If $\vc b = 1000$, then $g = k + y - b_a(k + y)$. Since $-k - y \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
 
 If $\vc b = 1001$, then $g = b_a(k + w + z)$.
-Since $k$ and $w$ and $z \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+Since $k + z \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
 
 If $\vc b = 1010$, then $g = b_a(k + x + z)$.
-Since $k + x \ge 0 $ and $z \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+Since $k + x + z \ge k + x + y \ge 0 $, $b_a^* = 0$, so $\min g = 0 = f$.
 
 If $\vc b = 1011$, then $g = z + b_a(3k + w + x + y + 2z)$.
-Since $k + x \ge 0$ and $k + y \ge 0$ and $k \ge 0 $ and $w \ge z \ge 0 $, $b_a^* = 0$, so $\min g = z = f$.
+Since $k + x \ge 0$ and $k + y \ge 0$ and $k + 2z \ge 0 $ and $w \ge 0 $, $b_a^* = 0$, so $\min g = z = f$.
 
 If $\vc b = 1100$, then $g = b_a(k + w + x)$.
 Since $k + x \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
 
 If $\vc b = 1101$, then $g = w + b_a(3k + 2w + x + y + z)$.
-Since $k + x \ge 0 $ and $k + y \ge 0 $ and $k \ge 0 $ and $w \ge z \ge 0$, $b_a^* = 0$, so $\min g = w = f$.
+Since $k + x \ge 0 $ and $k + y \ge 0 $ and $k + z \ge 0 $ and $w  \ge 0$, $b_a^* = 0$, so $\min g = w = f$.
 
 If $\vc b = 1110$, then $g = x + b_a(3k + w + 2x + y + z)$.
-Since $2k + 2x \ge 0$ and $k + y \ge 0$ and $w \ge z \ge 0$, $b_a^* = 0$, so $\min g = x = f$.
+Since $2k + 2x \ge 0$ and $k + y + z \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = x = f$.
 
 If $\vc b = 1111$, then $g = k + w + x + y + z + b_a(5k + 2w + 2x + 2y + 2z)$.
-Since $2k + 2x \ge 0$ and $2k + 2y \ge 0$ and $k \ge 0$ and $w \ge z \ge 0$, $b_a^* = 0$, so $\min g = k + w + x + y + z = f$.
+Since $2k + 2x \ge 0$ and $2k + 2y + 2z\ge 0$ and $k \ge 0$ and $w  \ge 0$, $b_a^* = 0$, so $\min g = k + w + x + y + z = f$.
 
 \end{proof}
 
@@ -385,64 +385,6 @@ Since $w \ge 0$ and $z - y \ge 0$ and $-y \ge 0$ and $-x \ge 0$, $b_a^* = 0$, so
 
 If $\vc b = 1111$, then $g = k + w + x + y + z - b_a(k + x + y)$.
 Since $-(k + x + y) \ge 0$, $b_a^* = 0$, so $\min g = k + w + x + y + z = f$. 
-
-\end{proof}
-
-\begin{lemma}
-	\label{case5}
- If $-k\le x \le -\frac{k}{2} \le y \le z \le 0 \le w$ and $k + x+ y \ge 0$, then $g = b_a(x(-1+b_1+b_2+b_3)+y(-1+b_2+b_3+b_4)+z(-1+b_1+b_3+b_4)+w(-1+b_1+b_2+b_4)+k(-3+2b_1+2b_2+2b_3+2b_4))+x(+1 -b_1-b_2-b_3+b_1b_2+b_1b_3+b_2b_3)+y(+1 -b_2-b_3-b_4+b_2b_3+b_2b_4+b_3b_4)+z(+1 -b_1-b_3-b_4+b_1b_3+b_1b_4+b_3b_4)+w(+1 -b_1-b_2-b_4+b_1b_2+b_1b_4+b_2b_4)+k(+3 -2 b_1-2 b_2-2 b_3-2 b_4+b_1b_2+b_1b_3+b_1b_4+b_2b_3+b_2b_4+b_3b_4)$
- is a quadratisation of $f$.
- \end{lemma}
-
-\begin{proof}
-If $\vc b = 0000$, then $g = 3k + w + x + y + z - b_a(3k + w + x + y + z)$.
-Since $-k - x \le 0$ and $-\frac{k}{2} - y \le 0$ and $-\frac{k}{2} - z \le 0$ and $-k \le 0$ and $-w \le 0$,
-$b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0001$, then $g = k + x - b_a(k + x)$.
-Since $-k - x \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0010$, then $g = k + w - b_a(k + w)$.
-Since $-k \le 0$ and $-w \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0011$, then $g = b_a(k + y + z)$.
-Since  $\frac{k}{2} + y \ge 0$ and $\frac{k}{2} + z \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$. 
-
-If $\vc b = 0100$, then $g = k + z - b_a(k + z)$.
-Since $-k - z \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0101$, then $g = b_a(k + w + y)$.
-Since $k + y \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0110$, then $g = b_a(k + x + y)$.
-Since $k + x + y \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0111$, then $g = y + b_a(3k + w + x + 2y + z)$.
-Since $k + x \ge 0 $ and $k + 2y \ge 0 $ and $k + z \ge 0$ and $w \ge 0 $, $b_a^* = 0$, so $\min g = y = f$.
-
-If $\vc b = 1000$, then $g = k + y - b_a(k + y)$.
-Since $-k - y \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 1001$, then $g = b_a(k + w + z)$.
-Since $k + z \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 1010$, then $g = b_a(k + x + z)$.
-Since $k + x + z \ge k + x + y \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 1011$, then $g = z + b_a(3k + w + x + y + 2z)$.
-Since $k + x \ge 0 $ and $k + y \ge 0$ and $k + 2z \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = z = f$.
-
-If $\vc b = 1100$, then $g = b_a(k + w + x)$.
-Since $k + x \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 1101$, then $g = w + b_a(3k + 2w + x + y + z)$.
-Since $k + x\ge 0 $ and $k + y \ge 0$ and $k + z \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = w = f$.
-
-If $\vc b = 1110$, then $g = x + b_a(3k + w + 2x + y + z)$.
-Since $2k + 2x \ge 0$ and $\frac{k}{2} + y \ge 0$ and $\frac{k}{2} + z \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = x = f$.
-
-If $\vc b = 1111$, then $g = k + w + x + y + z + b_a(5k + 2w + 2x + 2y + 2z)$.
-Since $2k + 2x \ge 0$ and $ k + 2y \ge 0$ and $k + 2z \ge 0$ and $k \ge 0$ and $w \ge 0$, $b_a^* = 0$, so $\min g = k + w + x + y + z = f$.
 
 \end{proof}
 
