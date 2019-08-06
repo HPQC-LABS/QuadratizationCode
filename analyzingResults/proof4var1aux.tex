@@ -16,7 +16,7 @@ WLOG $x \le y \le z \le w$, and  $k \ge 0$ unless otherwise stated (by flipping 
 	\item An even number of $x, y, z, w$ lie on each side of $-\frac{k}{2}$, i.e. 
 		$-\frac{k}{2} \le x \le y \le z \le w$ or $x \le y \le -\frac{k}{2} \le z \le w$ or 
 		$x \le y \le z \le w \le -\frac{k}{2}$.
-		Done by lemma \ref{allpositive} and flipping pairs of bits.
+		Done by lemma \ref{1small3large} and flipping pairs of bits.
 	\item At least three of $x, y, z, w$ lie in $(-\infty, -k] \cup [0, \infty)$. 
 			By flipping bits WLOG $y, z, w \ge 0$. Summarised in proposition \ref{insidebox}.
 		\begin{enumerate}
@@ -47,28 +47,37 @@ WLOG $x \le y \le z \le w$, and  $k \ge 0$ unless otherwise stated (by flipping 
 		\end{enumerate}
 \end{enumerate}
 
-
-
 \begin{lemma}
-	\label{allpositive}
-	If $k \ge 0$ and $x, y, z, w \ge -\frac{k}{2}$, then $g = b_a((3k+x+y+z+w) - (2k+x+z+w)b_1 - (2k+x+y+w)b_2 - (2k+x+y+z)b_3 - (2k+y+z+w)b_4) + k(b_1b_2+b_1b_3+b_1 b_4+ b_2b_3+b_2b_4+b_3b_4) + x(b_1b_2+b_1b_3+b_2b_3) + y(b_2b_3+b_2b_4+b_3b_4) + z(b_1b_3+b_1b_4+b_3b_4) + w(b_1b_2+b_1b_4+b_2b_4)$ is a quadratisation of $f$.
+	\label{1small3large}
+	Suppose $k \ge 0$. If either $x, y, z, w \ge -\frac{k}{2}$, or  $-k\le x \le -\frac{k}{2}$ and $w, y, z \ge 0$, then $g = b_a((3k+x+y+z+w) - (2k+x+z+w)b_1 - (2k+x+y+w)b_2 - (2k+x+y+z)b_3 - (2k+y+z+w)b_4) + k(b_1b_2+b_1b_3+b_1 b_4+ b_2b_3+b_2b_4+b_3b_4) + x(b_1b_2+b_1b_3+b_2b_3) + y(b_2b_3+b_2b_4+b_3b_4) + z(b_1b_3+b_1b_4+b_3b_4) + w(b_1b_2+b_1b_4+b_2b_4)$  is a quadratisation of $f$.
 \end{lemma}
 
 \begin{proof}
+	By symmetry, it suffices to check the quadratisation for $b_1 \le b_2 \le b_3$ (we cannot make assumption on $b_4$ because $x$ is special among $x, y, z, w$).
+	Notice that in both cases, we have $k + a + b \ge 0$ for any two distinct variables $a, b$ among $x, y, z, w$.
+	
+If $\vc b = 0000$, then $g = b_a(3k + w + x + y + z)$. Since $k + x + y \ge 0 $ and $k+w + z\ge 0$ and $k \ge 0$, so the minimiser is $b_a^* = 0$, so $\min g = 0 = f$.
 
-Using the symmetry in the condition that $x, y, z, w$ satisfy and the symmetry in the quadratisation, WLOG consider $b_1\le b_2\le b_3\le b_4$, so we only need to check $5$ cases: $\vc b = 0000, 0001, 0011, 0111, $ or $1111$. 
+If $\vc b = 0001$, then $g = b_a(k + x)$. Since $k + x\ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
 
-If $\vc b = 0000$, then $g = b_a(3k + w + x + y + z)$. Since $k + w + x \ge 0$ and $k + y + z \ge 0$, the minimiser is $b_a^*= 0$, so $\min g = 0 = f$.
+If $\vc b = 0010$, then $g = b_a(k + w)$. Since $k + w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
 
-If $\vc b = 0001$, then $g = b_a(k + x)$. Since $k + x \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
+If $\vc b = 0011$, then $g = -(b_a - 1)(k + y + z)$. Since $-(k+y+z) \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
 
-If $\vc b = 0011$, then $g = k + y + z - b_a(k + y + z)$. Since $-(k+y + z) \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
+If $\vc b = 0110$, then $g = -(b_a - 1)(k + x + y)$. Since $-(k+x+y) \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
 
-If $\vc b = 0111$, then $g = 3k + w + x + 3y + z - b_a(3k + w + x + 2y + z)$. Since $-(k+w+x) \le 0$ and $-(k+2y) \le 0$ and $-(k+z) \le 0$, $b_a^* = 1$, so $\min g = y = f$.
+If $\vc b = 0111$, then $g = 3k + w + x + 3y + z - b_a(3k + w + x + 2y + z)$.
+Since $-(k+x) \le 0$ and $-(k+w+y) \le 0$ and $-(k+ y+z)\le 0$, $b_a^* = 1$, so $\min g = y = f$.
 
-If $\vc b = 1111$, then $g = 6k + 3w + 3x + 3y + 3z - b_a(5k + 2w + 2x + 2y + 2z)$. Since $-k -2w \le 0$ and $-k - 2x \le 0$ and $-k -2y \le 0$ and $-k - 2z \le 0$ and $-k \le 0$, $b_a^* = 1$, so $\min g = k + w + x + y + z = f$.
+If $\vc b = 1110$, then $g = 3k + w + 3x + y + z - b_a(3k + w + 2x + y + z)$.
+Since $-(k+x+y) \le 0$ and $-(k+x+z) \le 0$ and $-(k+w) \le 0 $, $b_a^* = 1$, so $\min g = x = f$.
 
+If $\vc b = 1111$, then $g = 6k + 3w + 3x + 3y + 3z - b_a(5k + 2w + 2x + 2y + 2z)$.
+Since $-2(k+x+y) \le 0$ and $-2(k+w+z) \le 0$ and $-k \le 0$,  $b_a^* = 1$, so $\min g = k+ w+ x + y + z = f$.
 \end{proof}
+
+
+
 
 \begin{lemma}
 	\label{allnegative}
@@ -137,7 +146,7 @@ This is of the original form with $y'=-y-k$ and $z'=-z-k$ and other coefficients
 If we have a 1-auxiliary quadratisation for $f$ in terms of $b_1, b_2, b_3, b_4, b_a$, 
 then after the substitution and taking care of the linear and quadratic terms in $f$, we obtain a 1-aux quadratisation for $f'$ in terms of $b_1', b_2', b_3, b_4, b_a$.
 
-If $f$ has $k \ge 0$ and $w, x, y , z \ge -\frac{k}{2}$ as in \ref{allpositive}, then $f'$ has $k' \ge 0$ and $w', x' \ge -\frac{k}{2}$ and $y', w' \le -\frac{k}{2}$. And this correspondence is invertible, so given any $f'$ with  $k' \ge 0$ and $w', x' \ge -\frac{k}{2}$ and $y', w' \le -\frac{k}{2}$,
+If $f$ has $k \ge 0$ and $w, x, y , z \ge -\frac{k}{2}$ as in \ref{1small3large}, then $f'$ has $k' \ge 0$ and $w', x' \ge -\frac{k}{2}$ and $y', w' \le -\frac{k}{2}$. And this correspondence is invertible, so given any $f'$ with  $k' \ge 0$ and $w', x' \ge -\frac{k}{2}$ and $y', w' \le -\frac{k}{2}$,
 we know that it has a 1-aux quadratisation. We can also do the same substitution on the other pair of variables $b_3, b_4$ to prove that any $f''$ with $k'' \ge 0$ and $w'', x'', y'', z'' \le -\frac{k}{2}$ has a 1-aux quadratisation. 
 
 To sum up, if $k\ge 0$, an even number of $x, y, z, w$ are at least $-\frac{k}{2}$, and an even number of them are most $-\frac{k}{2}$, then $f$ has a quadratisation in 1 auxiliary.
@@ -165,37 +174,6 @@ Therefore, we have proved the following.
 	Then $f$ has a quadratisation with 1 auxiliary.
 \end{proposition}
 
-
-\begin{lemma}
-	\label{1small3large}
-	If $k\ge 0$, $-k\le x \le -\frac{k}{2}$, and $w, y, z \ge 0$, then$g = b_a((3k+x+y+z+w) - (2k+x+z+w)b_1 - (2k+x+y+w)b_2 - (2k+x+y+z)b_3 - (2k+y+z+w)b_4) + k(b_1b_2+b_1b_3+b_1 b_4+ b_2b_3+b_2b_4+b_3b_4) + x(b_1b_2+b_1b_3+b_2b_3) + y(b_2b_3+b_2b_4+b_3b_4) + z(b_1b_3+b_1b_4+b_3b_4) + w(b_1b_2+b_1b_4+b_2b_4)$  is a quadratisation of $f$.
-\end{lemma}
-
-\begin{remark}
-This is the same quadratisation as in \ref{allpositive}.
-\end{remark}
-
-\begin{proof}
-	By symmetry, WLOG $b_1 \le b_2 \le b_3$ (we cannot make assumption on $b_4$ because $x$ is special among $x, y, z, w$).
-If $\vc b = 0000$, then $g = b_a(3k + w + x + y + z)$. Since $k + x \ge 0 $ and $k, y, z, w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0001$, then $g = b_a(k + x)$. Since $k + x\ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0010$, then $g = b_a(k + w)$. Since $k, w \ge 0$, $b_a^* = 0$, so $\min g = 0 = f$.
-
-If $\vc b = 0011$, then $g = -(b_a - 1)(k + y + z)$. Since $-k \le 0$ and $-y \le 0$ and $-z \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0110$, then $g = -(b_a - 1)(k + x + y)$. Since $-(k+x) \le 0$ and $-y \le 0$, $b_a^* = 1$, so $\min g = 0 = f$.
-
-If $\vc b = 0111$, then $g = 3k + w + x + 3y + z - b_a(3k + w + x + 2y + z)$.
-Since $-(k+x) \le 0$ and $-k, -w, -y, -z \le 0$, $b_a^* = 1$, so $\min g = y = f$.
-
-If $\vc b = 1110$, then $g = 3k + w + 3x + y + z - b_a(3k + w + 2x + y + z)$.
-Since $-2(k+x) \le 0$ and $-k, -w, -y, -z \le 0$, $b_a^* = 1$, so $\min g = x = f$.
-
-If $\vc b = 1111$, then $g = 6k + 3w + 3x + 3y + 3z - b_a(5k + 2w + 2x + 2y + 2z)$.
-Since $-2(k+x) \le 0$ and $-k, -w, -y, -z \le 0$, $b_a^* = 1$, so $\min g = k+ w+ x + y + z = f$.
-\end{proof}
 
 For $k \ge 0$, we have shown that $f$ has a 1-auxiliary quadratisation if  $x, y, z, w \ge -\frac{k}{2}$, 
 or if $x\le -k$ and $w, y, z \ge 0$ (both cases are sumarised in \ref{oldcases}), so we can combine them 
@@ -511,7 +489,7 @@ i.e. $h(i) = (ai+d)^- = \min(ai+d, 0)$ for some constant $a, d$, then $f$ is qua
 
 \begin{proof}
 	In fact we have a quadratisation that is also symmetric in $b_1, \cdots, b_n$.
-	Let $g = b_a(a|\vc b| + d) = b_a (a(\sum b_i) + d)$. This is quadratic in $\bc b, b_a$ and 
+	Let $g = b_a(a|\vc b| + d) = b_a (a(\sum b_i) + d)$. This is quadratic in $\vc b, b_a$ and 
 	\[\min_{b_a} g = f \quad \forall \vc b \in \{0, 1\}^n\]
 	using the property of $f$.
 \end{proof}
