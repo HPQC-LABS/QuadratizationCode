@@ -1,6 +1,6 @@
 #!/bin/sh
 #g++ qcone.cpp -o qcone
-#make lrs
+#make lrs64 (the 32 bits version is still called this way)
 #g++ isquad.cpp -o isquad
 
 rm -f temp.ine
