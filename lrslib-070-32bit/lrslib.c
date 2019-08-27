@@ -28,6 +28,7 @@
 #include <limits.h>
 #include "lrslib.h"
 
+#define INT32_MAX 2147483647
 static  __int32_t dict_count, dict_limit, cache_tries, cache_misses;
 
 /* Variables and functions global to this file only */
