@@ -1,0 +1,88 @@
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 -1 0 0 0 -1 0 -1 -1 -1 0 -1 -1 -1 -1 -1 -1 -1
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.001u 0.002s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 -1 0 0 0 -1 0 -1 -1 -1 0 -1 -1 -1 -1 -1 -1 0
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.002u 0.001s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 -1 0 -1 -1 -1 -1 -1 -1 -1
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.000u 0.003s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 -1 0 -1 -1 -1 -1 -1 -1 0
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.001u 0.002s 784Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 0 0 -1 -1 -1 -1 -1 -1 -1
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.001u 0.002s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 0 0 -1 -1 -1 -1 -1 -1 0
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.002u 0.000s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 0 0 -1 -1 0 -1 -1 -1 -1
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.001u 0.001s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 0 0 -1 -1 0 -1 -1 -1 0
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.002u 0.001s 784Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 0 0 -1 -1 0 -1 0 -1 -1
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.000u 0.003s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 0 0 -1 -1 0 -1 0 -1 0
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.001u 0.002s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
+0 0 0 0 0 0 0 -1 0 0 0 -1 0 -1 -1 0 0 0 0 -1 0 -1 -1 0 0 -1 -1 0 -1 0 0 -1
+*Totals: vertices=1 rays=22 bases=1 integer_vertices=1  vertices+rays=23
+*Note! Duplicate rays may be present
+*Dictionary Cache: max size= 1 misses= 0/0   Tree Depth= 0
+*Overflow checking on lrs__int32_t arithmetic
+*lrs:lrslib v.7.0 2019.7.10(64bit,lrslong.h,hybrid arithmetic)
+*0.002u 0.001s 780Kb 0 flts 0 swaps 0 blks-in 16 blks-out 
+
