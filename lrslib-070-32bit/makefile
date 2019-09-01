@@ -35,7 +35,7 @@ default: lrs redund lrsgmp redundgmp
 INCLUDEDIR = /usr/local/include
 LIBDIR     = /usr/local/lib
 
-CFLAGS     = -O3 -Wall 
+CFLAGS     = -O3 -Wall
 SHLIB_CFLAGS = -fPIC
 mpicxx=mpic++
 

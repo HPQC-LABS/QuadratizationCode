@@ -27,8 +27,8 @@
 #include <setjmp.h>
 #include <limits.h>
 #include "lrslib.h"
-
 #define INT32_MAX 2147483647
+
 static  __int32_t dict_count, dict_limit, cache_tries, cache_misses;
 
 /* Variables and functions global to this file only */
@@ -3113,34 +3113,32 @@ pivot (lrs_dic * P, lrs_dat * Q, __int32_t bas, __int32_t cob)
   copy (Ars, A[r][s]);
   storesign (P->det, sign (Ars));	/*adjust determinant to new sign */
 
-/*#pragma clang loop vectorize(enable)
+
   for (i = 0; i <= m_A; i++)
     if (i != r)
       for (j = 0; j <= d; j++)
 	if (j != s)
 	  {
- //    want to do  A[i][j]=(A[i][j]*Ars-A[i][s]*A[r][j])/P->det;
+/*          A[i][j]=(A[i][j]*Ars-A[i][s]*A[r][j])/P->det; */
 
 	    mulint (A[i][j], Ars, Nt);
 	    mulint (A[i][s], A[r][j], Ns);
 #ifdef LRSLONG
-	    unchecked_decint (Nt, Ns);    // overflow cannot happen
+	    unchecked_decint (Nt, Ns);    /* overflow cannot happen */
 #else
 	    decint (Nt, Ns);
 #endif
 	    exactdivint (Nt, P->det, A[i][j]);
-	  }			// end if j ....  */
+	  }			/* end if j ....  */
 
   if (sign (Ars) == POS)
     {
-#pragma clang loop vectorize(enable)
       for (j = 0; j <= d; j++)	/* no need to change sign if Ars neg */
 	/*   A[r][j]=-A[r][j];              */
 	if (!zero (A[r][j]))
 	  changesign (A[r][j]);
     }				/* watch out for above "if" when removing this "}" ! */
   else
-#pragma clang loop vectorize(enable)
     for (i = 0; i <= m_A; i++)
       if (!zero (A[i][s]))
 	changesign (A[i][s]);
