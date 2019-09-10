@@ -1,53 +1,56 @@
 \documentclass[11pt]{scrartcl}
-\usepackage[sexy]{evan}
+%\usepackage[sexy]{evan}
 \newcommand{\vc}[1]{\boldsymbol{#1}}
 \usepackage{array,multirow}
+\usepackage{amsmath,amsfonts}
 
 \begin{document}
 \author{} 
 \date{SEP 2019}
 
-1)\[-b_1 b_4 b_5 - b_2 b_4 b_5 -b_3 b_4 b_5 \longrightarrow  b_a(6 -b_1 -b_2 -b_3 -3b_4 -3b_5). \]
-
-2)\[-b_3 b_4 b_5 - b_1 b_3 b_4 b_5 - b_2 b_3 b_4 b_5 \longrightarrow b_a(8-b_1 - b_2 - 3b_3 -3b_4 -3b_5). \]
-
-These are examples of \\
-3) \[\min \left ( \sum a_i b_i + d, 0\right) \longrightarrow b_a\left(\sum a_i b_i + d \right). \] 
-
-4)\[ -b_1 b_2 b_3 b_4-b_1b_2b_3b_5-b_1b_2b_4b_5-b_1b_3b_4b_5-b_2b_3b_4b_5-b_1b_2b_3b_4b_5
-\longrightarrow b_a(19-5b_1 -5b_2 -5b_3 -5b_4 -5b_5).\]
-
-5)\[-b_1b_2b_3b_5-b_1b_2b_4b_5-b_1b_3b_4b_5-b_2b_3b_4b_5-b_1b_2b_3b_4b_5
-\longrightarrow b_a(16-4b_1 -4b_2 -4b_3 -4b_4 -5b_5).\]
-
-6)
+\[ -b_1 b_2 b_3 b_4-b_1b_2b_3b_5-b_1b_2b_4b_5-b_1b_3b_4b_5-b_2b_3b_4b_5-b_1b_2b_3b_4b_5
+\longrightarrow b_a(19-5b_1 -5b_2 -5b_3 -5b_4 -5b_5)\]
+\vspace{-5mm}
+\[-b_1b_2b_3b_5-b_1b_2b_4b_5-b_1b_3b_4b_5-b_2b_3b_4b_5-b_1b_2b_3b_4b_5
+\longrightarrow b_a(16-4b_1 -4b_2 -4b_3 -4b_4 -5b_5)\]
+\vspace{-5mm}
 \[-b_1b_2b_4b_5-b_1b_3b_4b_5-b_2b_3b_4b_5-b_1b_2b_3b_4b_5
-\longrightarrow b_a(13 -3b_1-3b_2-3b_3-4b_4-4b_5).\]
-
-7)
+\longrightarrow b_a(13 -3b_1-3b_2-3b_3-4b_4-4b_5)\]
+\vspace{-5mm}
 \[-b_1b_3b_4b_5-b_2b_3b_4b_5-b_1b_2b_3b_4b_5
-\longrightarrow b_a(10-2b_1-2b_2-3b_3-3b_4-3b_5).\]
-
-8)
+\longrightarrow b_a(10-2b_1-2b_2-3b_3-3b_4-3b_5)\]
+\vspace{-5mm}
 \[-b_1b_2b_3b_5-b_1b_2b_4b_5-b_1b_3b_4b_5-b_2b_3b_4b_5
-\longrightarrow b_a(12-3b_1-3b_2-3b_3-3b_4-4b_5).\]
-
-9)
+\longrightarrow b_a(12-3b_1-3b_2-3b_3-3b_4-4b_5)\]
+\vspace{-5mm}
 \[-b_1b_2b_4b_5-b_1b_3b_4b_5-b_2b_3b_4b_5
-\longrightarrow b_a(9-2b_1-2b_2-2b_3-3b_4-3b_5).\],
-
-10)
+\longrightarrow b_a(9-2b_1-2b_2-2b_3-3b_4-3b_5)\]
+\vspace{-5mm}
 \[-b_1b_3b_4b_5-b_2b_3b_4b_5
-\longrightarrow b_a(6-b_1-b_2-2b_3-2b_4-2b_5).\]
-
-These are examples of\\ 
-11) If $a_i \le 0 \ \forall i\in \{1, 2, 3, 4, 5\}$ and $a_0 + a_i + a_j +a_k\le 0 $ for all distinct $i, j, k \in \{1, 2, 3, 4, 5\}$, then 
+\longrightarrow b_a(6-b_1-b_2-2b_3-2b_4-2b_5)\]
+\vspace{3mm}
+All of these are examples of a general 5-var/1-aux theorem for negative coefficients: \\
+\vspace{3mm}
+If $a_i \le 0 $ and $a_0 + a_i + a_j +a_k\le 0 $ for all distinct $i, j, k $, then 
+\vspace{-3mm}
 \begin{align*}
-	&\phantom{\longrightarrow} a_0 b_1b_2b_3b_4b_5+ a_1b_2b_3b_4b_5+a_2b_1b_3b_4b_5+a_3b_1b_2b_4b_5+a_4b_1b_2b_3b_5+a_5b_1b_2b_3b_4 \\
-	&\longrightarrow b_a\left(a_0(b_1+b_2+b_3+b_4+b_5-4)+a_1(b_2+b_3+b_4+b_5 - 3) + \cdots + a_5(b_1+b_2+b_3+b_4 - 3)\right).
+&	\phantom{\longrightarrow} a_0 b_1b_2b_3b_4b_5+ a_1b_2b_3b_4b_5+a_2b_1b_3b_4b_5+a_3b_1b_2b_4b_5+a_4b_1b_2b_3b_5+a_5b_1b_2b_3b_4 \\
+&	\longrightarrow b_a\left(a_0(b_1+b_2+b_3+b_4+b_5-4)+a_1(b_2+b_3+b_4+b_5 - 3) + \cdots + a_5(b_1+b_2+b_3+b_4 - 3)\right)
 \end{align*}
 
-This can be generalised \\
-12) Let $n \in \mathbb{Z}^+,\ a_0, a_1, \cdots a_n \le 0$. Then \[ a_0 \prod_{i = 1}^n b_i + \sum_{i = 1}^n \left( a_i \prod_{j \neq i} b_j\right) \longrightarrow  b_a \left(a_0\left(\sum_{i=1}^n b_i - (n-1)\right) + \sum_{i=1}^n a_i \left( \sum_{j \neq i} b_j - (n-2)\right) \right). \]
+This can be generalized:
+Let $n \in \mathbb{Z}^+,\ a_0, a_1, \cdots a_n \le 0$. Then \[ a_0 \prod_{i = 1}^n b_i + \sum_{i = 1}^n \left( a_i \prod_{j \neq i} b_j\right) \longrightarrow  b_a \left(a_0\left(\sum_{i=1}^n b_i - (n-1)\right) + \sum_{i=1}^n a_i \left( \sum_{j \neq i} b_j - (n-2)\right) \right) \]
+
+
+
+\vspace{15mm}
+We also found some more quadratizations:
+
+\[-b_1 b_4 b_5 - b_2 b_4 b_5 -b_3 b_4 b_5 \longrightarrow  b_a(6 -b_1 -b_2 -b_3 -3b_4 -3b_5) \]
+\[-b_3 b_4 b_5 - b_1 b_3 b_4 b_5 - b_2 b_3 b_4 b_5 \longrightarrow b_a(8-b_1 - b_2 - 3b_3 -3b_4 -3b_5) \]
+
+
+These are examples of:
+\[\min \left ( \sum a_i b_i + d, 0\right) \longrightarrow b_a\left(\sum a_i b_i + d \right) \] 
 
 \end{document}
