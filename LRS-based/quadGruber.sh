@@ -1,6 +1,8 @@
 #!/bin/sh
 #g++ qcone.cpp -o qcone
-#make lrs64 (the 32 bits version is still called this way)
+#cd lrslib-070-32bit 
+#make lrs64  (the 32 bits version is still called this way)
+#cd ..
 #g++ isquad.cpp -std=c++11 -o isquad
 
 CASENO=0
