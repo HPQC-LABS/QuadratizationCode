@@ -54,7 +54,7 @@ lrs: ${LRSOBJ}
 	$(CC) ${CFLAGS} -DMA -DB128 -L${LIBDIR} -o lrs ${LRSOBJ} -lgmp
 
 lrs64: ${LRSOBJ64}
-	$(CC) ${CFLAGS} -DMA -L${LIBDIR} -o lrs ${LRSOBJ64} -lgmp
+	$(CC) -mkl ${CFLAGS} -DMA -L${LIBDIR} -o lrs ${LRSOBJ64} -lgmp
 
 avisloop: ${AVISLOOPOBJ}
 	$(CC)  -DMA ${CFLAGS} -L${LIBDIR} -o avisloop ${AVISLOOPOBJ} -lgmp
@@ -87,7 +87,7 @@ lrslong2.o: lrslong.c lrslong.h
 	$(CC) ${CFLAGS} -DMA -DSAFE -DB128 -DLRSLONG -c -o lrslong2.o lrslong.c
 
 lrslib1.o: lrslib.c lrslib.h
-	$(CC) ${CFLAGS} -DMA -DSAFE -DLRSLONG -c -o lrslib1.o lrslib.c
+	$(CC) -mkl ${CFLAGS} -DMA -DSAFE -DLRSLONG -c -o lrslib1.o lrslib.c
 
 avisloop.o: avisloop.c lrslib.h
 	$(CC) ${CFLAGS} -DMA -DSAFE -DLRSLONG -c -o avisloop.o avisloop.c
@@ -99,7 +99,7 @@ lrslib2.o: lrslib.c lrslib.h
 	$(CC) ${CFLAGS} -DMA -DSAFE -DB128 -DLRSLONG -c -o lrslib2.o lrslib.c
 
 lrslibgmp.o: lrslib.c lrslib.h
-	$(CC) ${CFLAGS} -DMA -DGMP -I${INCLUDEDIR} -c -o lrslibgmp.o lrslib.c
+	$(CC) -mkl ${CFLAGS} -DMA -DGMP -I${INCLUDEDIR} -c -o lrslibgmp.o lrslib.c
 
 lrsgmp.o: lrsgmp.c lrsgmp.h
 	$(CC) ${CFLAGS} -DMA -DGMP -I${INCLUDEDIR} -c -o lrsgmp.o lrsgmp.c

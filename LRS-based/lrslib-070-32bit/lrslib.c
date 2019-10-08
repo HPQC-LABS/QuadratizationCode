@@ -1,3 +1,5 @@
+// locally use export DYLD_LIBRARY_PATH="/opt/intel/mkl/lib" if mkl library not found
+
 /* lrslib.c     library code for lrs                     */
 
 /* modified by Gary Roumanis for multithread plrs compatability */
@@ -27,6 +29,7 @@
 #include <setjmp.h>
 #include <limits.h>
 #include "lrslib.h"
+#include "mkl.h"
 #define INT32_MAX 2147483647
 
 static  __int32_t dict_count, dict_limit, cache_tries, cache_misses;
@@ -3074,6 +3077,7 @@ selectpivot (lrs_dic * P, lrs_dat * Q, __int32_t *r, __int32_t *s)
   return (FALSE);
 }				/* end of selectpivot        */
 /******************************************************* */
+__int32_t maxmaxinA, maxdet;
 
 void 
 pivot (lrs_dic * P, lrs_dat * Q, __int32_t bas, __int32_t cob)
@@ -3082,6 +3086,8 @@ pivot (lrs_dic * P, lrs_dat * Q, __int32_t bas, __int32_t cob)
 		     /* corresponding to row Row[bas] and column       */
 		     /* Col[cob]   respectively                       */
 {
+
+    
   __int32_t r, s;
   __int32_t i, j;
   lrs_mp Ns, Nt, Ars;
@@ -3104,32 +3110,80 @@ pivot (lrs_dic * P, lrs_dat * Q, __int32_t bas, __int32_t cob)
   s = Col[cob];
 
 /* Ars=A[r][s]    */
+    
+    //debug here
+    Q->debug = 0;
   if (Q->debug)
     {
-      fprintf (lrs_ofp, "\n pivot  B[%d]=%d  C[%d]=%d ", bas, B[bas], cob, C[cob]);
+      fprintf (lrs_ofp, "\n pivot  B[%d]=%d  C[%d]=%d r=%d s=%d", bas, B[bas], cob, C[cob], r, s);
       printA(P,Q);
       fflush (stdout);
+        __int32_t maxinA = 0;
+        for( i = 0; i<= m_A; i++){
+            for (j = 0; j<=d; j++){
+                __int32_t Aij = *(__int32_t*)A[i][j];
+                if(Aij > maxinA){
+                    maxinA = Aij;
+                }
+                if(-Aij > maxinA){
+                    maxinA = -Aij;
+                }
+            }
+        }
+        if(maxinA > maxmaxinA){
+            maxmaxinA = maxinA;
+        }
+        printf("\n maxinA = %d, maxmaxinA = %d, ", maxinA, maxmaxinA);
+
     }
   copy (Ars, A[r][s]);
   storesign (P->det, sign (Ars));	/*adjust determinant to new sign */
+    __int16_t *Ais, *Arj;
+    __int32_t *Bis, *Brj;
+    Ais = (__int16_t*) malloc((m_A+1)*1*sizeof(__int16_t));
+    Arj = (__int16_t*) malloc(1*(d+1)*sizeof(__int16_t));
+    Bis = (__int32_t*) malloc((m_A+1)*1*sizeof(__int32_t));
+    Brj = (__int32_t*) malloc(1*(d+1)*sizeof(__int32_t));
+    for (i = 0 ; i<= m_A; i++){
+        Ais[i] = *(__int32_t*) A[i][s];
 
+    }
+    for (j = 0 ; j<=d; j++){
+        Arj[j] = *(__int32_t*) A[r][j];
 
+    }
+    printf("OK before gemm\n");
+    cblas_gemm_s16s16s32 (CblasRowMajor, CblasNoTrans, CblasNoTrans, CblasFixOffset,
+                          m_A+1, d+1, 1, -1.0/(*(__int32_t*) P->det), Ais, 1, 0, Arj, d+1, 0, 1.0*(*(__int32_t*) Ars)/(*(__int32_t*) P->det), (__int32_t*) A[0][0], d+1, 0);
+    printf("OK after gemm\n");
+    //printA(P,Q);
+    for (i = 0; i<=m_A; i++){
+        Bis[i] = Ais[i];
+        memcpy(A[i][s], (Bis + i), sizeof(__int32_t));
+    }
+    for (j = 0; j<=d; j++){
+        Brj[j] = Arj[j];
+        memcpy(A[r][j], (Brj + j), sizeof(__int32_t));
+    }
+    //printA(P,Q);
+    /*
   for (i = 0; i <= m_A; i++)
     if (i != r)
       for (j = 0; j <= d; j++)
 	if (j != s)
 	  {
-/*          A[i][j]=(A[i][j]*Ars-A[i][s]*A[r][j])/P->det; */
+//          A[i][j]=(A[i][j]*Ars-A[i][s]*A[r][j])/P->det;
 
 	    mulint (A[i][j], Ars, Nt);
 	    mulint (A[i][s], A[r][j], Ns);
 #ifdef LRSLONG
-	    unchecked_decint (Nt, Ns);    /* overflow cannot happen */
+	    unchecked_decint (Nt, Ns);    // overflow cannot happen
 #else
 	    decint (Nt, Ns);
 #endif
 	    exactdivint (Nt, P->det, A[i][j]);
-	  }			/* end if j ....  */
+	  }			// end if j ....
+     */
 
   if (sign (Ars) == POS)
     {
@@ -3152,8 +3206,16 @@ pivot (lrs_dic * P, lrs_dat * Q, __int32_t bas, __int32_t cob)
 
   if (Q->debug)
     {
-      fprintf (lrs_ofp, " depth=%d ", P->depth);
+      //fprintf (lrs_ofp, " depth=%d ", P->depth);
       pmp ("det=", P->det);
+        __int32_t Pdet = *(__int32_t*) P->det;
+        if(Pdet > maxdet){
+            maxdet = Pdet;
+        }
+        if(-Pdet> maxdet){
+            maxdet = -Pdet;
+        }
+        printf(", maxdet= %d", maxdet);
       fflush(stdout);
     }
 /* set the new rescaled objective function value */
@@ -3170,6 +3232,9 @@ pivot (lrs_dic * P, lrs_dat * Q, __int32_t bas, __int32_t cob)
 
 
   lrs_clear_mp(Ns); lrs_clear_mp(Nt); lrs_clear_mp(Ars);
+    
+    //debug
+    Q->debug = 0;
 }				/* end of pivot */
 
 __int32_t 
@@ -4351,7 +4416,7 @@ printA (lrs_dic * P, lrs_dat * Q)	/* pr__int32_t the integer m by n array A
   __int32_t m, d;
   m = P->m;
   d = P->d;
-
+/*
   fprintf (lrs_ofp, "\n Basis    ");
   for (i = 0; i <= m; i++)
     fprintf (lrs_ofp, "%d ", B[i]);
@@ -4363,7 +4428,7 @@ printA (lrs_dic * P, lrs_dat * Q)	/* pr__int32_t the integer m by n array A
     fprintf (lrs_ofp, "%d ", C[i]);
   fprintf (lrs_ofp, " Column ");
   for (i = 0; i <= d; i++)
-    fprintf (lrs_ofp, "%d ", Col[i]);
+    fprintf (lrs_ofp, "%d ", Col[i]);*/
   pmp (" det=", P->det);
   fprintf (lrs_ofp, "\n");
   i=0;
@@ -4391,8 +4456,8 @@ pimat (lrs_dic * P, __int32_t r, __int32_t s, lrs_mp Nt, char name[])
     fprintf (lrs_ofp, "%s[%d][%d]=", name, B[r], C[s]);
   else
     fprintf (lrs_ofp, "[%d]=", C[s]);
-  pmp ("", Nt);
-
+  //pmp ("", Nt);
+    printf("%d ", *(__int32_t*)Nt);
 }
 
 /***************************************************************/
@@ -4458,7 +4523,7 @@ copy_dict (lrs_dat * global, lrs_dic * dest, lrs_dic * src)
   else
 #ifdef B128
   memcpy (dest->A[0][0], (global->Qtail->prev)->A[0][0],
-          (d + 1) * (lrs_digits + 1) * (m_A + 1) * sizeof (__int32));
+          (d + 1) * (lrs_digits + 1) * (m_A + 1) * sizeof (__int32_t));
 #else
   memcpy (dest->A[0][0], (global->Qtail->prev)->A[0][0],
           (d + 1) * (lrs_digits + 1) * (m_A + 1) * sizeof (__int32_t));
