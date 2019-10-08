@@ -3152,10 +3152,10 @@ pivot (lrs_dic * P, lrs_dat * Q, __int32_t bas, __int32_t cob)
         Arj[j] = *(__int32_t*) A[r][j];
 
     }
-    printf("OK before gemm\n");
+
     cblas_gemm_s16s16s32 (CblasRowMajor, CblasNoTrans, CblasNoTrans, CblasFixOffset,
                           m_A+1, d+1, 1, -1.0/(*(__int32_t*) P->det), Ais, 1, 0, Arj, d+1, 0, 1.0*(*(__int32_t*) Ars)/(*(__int32_t*) P->det), (__int32_t*) A[0][0], d+1, 0);
-    printf("OK after gemm\n");
+
     //printA(P,Q);
     for (i = 0; i<=m_A; i++){
         Bis[i] = Ais[i];
