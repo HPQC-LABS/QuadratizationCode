@@ -40,19 +40,10 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
     end
     LHS = LHS + term;
     
-    %{
-    switch Case
-        case 0
-            LHS = b{1}.*b{2}.*b{3}.*b{4} + b{2}.*b{3}.*b{4}.*b{5} + b{3}.*b{4}.*b{5}.*b{6} + b{4}.*b{5}.*b{6}.*b{7};
-        case 1
-            LHS = b{1}.*b{2}.*b{3}.*b{4} + b{2}.*b{3}.*b{4}.*b{5} + b{3}.*b{4}.*b{5}.*b{6} - b{4}.*b{5}.*b{6}.*b{7};
-        case 2
-            LHS = b{1}.*b{2}.*b{3}.*b{4} - b{2}.*b{3}.*b{4}.*b{5} - b{3}.*b{4}.*b{5}.*b{6} + b{4}.*b{5}.*b{6}.*b{7};
-    end
-    %}
+    
     %LHS = b{1}.*b{2}.*b{3}.*b{4} + b{4}.*b{5}.*b{6}.*b{7};
     LHS = LHS';
-    LHS = LHS(1:2^aux:2^n);
+    LHS = LHS(1:2^aux:end);
     
     allbits = [];
     for i = 1:n
@@ -72,7 +63,7 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
     init = int2str( (base-1)/2 );
 
     restartId = 0;
-    perCheck = 100000;
+    perCheck = 1000;
     
     data_percentage = 1;
     conflicts_threshold = 60;
@@ -91,19 +82,18 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
         coeffs( coeffs == 2 ) = -1;
 
         RHS = coeffs*allbits;
-        if aux == 1
-            RHS = min(RHS(:,1:2:2^n-1),RHS(:,2:2:2^n));
-        elseif aux == 2
-            min1 = min(RHS(:,1:4:2^n-1),RHS(:,2:4:2^n));
-            min2 = min(RHS(:,3:4:2^n-1),RHS(:,4:4:2^n));
-            RHS = min(min1,min2);
+        for i = 1:aux
+            RHS = min(RHS(:,1:2:end),RHS(:,2:2:end));
         end
-
         RHS = RHS - min(RHS,[],2) + min(LHS);
 
         conflicts_percent = mean( RHS ~= LHS , 2 ) * 100; % percentage of overall conflicts
         index_good = (conflicts_percent <= conflicts_threshold);
-
+        
+        difference = RHS - LHS;
+        flag = (sum(difference < 0,2) ~= 0);
+        
+        index_good = logical(index_good.*flag);
         %input(checkpoint*perCheck+1:min( floor(data_size), int64((checkpoint+1)*perCheck)),:) = coeffs; %for sampling
         %target(checkpoint*perCheck+1:min( floor(data_size), int64((checkpoint+1)*perCheck))) = index_good; %for sampling
         if any(index_good)
@@ -126,14 +116,10 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
     %fprintf('progress %.3f%%, restart id = %d, step time = %.3f, total time = %.3f, good = %d\n',...
     %    min((checkpoint+1)*progress_const, 100), checkpoint,cputime - t,cputime - t_init,good_count);
 
-    input = good_coeffs(randperm(size(good_coeffs,1),min(1000,floor(0.7*size(good_coeffs,1)))),:);
+    input = good_coeffs(randperm(size(good_coeffs,1),min(1000,size(good_coeffs,1))),:);
     RHS = good_coeffs*allbits;
-    if aux == 1
-        RHS = min(RHS(:,1:2:2^n-1),RHS(:,2:2:2^n));
-    elseif aux == 2
-        min1 = min(RHS(:,1:4:2^n-1),RHS(:,2:4:2^n));
-        min2 = min(RHS(:,3:4:2^n-1),RHS(:,4:4:2^n));
-        RHS = min(min1,min2);
+    for i = 1:aux
+        RHS = min(RHS(:,1:2:end),RHS(:,2:2:end));
     end
     RHS = RHS - min(RHS,[],2) + min(LHS);
     

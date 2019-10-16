@@ -1,16 +1,8 @@
 function [verified,const_terms] = verify(n,aux,LHS,allbits,coef)
     coeffs_size = n*(n+1)/2;
     
-    temp = [coef{:}];
-    coef = cell2mat(temp);
     coef = reshape(coef,[],coeffs_size);
-    
-	temp = [allbits{:}];
-    allbits = cell2mat(temp);
     allbits = reshape(allbits,2^n,coeffs_size);
-    
-    temp = [LHS{:}];
-    LHS = cell2mat(temp);
     LHS = reshape(LHS,1,[]);
     
     RHS = coef*allbits';
