@@ -6,7 +6,7 @@
 # add -DSIGNALS if your compiler does *not* support <signal.h> <unistd.h>
 
 #try uncommenting next line if cc is the default C compiler
-#CC = gcc
+CC = icc
 
 default: lrs redund lrsgmp redundgmp
 
@@ -35,7 +35,7 @@ default: lrs redund lrsgmp redundgmp
 INCLUDEDIR = /usr/local/include
 LIBDIR     = /usr/local/lib
 
-CFLAGS     = -O3 -Wall
+CFLAGS = -O3 -Wall 
 SHLIB_CFLAGS = -fPIC
 mpicxx=mpic++
 
@@ -44,6 +44,9 @@ REDUNDOBJ=redund.o lrslong1.o lrslong2.o lrslib1.o lrslib2.o lrslibgmp.o lrsgmp.
 MPLRSOBJ=lrslong1-mplrs.o lrslong2-mplrs.o lrslib1-mplrs.o lrslib2-mplrs.o lrslibgmp-mplrs.o lrsgmp-mplrs.o lrsdriver.o mplrs.o
 
 LRSOBJ64=lrs64.o lrslong1.o lrslib1.o lrslibgmp.o lrsgmp.o lrsdriver.o
+AVISLOOPOBJ=lrs64.o lrslong1.o avisloop.o lrslibgmp.o lrsgmp.o lrsdriver.o
+CBLASLOOPOBJ=lrs64.o lrslong1.o cblasloop.o lrslibgmp.o lrsgmp.o lrsdriver.o
+
 REDUNDOBJ64=redund64.o lrslong1.o lrslib1.o lrslibgmp.o lrsgmp.o lrsdriver.o
 MPLRSOBJ64=lrslong1-mplrs.o lrslib1-mplrs.o lrslibgmp-mplrs.o lrsgmp-mplrs.o lrsdriver.o mplrs64.o
 
@@ -51,7 +54,13 @@ lrs: ${LRSOBJ}
 	$(CC) ${CFLAGS} -DMA -DB128 -L${LIBDIR} -o lrs ${LRSOBJ} -lgmp
 
 lrs64: ${LRSOBJ64}
-	$(CC) ${CFLAGS} -DMA -L${LIBDIR} -o lrs ${LRSOBJ64} -lgmp
+	$(CC) -mkl ${CFLAGS} -DMA -L${LIBDIR} -o lrs ${LRSOBJ64} -lgmp
+
+avisloop: ${AVISLOOPOBJ}
+	$(CC)  -DMA ${CFLAGS} -L${LIBDIR} -o avisloop ${AVISLOOPOBJ} -lgmp
+
+cblasloop: ${CBLASLOOPOBJ}
+	$(CC) -mkl -DMA ${CFLAGS} -L${LIBDIR} -o cblasloop ${CBLASLOOPOBJ} -lgmp
 
 redund: ${REDUNDOBJ}
 	$(CC) ${CFLAGS} -DMA -DB128 -L${LIBDIR} -o redund ${REDUNDOBJ} -lgmp
@@ -78,13 +87,19 @@ lrslong2.o: lrslong.c lrslong.h
 	$(CC) ${CFLAGS} -DMA -DSAFE -DB128 -DLRSLONG -c -o lrslong2.o lrslong.c
 
 lrslib1.o: lrslib.c lrslib.h
-	$(CC) ${CFLAGS} -DMA -DSAFE -DLRSLONG -c -o lrslib1.o lrslib.c
+	$(CC) -mkl ${CFLAGS} -DMA -DSAFE -DLRSLONG -c -o lrslib1.o lrslib.c
+
+avisloop.o: avisloop.c lrslib.h
+	$(CC) ${CFLAGS} -DMA -DSAFE -DLRSLONG -c -o avisloop.o avisloop.c
+
+cblasloop.o: cblasloop.c lrslib.h
+	$(CC) -mkl ${CFLAGS} -DMA -DSAFE -DLRSLONG -c -o cblasloop.o cblasloop.c
 
 lrslib2.o: lrslib.c lrslib.h
 	$(CC) ${CFLAGS} -DMA -DSAFE -DB128 -DLRSLONG -c -o lrslib2.o lrslib.c
 
 lrslibgmp.o: lrslib.c lrslib.h
-	$(CC) ${CFLAGS} -DMA -DGMP -I${INCLUDEDIR} -c -o lrslibgmp.o lrslib.c
+	$(CC) -mkl ${CFLAGS} -DMA -DGMP -I${INCLUDEDIR} -c -o lrslibgmp.o lrslib.c
 
 lrsgmp.o: lrsgmp.c lrsgmp.h
 	$(CC) ${CFLAGS} -DMA -DGMP -I${INCLUDEDIR} -c -o lrsgmp.o lrsgmp.c
