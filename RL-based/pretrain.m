@@ -3,6 +3,19 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
     b_ind = regexp(LHS_string,'b*');
     numbers = LHS_string(b_ind+1) - '0';
     n = max(numbers) + aux;
+	if max(numbers) == 9
+		maxnum = 0;
+		b_ind = regexp(LHS_string,'b1');
+		for i = 1:size(b_ind,2)
+			num = sscanf(LHS_string(b_ind(i)+1:end),'%d');
+			if num > maxnum
+				maxnum = num;
+			end
+		end
+		if maxnum > 9
+			n = maxnum + aux;
+		end
+	end
     
     coeffs_range = -1:1;
     allCombos = dec2bin(0:2^n-1) -'0';
@@ -21,8 +34,9 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
     while i <= size(LHS_string,2)
         switch LHS_string(i)
             case 'b'
-                term = term.*b{LHS_string(i+1) - '0'};
-                i = i + 1;
+				temp = sscanf(LHS_string(i+1:end),'%d');
+                term = term.*b{temp};
+                i = i + 1 + floor( log(temp)/log(10) );
             case '+'
                 LHS = LHS + term;
                 term = 1;
@@ -115,7 +129,7 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
 
     %fprintf('progress %.3f%%, restart id = %d, step time = %.3f, total time = %.3f, good = %d\n',...
     %    min((checkpoint+1)*progress_const, 100), checkpoint,cputime - t,cputime - t_init,good_count);
-
+	
     input = good_coeffs(randperm(size(good_coeffs,1),min(1000,size(good_coeffs,1))),:);
     RHS = good_coeffs*allbits;
     for i = 1:aux

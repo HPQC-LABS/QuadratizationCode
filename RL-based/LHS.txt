@@ -1,6 +1,56 @@
 b1b2b3b4 + b3b4b5b6
+0
+b1b2b3b4 + b4b5b6b7
+0
+b1b2b3b4b5 + b3b4b5b6b7
+0
+b1b2b3b4b5b6 + b2b3b4b5b6b7
+0
+b1b2b3b4b5 + b4b5b6b7b8
+0
+b1b2b3b4b5b6 + b3b4b5b6b7b8
+0
+b1b2b3b4b5b6b7 + b2b3b4b5b6b7b8
+0
+b1b2b3b4 + b5b6b7b8
+0
+b1b2b3b4b5 + b6b7b8b9b10
+0
+b1b2b3b4b5b6 + b5b6b7b8b9b10
+0
+b1b2b3b4b5b6b7 + b4b5b6b7b8b9b10
+0
+b1b2b3b4b5b6b7b8 + b3b4b5b6b7b8b9b10
+0
+b1b2b3b4b5b6b7b8b9 + b2b3b4b5b6b7b8b9b10
+0
+b1b2b3b4 + b2b3b4b5 + b3b4b5b6
+0
+b1b2b3b4 + b3b4b5b6 + b5b6b7b8
+0
+b1b2b3b4b5 + b2b3b4b5b6 + b3b4b5b6b7
+0
+b1b2b3b4b5b6 + b2b3b4b5b6b7 + b3b4b5b6b7b8
+0
+b1b2b3b4b5b6b7b8 + b2b3b4b5b6b7b8b9 + b3b4b5b6b7b8b9b10
+0
+b1b2b3b4b5b6 + b3b4b5b6b7b8 + b5b6b7b8b9b10
+0
+b1b2b3b4 + b4b5b6b7 + b7b8b9b10
+0
+b1b2b3b4b5 + b3b4b5b6 + b4b5b6b7b8
+0
+b1b2b3 + b1b2b4 + b1b3b4 + b2b3b4
+0
+b1b2b3b4b5b6b7 + b2b3b4b5b6b7b8 + b3b4b5b6b7b8b9 + b4b5b6b7b8b9b10
+0
+b1b2b3b4 + 2b1b2b3 + b1b2b4 + b1b3b4 + b2b3b4
+0
+b1b2b3b4 + 2b1b2b3 + b1b2b4 + 3b1b3b4 + b2b3b4
+0
+b1b2b3b4 + 2b1b2b3 + b1b3b4
+0
+b1b2b3b4b5b6b7b8
+0
+b1b2b3b4b5b6b7b8
 1
-Verified!
- + b_{1}b_{4} + b_{4}b_{5} - b_{4}b_{7} - b_{5}b_{7} + b_{6}b_{7} + b_{7} +1
- + b_{2}b_{3} + b_{3}b_{5} + b_{4}b_{5} - b_{4}b_{7} - b_{5}b_{7}
- + b_{5}b_{6} + b_{2} +1

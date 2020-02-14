@@ -2,12 +2,18 @@ import numpy as np
 from scipy.io import savemat # ,loadmat
 import matlab.engine
 from sklearn.neural_network import MLPClassifier
+from sklearn.exceptions import DataConversionWarning
+import time
+import warnings
+warnings.filterwarnings(action = 'ignore', category = DataConversionWarning)
+start_runtime = time.time()
 
 # hyperparameters
 #n = 7              # number of variables including aux
 #aux = 1
-fileID = "LHS.txt"
-num_cases = 1
+filein  = "LHS.txt"
+fileout = "Quads/quad"
+#num_cases = 1
 new_input = True
 
 n_sessions = 100
@@ -22,7 +28,7 @@ c_strength = 2
 c_accuracy = 10000
 
 percentile = 70
-max_comigs = 15
+max_comigs = 16
 comigs_each_run = 1
 # -----------------------------------------------------------------------------------------
 
@@ -212,21 +218,26 @@ def show_progress(batch_rewards, percentile):
 
 # Run for multiple LHSs
 
+file1 = open(filein,"r")
+data = file1.readlines()
+file1.close()
+
+num_cases = int(len(data)/2)
 for Case in range(num_cases):
-    # Read new input
+    start_time = time.time()
     
+    # Read new input
     if new_input:
         
-        file1 = open(fileID,"r")
-        
-        LHS_string = file1.readline()
-        aux = int( file1.readline() )
-        file1.close()
+        LHS_string = data[2*Case]
+        aux = int( data[2*Case + 1] )
         
         # Run Matlab to pretrain RL model
         eng = matlab.engine.start_matlab()
         #eng.brute_force_for_RL_input_data(nargout = 0)
+        pretraining_start = time.time()
         [init_training, LHS, allbits, reset_state, n] = eng.pretrain(aux, LHS_string, nargout = 5)
+        pretraining_time = time.time() - pretraining_start
         
         coeffs_size = int( n*(n+1)/2 )
         n_actions = 2*coeffs_size + 1   # number of actions
@@ -280,6 +291,7 @@ for Case in range(num_cases):
     best_num_of_comigs = 1000
     for Run in range(3):
         good = np.zeros((max_comigs,comigs_each_run,coeffs_size))
+        comig_start_time = time.time()
         good_ind = []
         score = 0
         
@@ -369,10 +381,13 @@ for Case in range(num_cases):
         if num_COMIGs < best_num_of_comigs:
             best_num_of_comigs = num_COMIGs
             Best_score = score
+            Best_time = time.time() - comig_start_time
             best_coef = coef[:num_COMIGs]
             savemat('data.mat',{ ('coef' + str(Case)) :best_coef} )
         elif num_COMIGs == best_num_of_comigs:
-            if score > Best_score:                
+            if score > Best_score:
+                Best_score = score
+                Best_time = time.time() - comig_start_time
                 best_coef = coef[:num_COMIGs]
                 savemat('data.mat',{ ('coef' + str(Case)) :best_coef} )
     
@@ -380,16 +395,21 @@ for Case in range(num_cases):
     print('best num of comigs = ',best_num_of_comigs,'\n')
     
     # verify coef and get const_terms
-    [verified, const_terms] = eng.verify(n, aux, LHS.tolist(), allbits.tolist(), best_coef.tolist(), nargout = 2)
+    #[verified, const_terms] = eng.verify(n, aux, LHS.tolist(), allbits.tolist(), best_coef.tolist(), nargout = 2)
     
-    file1 = open(fileID,"a")
+    file1 = open(fileout + str(Case) + ".txt","a+")
     
     if (np.min(rhs(np.transpose(best_coef)),1) != np.transpose(LHS)).any():
         file1.write('\nNot verified!\n')
-    else:
-        file1.write('\nVerified!\n')
     
+    file1.write(LHS_string[:-1] + ':\n\n')
+    
+    mask = np.ones((1,LHS.shape[0]))
     for m in range(best_coef.shape[0]):
+        mask = mask * ( rhs(best_coef[m]) != np.transpose(LHS) )
+        percent = 100 * ( 1 - sum(sum(mask))/LHS.shape[0] )
+        
+        file1.write('(%6.2f%%)  ' % percent )
         vec = best_coef[m,:]
         k = 0
         for i in range(1,n):
@@ -402,7 +422,7 @@ for Case in range(num_cases):
                     else:
                         file1.write(' %+d b_{%d}b_{%d}' % (vec[k], i, j) )
                 k += 1
-    
+        
         for i in range(1,n+1):
             if vec[k] != 0:
                 if vec[k] == 1:
@@ -413,9 +433,16 @@ for Case in range(num_cases):
                     file1.write(' %+d b_{%d}' % (vec[k], i) )
             k += 1
         
-        if np.floor(const_terms[m]) != 0:
-            file1.write(' %+d' % np.floor(const_terms[m]) )
+        #if np.floor(const_terms[m]) != 0:
+        #    file1.write(' %+d' % np.floor(const_terms[m]) )
         file1.write('\n')
     
+    file1.write("\nPre-training Runtime: %6.2f seconds" % pretraining_time )
+    file1.write("\n  Envelope's Runtime: %6.2f seconds" % Best_time )        
+    file1.write('\n       Total Runtime: %6.2f seconds\n' % (time.time() - start_time) )
+    
     file1.close()
-
+    
+total = time.time() - start_runtime
+print('total runtime = %.2f minutes' % float(total/60) )
+print('avg runtime per comig = %.2f minutes' % float(total/60/num_cases) )
