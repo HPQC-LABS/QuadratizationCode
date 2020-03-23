@@ -1,5 +1,5 @@
 clear;
-global c_conflict c_distance c_entropy worst_score stop_condition coef found reset_state agent allbits LHS aux one_hot mask coeffs_size n_sessions c_accuracy c_strength  c_num_of_terms num_COMIGs
+global    stop_condition coef found num_COMIGs
 
 % hyperparameters
 
@@ -8,16 +8,16 @@ num_cases = 1;
 new_input = true;
 seed = 'shuffle';
 
-c_conflict = 1;
-c_distance = 1;
-c_entropy  = 0.25;
+param.c_conflict = 1;
+param.c_distance = 1;
+param.c_entropy  = 0.25;
 
-n_sessions = 100;
-t_max = 150;
+param.n_sessions = 100;
+param.t_max = 150;
 
-c_num_of_terms = 1;
-c_strength = 2;
-c_accuracy = 10000;
+param.c_num_of_terms = 1;
+param.c_strength = 2;
+param.c_accuracy = 10000;
 
 percentile = 70;
 max_comigs = 16;
@@ -28,9 +28,10 @@ max_comigs = 16;
 
 best_comig_cost = 1000;
 
+%LHS_string = 'b1b2b3 + b3b4b5 + b4b5b6/n0';
 file1 = fopen(fileID,'r');
 LHS_string = fscanf(file1,'%s');
-fclose(file1);
+%close(file1);
 
 aux = LHS_string(end) - '0';
 LHS_string = LHS_string(1:end-1);
@@ -41,7 +42,7 @@ for Case = 0:num_cases
     if new_input
         
         [init_training, LHS, allbits, reset_state, n] = pretrain(aux, LHS_string);
-        
+		
         coeffs_size = n*(n+1)/2;
         n_actions = 2*coeffs_size + 1;   % number of actions
         
@@ -51,26 +52,35 @@ for Case = 0:num_cases
         
         allbits = allbits';
         
-        reset_state = repmat(reset_state',1,n_sessions);
+        reset_state = repmat(reset_state',1,param.n_sessions);
         
         one_hot = zeros(coeffs_size,n_actions);
         for i = 1:coeffs_size
             one_hot(i,i) = 1;
             one_hot(i,coeffs_size + i) = -1;
-        end
+		end
+		
+		cache.LHS = LHS;
+		cache.allbits = allbits;
+		cache.n = n;
+		cache.aux = aux;
+		cache.coeffs_size = coeffs_size;
+		cache.reset_state = reset_state;
+		cache.one_hot = one_hot;
+		clear LHS allbits n aux coeffs_size reset_state one_hot
     end
     % create agent
     
-    agent = patternnet([coeffs_size,2*coeffs_size]);
-    agent.trainParam.epochs = 1;
-    agent.trainParam.showWindow = false;
+    agent = patternnet(cache.coeffs_size);
+    agent.trainparam.epochs = 1;
+    agent.trainparam.showWindow = false;
     
     Size = size(init_training,1);
-    train_data = init_training - one_hot(:,1)';
+    train_data = init_training - cache.one_hot(:,1)';
     target = ones(Size,1);
     
     for action = 2:n_actions
-        train_data = [train_data; init_training - one_hot(:,action)' ];
+        train_data = [train_data; init_training - cache.one_hot(:,action)' ];
         target = [target; ones(Size,1)*action ];
     end
     
@@ -82,19 +92,18 @@ for Case = 0:num_cases
     
     best_num_of_comigs = 1000;
     for Run = 1:3
-        coef = zeros(max_comigs,coeffs_size);
+        coef = zeros(max_comigs,cache.coeffs_size);
         score = 0;
         
         for num_COMIGs = 1:max_comigs
             
             mask = true(LHS_size,1);
-            mask_preserve = zeros(max_comigs,LHS_size,1);
+            mask_preserve = zeros(max_comigs,LHS_size);
             
             for i = 1:num_COMIGs-1
-                RHS = reshape( rhs(reshape(coef(i),[],1)) , [] , 1);
-                size(RHS)
-                mask_preserve(i) = (RHS ~= LHS);
-                mask = mask.*mask_preserve(i);
+                RHS = reshape( rhs(reshape(coef(i,:),[],1), cache) , [] , 1);
+                mask_preserve(i,:) = (RHS ~= cache.LHS)';
+                mask = mask.*mask_preserve(i,:)';
             end
             mask = reshape(mask,[],1);
             mask = (mask == 1);
@@ -104,7 +113,7 @@ for Case = 0:num_cases
             end
             fprintf('states left = %d\n', sum(mask));
             
-            worst_score = -10000;
+            best_run_score = -10000;
             stop_counter = 0;
             counter = 0;
             found = 0;
@@ -115,15 +124,15 @@ for Case = 0:num_cases
                 for j = 0:100
                     %mean_reward_max_in = -10000
                     
-                    [batch_states,batch_actions,batch_rewards, flag] = generate_session(t_max);
+                    [batch_states, batch_actions, batch_rewards, flag, best_run_score] = generate_session(agent, param, cache, mask, best_run_score);
                     
                     if flag
                         break;
                     end
                     
-                    [elite_states, elite_actions] = select_elites(batch_states, batch_actions, batch_rewards, percentile);
+                    [elite_states, elite_actions] = select_elites(batch_states, batch_actions, batch_rewards, percentile, cache);
                     
-                    elite_actions = ind2vec(elite_actions, n_actions);
+                    elite_actions = ind2vec(elite_actions, n_actions); % Transform to hot-one
                     agent = train(agent,elite_states, full(elite_actions));
                     
                     %{
@@ -154,10 +163,10 @@ for Case = 0:num_cases
             fprintf('Case: %d, Run: %d, Comig: %d\n', Case, Run, num_COMIGs);
             
             coef_temp = coef(num_COMIGs,:);
-            [conflict_current, ~,~] = accuracy(reshape(coef_temp,[],1));
+            [conflict_current, ~,~] = accuracy(reshape(coef_temp,[],1), cache, mask);
             coeffs_strength = sum(abs(coef_temp));
             coeffs_number = sum(coef_temp ~= 0);
-            best_score = c_accuracy*(1 - conflict_current) - c_strength*coeffs_strength - c_num_of_terms*coeffs_number;
+            best_score = param.c_accuracy*(1 - conflict_current) - param.c_strength*coeffs_strength - param.c_num_of_terms*coeffs_number;
             score = score + best_score;
         end
         
@@ -167,12 +176,12 @@ for Case = 0:num_cases
             Best_score = score;
             best_coef = coef(1:num_COMIGs);
             %savemat('data.mat',{ ('coef' + str(Case)) :best_coef} )
-            %LATER!!!!!y
+            %LATER!
         elseif num_COMIGs == best_num_of_comigs
             if score > Best_score
                 best_coef = coef(1:num_COMIGs);
                 %savemat('data.mat',{ ('coef' + str(Case)) :best_coef} )
-                %LATER!!!!
+                %LATER!
             end
         end
     end
@@ -188,9 +197,9 @@ for Case = 0:num_cases
     fprintf('best num of comigs = %d\n',best_num_of_comigs);
     
     % verify coef and get const_terms
-    [verified, const_terms] = verify(n, aux, LHS, allbits, best_coef);
+    [verified, const_terms] = verify(cache, best_coef);
     
-    file1 = fopen(fileID,'a');
+    %file1 = fopen(fileID,'a');
     
     %fprintf(file1,'\n\n%d-aux\n', aux);
     %{
@@ -252,35 +261,26 @@ end
 
 % functions
 
-function state = step(state, action)
-	global one_hot
-	state = state + one_hot(:,action);
+function r = reward(conflict, dist, entropy, param)
+    r_conflict = 1 - conflict.^(1/3);         % "preserving states" reward
+    r_distance = 1 - dist.^(1/3);             % "staying close"     reward
+    r_entropy  = entropy;                     % "being an explorer" reward
+    
+    r = param.c_conflict * r_conflict + param.c_distance * r_distance + param.c_entropy * r_entropy;
 end
 
-function r = reward(conflict, dist, entropy)
-    global c_conflict c_distance c_entropy
+function RHS = rhs(s, cache)
+    RHS = cache.allbits*s;
+    RHS = RHS - min(RHS) + min(cache.LHS);
     
-    r_conflict = 1 - conflict.^(1/3);            % "preserving states" reward
-    r_distance = 1 - dist.^(1/3);                % "staying close"     reward
-    r_entropy  = entropy;                        % "being an explorer" reward
-    
-    r = c_conflict * r_conflict + c_distance * r_distance + c_entropy * r_entropy;
-end
-
-function RHS = rhs(s)
-    global allbits LHS aux
-    RHS = allbits*s;
-    RHS = RHS - min(RHS) + min(LHS);
-    
-    for i=1:aux
+    for i=1:cache.aux
         RHS = min(RHS(1:2:end,:),RHS(2:2:end,:));
     end
 end
 
-function [conflict, distance, flag] = accuracy(s)
-    global LHS mask
-    RHS = rhs(s);
-    difference = RHS - LHS;
+function [conflict, distance, flag] = accuracy(s, cache, mask)
+    RHS = rhs(s, cache);
+    difference = RHS - cache.LHS;
     flag = (sum(difference < 0) ~= 0);
     
     conflict = sum(difference(mask,:) ~= 0) / sum(mask);
@@ -291,37 +291,37 @@ function [conflict, distance, flag] = accuracy(s)
     distance = min(1, distance/sum(mask)); %LHS_size? or maybe changing at runtime?
 end
 
-function [states, actions, total_reward, flag] = generate_session(t_max)
-    global worst_score stop_condition coef found reset_state agent coeffs_size n_sessions c_accuracy c_strength  c_num_of_terms num_COMIGs
-    states  = zeros(size(reset_state,1),size(reset_state,2),t_max);
-    actions = zeros(n_sessions,t_max);
+function [states, actions, total_reward, flag, best_score] = generate_session(agent, param, cache, mask, best_score)
+    global  stop_condition coef found  num_COMIGs
+    states  = zeros(size(cache.reset_state,1),size(cache.reset_state,2),param.t_max);
+    actions = zeros(param.n_sessions,param.t_max);
     total_reward = 0;
     mini = 100;
     %r_best = -1000 * np.ones((n_sessions,))
-    s = reset_state;
+    s = cache.reset_state;
     %conflict,dist = accuracy(s)
     %old_reward = reward(conflict, dist, 0)
     
-    for t = 1:t_max
-        
-        probs = agent(s);
+    for t = 1:param.t_max
+		
+		probs = agent(s);
         
         % choose actions w.r.t. probs
         c = cumsum(probs);
         u = rand(1,size(c,2));
         [~,a] = max(u < c);
         
-        new_s = step(s,a);
+        new_s = s + cache.one_hot(:,a);
+		
+        [conflict, dist, flag] = accuracy(new_s, cache, mask);
         
-        [conflict, dist, flag] = accuracy(new_s);
-        
-        entropy = -sum( probs.*log(probs)/log(coeffs_size));
+        entropy = -sum( probs.*log(probs)/log(cache.coeffs_size));
         
         %new_reward = reward(conflict, dist, entropy)
         %r = new_reward - old_reward
         %old_reward = new_reward
         
-        r = reward(conflict, dist, entropy);
+        r = reward(conflict, dist, entropy, param);
         r(flag) = r(flag) - 10;
         
         condition = ( flag == 0 );
@@ -329,41 +329,19 @@ function [states, actions, total_reward, flag] = generate_session(t_max)
         if any(condition)
             coeffs_strength = sum(abs(new_s(:,condition)),1);
             coeffs_number = sum( new_s(:,condition) ~= 0 , 1 );
-            score = c_accuracy*(1 - conflict(condition)) - c_strength*coeffs_strength - c_num_of_terms*coeffs_number;
-            score_condition = ( score > worst_score );
+            score = param.c_accuracy*(1 - conflict(condition)) - param.c_strength*coeffs_strength - param.c_num_of_terms*coeffs_number;
             
-            if any(score_condition)
-                stop_condition = 0;
-                found = 1;
-                %flag = True
-                %for k in range(len(good)):
-                %    if (good[k] == new_s[:,temp]).all():
-                %        flag = False
-                %if flag:
-                %   good.append(new_s[:,temp])
-                %print(rhs(new_s[:,temp]))
-                coeffs = new_s(:,condition)';
-                coeffs = coeffs(score_condition,:);
-                score = score(score_condition);
-                %print(j,max(score),worst_score)
-                for i = 1:size(coeffs,1)
-                    if score(i) > worst_score
-                        coef(num_COMIGs,:) = coeffs(i,:);
-                        
-                        coef_temp = coeffs(i,:);
-                        [conflict_current, ~, ~] = accuracy(coef_temp');
-                        coeffs_strength = sum(abs(coef_temp));
-                        coeffs_number = sum(coef_temp ~= 0);
-                        
-                        score_current = c_accuracy*(1 - conflict_current) - c_strength*coeffs_strength - c_num_of_terms*coeffs_number;
-                        if score_current < worst_score
-                            worst_score = score_current;
-                        end
-                    end
-                end
-            end
-        end
-        
+			[score_max, score_idx] = max(score);
+			
+			if score_max > best_score
+				best_score = score_max;
+				coeffs = new_s(:,condition)';
+				coef(num_COMIGs,:) = coeffs(score_idx,:);
+				stop_condition = 0;
+				found = 1;
+			end
+		end
+		
         if min(conflict) < mini
             mini = min(conflict);
         end
@@ -383,13 +361,12 @@ function [states, actions, total_reward, flag] = generate_session(t_max)
 	%print(1-mini)
 end
         
-function [elite_states, elite_actions] = select_elites(states_batch,actions_batch,rewards_batch,percentile)
-    global coeffs_size
+function [elite_states, elite_actions] = select_elites(states_batch,actions_batch,rewards_batch,percentile, cache)
     %{
     Select states and actions from games that have rewards >= percentile
-    :param states_batch: list of lists of states, states_batch[session_i][t]
-    :param actions_batch: list of lists of actions, actions_batch[session_i][t]
-    :param rewards_batch: list of rewards, rewards_batch[session_i][t]
+    :cache states_batch: list of lists of states, states_batch[session_i][t]
+    :cache actions_batch: list of lists of actions, actions_batch[session_i][t]
+    :cache rewards_batch: list of rewards, rewards_batch[session_i][t]
     
     :returns: elite_states,elite_actions, both 1D lists of states and respective actions from elite sessions
     %}
@@ -397,7 +374,7 @@ function [elite_states, elite_actions] = select_elites(states_batch,actions_batc
     reward_threshold = prctile(rewards_batch, percentile);
     mask = (rewards_batch > reward_threshold);
     
-    elite_states = reshape(states_batch(:,mask,:), coeffs_size, []);
+    elite_states = reshape(states_batch(:,mask,:), cache.coeffs_size, []);
     elite_actions = reshape(actions_batch(mask,:), 1, []);
 end
 

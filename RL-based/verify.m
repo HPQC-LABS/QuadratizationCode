@@ -1,16 +1,17 @@
-function [verified,const_terms] = verify(n,aux,LHS,allbits,coef)
-    coeffs_size = n*(n+1)/2;
+function [verified,const_terms] = verify(cache, coef)
+	
+    coeffs_size = cache.coeffs_size;
     
-    coef = reshape(coef,[],coeffs_size);
-    allbits = reshape(allbits,2^n,coeffs_size);
-    LHS = reshape(LHS,1,[]);
+    coef = reshape(coef, [], coeffs_size);
+    allbits = reshape(cache.allbits, 2^cache.n, coeffs_size);
+    LHS = reshape(cache.LHS, 1, []);
     
     RHS = coef*allbits';
-    if aux
-        RHS = min(RHS(:,1:2:2^n-1),RHS(:,2:2:2^n)); % when using aux
+    if cache.aux
+        RHS = min( RHS(:,1:2:end), RHS(:,2:2:end) ); % when using aux
     end
 
-    const_terms = -min(RHS,[],2);
+    const_terms = -min(RHS, [], 2);
     RHS = RHS + const_terms + min(LHS);
     
     % checking if every single state is equal to the min

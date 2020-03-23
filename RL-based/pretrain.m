@@ -1,5 +1,5 @@
 function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
-
+	
     b_ind = regexp(LHS_string,'b*');
     numbers = LHS_string(b_ind+1) - '0';
     n = max(numbers) + aux;
@@ -16,7 +16,7 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
 			n = maxnum + aux;
 		end
 	end
-    
+	
     coeffs_range = -1:1;
     allCombos = dec2bin(0:2^n-1) -'0';
 
@@ -35,8 +35,12 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
         switch LHS_string(i)
             case 'b'
 				temp = sscanf(LHS_string(i+1:end),'%d');
-                term = term.*b{temp};
+                term = term.*b{temp(1)};
                 i = i + 1 + floor( log(temp)/log(10) );
+			case 'x'
+				temp = sscanf(LHS_string(i+3:end),'%d');
+                term = term.*b{temp(1)};
+                i = i + 4 + floor( log(temp)/log(10) );
             case '+'
                 LHS = LHS + term;
                 term = 1;
@@ -94,7 +98,7 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
         %k = randperm( data_size-1 , perCheck); % use this for random sample
         coeffs = ndec2base(k,base,coeffs_size) - '0';%init;
         coeffs( coeffs == 2 ) = -1;
-
+				
         RHS = coeffs*allbits;
         for i = 1:aux
             RHS = min(RHS(:,1:2:end),RHS(:,2:2:end));
@@ -105,7 +109,7 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
         index_good = (conflicts_percent <= conflicts_threshold);
         
         difference = RHS - LHS;
-        flag = (sum(difference < 0,2) ~= 0);
+        flag = (sum(difference < 0, 2) ~= 0);
         
         index_good = logical(index_good.*flag);
         %input(checkpoint*perCheck+1:min( floor(data_size), int64((checkpoint+1)*perCheck)),:) = coeffs; %for sampling
@@ -131,19 +135,21 @@ function [input,LHS,allbits,reset_state,n] = pretrain(aux,LHS_string)
     %    min((checkpoint+1)*progress_const, 100), checkpoint,cputime - t,cputime - t_init,good_count);
 	
     input = good_coeffs(randperm(size(good_coeffs,1),min(1000,size(good_coeffs,1))),:);
-    RHS = good_coeffs*allbits;
-    for i = 1:aux
-        RHS = min(RHS(:,1:2:end),RHS(:,2:2:end));
-    end
-    RHS = RHS - min(RHS,[],2) + min(LHS);
+	if ~isempty(good_coeffs)
+		RHS = good_coeffs*allbits;
+	    for i = 1:aux
+		    RHS = min(RHS(:,1:2:end),RHS(:,2:2:end));
+		end
+		RHS = RHS - min(RHS,[],2) + min(LHS);
     
-    accuracy_percent = mean( RHS == LHS , 2 ) * 100; % percentage of overall conflicts
-    index_good = (accuracy_percent >= 60);
-    if sum(index_good) == 0
-        index_good = (accuracy_percent >= 40);
-    end
+	    accuracy_percent = mean( RHS == LHS , 2 ) * 100; % 100 - percentage of overall conflicts
+		index_good = (accuracy_percent >= 60);
+		if sum(index_good) == 0
+			index_good = (accuracy_percent >= (100 - conflicts_threshold));
+		end
 
-    temp = good_coeffs(index_good,:);
-    reset_state = temp(randperm(size(temp,1),1),:);
-    %save('data.mat','input','LHS','allbits','reset_state');
+		temp = good_coeffs(index_good,:);
+		reset_state = temp(randperm(size(temp,1),1),:);
+		%save('data.mat','input','LHS','allbits','reset_state');
+	end
 end
