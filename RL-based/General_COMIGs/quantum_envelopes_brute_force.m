@@ -1,9 +1,12 @@
 %function [input,LHS,allbits,reset_state,n] = pretrain_general()
 
-H = ["ZXZ"];
-alpha = [1, 1];
+warning('off');
+
+H = {'ZZX'};
+alpha = [1, 1, 1];
 N_of_terms = size(H,2);
-n = max(strlength(H));
+n = 3;
+%n = max(strlength(H));
 
 sigma = cell(4,1);
 sigma{1} = [0 1 ; 1 0];
@@ -11,64 +14,32 @@ sigma{2} = [0 -1i ; 1i 0];
 sigma{3} = [1 0 ; 0 -1];
 sigma{4} = eye(2);
 
-if n==3
-	terms = cell(1,18);
-	term_idx = 0;
-	allbits = zeros(2^n,0);
-	%All 3-qubit combinations of X,Z,I that are up to quadratic
-	for i=1:4
-		for j=1:4
-			for k=1:4
-				if ( (i==4||j==4||k==4)&&(i~=2)&&(j~=2)&&(k~=2)&&(i+j+k~=12) )
-					allbits = [allbits kron(sigma{i},kron(sigma{j},sigma{k}))]; %[x1x2,x1z2,x1x3,x1z3,...,x3,z3,1];
-					term = [];
-					if i~= 4
-						term = [term, char(i+119), '1'];
-					end
-					if j~= 4
-						term = [term, char(j+119), '2'];
-					end
-					if k~= 4
-						term = [term, char(k+119), '3'];
-					end
-					term_idx = term_idx + 1;
-					terms{term_idx} = term;
-				end
-			end
-		end
-	end
-	allbits_size = size(allbits,2)/2^n;
+[allbits, terms] = get_all_possible_quadratics(n); % with x, z matrices
 
-	LHS = zeros(2^n,2^n);
-	for t = 1:N_of_terms
-		LHS = LHS + alpha(t)*kron(sigma{H{t}(1)-87},...
-			kron(sigma{H{t}(2)-87},sigma{H{t}(3)-87}));
-	end
-	
-elseif n==4
-	allbits = zeros(2^n,0);
-	%All 4-qubit combinations of X,Z,I that are up to quadratic
-	for i=1:4
-		for j=1:4
-			for k=1:4
-				for m=1:4
-					if ( ( ((i==4)&&(j==4)) || ((i==4)&&(k==4)) || ((i==4)&&(m==4)) || ((j==4)&&(k==4)) || ((j==4)&&(m==4)) || ((k==4)&&(m==4)) ) && (i~=2)&&(j~=2)&&(k~=2)&&(m~=2)&&(i+j+k+m~=16) )
-						allbits = [allbits kron(sigma{i},kron(sigma{j},kron(sigma{k},sigma{m})))]; %[x1x2,x1z2,x1x3,x1z3,...,x3,z3,1];
-					end
-				end
-			end
-		end
-	end
-	allbits_size = size(allbits,2)/2^n;
-
-	LHS = zeros(2^n,2^n);
-	for t = 1:N_of_terms
-		LHS = LHS + alpha(t)*kron(sigma{H{t}(1)-87},...
-			kron(sigma{H{t}(2)-87},kron(sigma{H{t}(3)-87},sigma{H{t}(4)-87})));
-	end
+LHS = zeros(2^n,2^n);
+for t = 1:N_of_terms
+	LHS = LHS + alpha(t)*kron(sigma{H{t}(1)-87},...
+		kron(sigma{H{t}(2)-87},sigma{H{t}(3)-87}));
 end
 
-allbits = sparse(allbits);
+%allbits = sparse(allbits);
+allbits_unfolded = reshape( allbits, 2^(2*n), []);
+
+LHS_allbits_unfolded = reshape( LHS  * allbits, 2^(2*n), []);
+%allbits_LHS_unfolded = reshape( allbits' * LHS, 2^(2*n), [])';
+allbits_LHS  = cell2mat( mat2cell( allbits' * LHS, ones(1,size(allbits_unfolded,2))*2^n, 2^n )' );
+allbits_LHS_unfolded = reshape( allbits_LHS, 2^(2*n), []);
+
+commutator_unfolded = LHS_allbits_unfolded - allbits_LHS_unfolded;
+
+null_space = null(commutator_unfolded,'r');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+allbits_unfolded = allbits_unfolded * null_space; %%%%%%%Don't forget to change 'terms' to fit with the null space%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+allbits_size = size(allbits_unfolded,2);
+
 
 %{
 [U,V] = eig(LHS);
@@ -246,134 +217,170 @@ warning('on', 'all');
 
 %}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+coeffs_range = -1:1;
+base = size(coeffs_range,2);
+init = int2str((base-1)/2);
+coeffs_size = allbits_size;
 
+restartId = 0;
+perCheck = 10000;
 
-	coeffs_range = -1:1;
-    coeffs_size = allbits_size;
-    base = size(coeffs_range,2);
-    init = int2str( (base-1)/2 );
+data_percentage = 1;
+data_size = floor(data_percentage*base^coeffs_size);
+progress_const = 100 * perCheck / data_size;
 
-    restartId = 0;
-    perCheck = 10000;
-    
-    data_percentage = 1;
-    conflicts_threshold = 60;
+coeffs_all = []; %zeros(data_size,coeffs_size);
+preserved  = zeros(1,100000);
+
+t = cputime;
+t_init = t;
+for checkpoint = restartId : floor( (data_size-1)/perCheck )
+	k = int64(checkpoint*perCheck) : min( floor(data_size-1), int64((checkpoint+1)*perCheck) - 1 );
+	%k = randperm( data_size-1 , perCheck); % use this for random sample
+	coeffs = ndec2base(k,base,coeffs_size) - init;
+	coeffs( coeffs == 2 ) = -1;
+	%coeffs = sparse(coeffs);
 	
-	coeffs_all = [];
-    
-    data_size = floor(data_percentage*base^coeffs_size);
-    progress_const = 100 * perCheck / data_size;
-    good_coeffs = [];
-    good_prcntg = [];
-    good_count = 0;
-    t = cputime;
-    t_init = t;
+	%commutator_unfolded_ = commutator_unfolded * coeffs';
 	
-	preserved = (-1)*ones(1,10000);
-	pre_idx = 1;
+	%LHS_RHS = coeffs * LHS_allbits_unfolded';
+	%RHS_LHS = coeffs * allbits_LHS_unfolded;
 	
-    for checkpoint = restartId : floor( (data_size-1)/perCheck )
-        k = int64(checkpoint*perCheck) : min( floor(data_size-1), int64((checkpoint+1)*perCheck) - 1 );
-        %k = randperm( data_size-1 , perCheck); % use this for random sample
-        coeffs = ndec2base(k,base,coeffs_size) - '0';%init;
-        coeffs( coeffs == 2 ) = -1;
-		coeffs = sparse(coeffs);
-		
-		RHS = allbits * kron(coeffs',speye(2^n));
-		
-		LHS_RHS = LHS  * RHS;   % LHS  * RHS: size 8x8     * 8x80000 = 8     * 80000
-		RHS_LHS = RHS' * LHS;   % RHS' * LHS: size 80000x8 * 8x8     = 80000 * 8
-		
-        LHS_RHS = cell2mat( mat2cell( LHS_RHS, 2^n, ones(1,perCheck)*2^n )' );
-		
-		flag = any( abs( LHS_RHS - RHS_LHS ) > 10e-5 , 2);
-		for i = 1:n
-			flag = flag(1:2:end) + flag(2:2:end);
-		end
-		
-		%flag = cellfun(@(x) any(abs(LHS*x*LHS - x) > 10e-5, 'all'),RHS_cell);
-		%dist = cellfun(@(x) norm(LHS_prime - x),RHS_cell);
-		
-		if ~all(flag)
-			idx = find(flag == 0);
-			coeffs_new = coeffs(idx,:);
-			coeffs_all = [coeffs_all ; coeffs_new];
-			
-			RHS_new = allbits * kron(coeffs_new',eye(2^n));
-			RHS_cell_new = mat2cell(RHS_new,2^n,2^n*ones(1,numel(idx)));
-			for i = 1:numel(idx)
-				[~,D1,D2] = simdiag(LHS, RHS_cell_new{i});
-				
-				lhs = real(diag(D1));  assert( all( imag(diag(D1)) < 10e-5 ) );
-				rhs = real(diag(D2));  assert( all( imag(diag(D2)) < 10e-5 ) );
-				
-				const = max(lhs - rhs);
-				rhs = rhs + const;
-				mask_preserve = (abs(rhs - lhs) < 10e-5);
-				preserved(pre_idx) = sum(mask_preserve);
-				pre_idx = pre_idx + 1;
-			end
-			
-			%{
-			fprintf('Nice! %d\n',size(coeffs_all,1));
-			[~,D1,D2] = simdiag(LHS,allbits*kron(coeffs_all(end,:)',eye(8)));
-			d1 = diag(D1);
-			d2 = diag(D2);
-			const = max(d1-d2);
-			d2 = d2 + const;
-			mask_preserve = (d2-d1 < 10e-5);
-			%}
-		end
-		
-		%{
-		if min(dist) < dist_threshold
-			coeffs_all = [coeffs_all ; coeffs(dist < dist_threshold,:)];
-			%fprintf('Nice! %d\n',size(coeffs_all,1));
-		end
-		
-        conflicts_percent = mean( RHS ~= LHS , 2 ) * 100; % percentage of overall conflicts
-        index_good = (conflicts_percent <= conflicts_threshold);
-        
-        difference = RHS - LHS;
-        flag = (sum(difference < 0,2) ~= 0);
-        
-        index_good = logical(index_good.*flag);
-        %input(checkpoint*perCheck+1:min( floor(data_size), int64((checkpoint+1)*perCheck)),:) = coeffs; %for sampling
-        %target(checkpoint*perCheck+1:min( floor(data_size), int64((checkpoint+1)*perCheck))) = index_good; %for sampling
-        if any(index_good)
-            good_coeffs = [good_coeffs; coeffs(index_good,:)];
-            good_prcntg = [good_prcntg; conflicts_percent(index_good)];
-            good_count = good_count + sum(index_good);
-        end
-        %}
-        if mod(checkpoint,100) == 0
-            fprintf('progress %.4f%%, restart id = %d, step time = %.3f, total time = %.3f, found = %d\n',...
-                min((checkpoint+1)*progress_const, 100), checkpoint, cputime - t,cputime - t_init, pre_idx);
-            t = cputime;
-        end
-        
-		%{
-        if (size(coeffs_all,1) > 1500) || (cputime - t_init > 60)
-            break;
-		end
-		%}
-    end
-
-    %fprintf('progress %.3f%%, restart id = %d, step time = %.3f, total time = %.3f, good = %d\n',...
-    %    min((checkpoint+1)*progress_const, 100), checkpoint,cputime - t,cputime - t_init,good_count);
-
-    input = coeffs_all(randperm(size(coeffs_all,1),min(1000,size(coeffs_all,1))),:);
-    %{
-    accuracy_percent = mean( RHS == LHS , 2 ) * 100; % percentage of overall conflicts
-    index_good = (accuracy_percent >= 60);
-    if sum(index_good) == 0
-        index_good = (accuracy_percent >= 40);
-    end
+	%LHS_RHS = reshape( LHS_RHS, 2^n, []);
+	%RHS_LHS = reshape( RHS_LHS, [], 2^n);
 	
-    temp = good_coeffs(index_good,:);
-    reset_state = temp(randperm(size(temp,1),1),:);
-    %save('data.mat','input','LHS','allbits','reset_state');
+	%{
+	RHS_unfolded = allbits_unfolded * coeffs';
+	RHS = reshape( RHS_unfolded , 2^n, []);
+	
+	LHS_RHS = LHS  * RHS;   % LHS  * RHS: size 8x8     * 8x80000 = 8     * 80000
+	RHS_LHS = RHS' * LHS;   % RHS' * LHS: size 80000x8 * 8x8     = 80000 * 8
 	%}
-	reset_state = input(1,:);
-%end
+	
+	%LHS_RHS = reshape( permute( reshape(LHS_RHS,2^n,2^n,[]), [1,3,2] ), [], 2^n );
+	
+	%flag = any( abs( LHS_RHS - RHS_LHS ) > 10e-5 , 2);
+	%{
+	for i = 1:n
+		flag = flag(1:2:end) + flag(2:2:end);
+	end
+	%}
+	
+	%dist = cellfun(@(x) norm(LHS_prime - x),RHS_cell);
+	
+	RHS_unfolded = allbits_unfolded * coeffs';
+	RHS = reshape( RHS_unfolded , 2^n, []);
+	
+	coeffs_all(k + 1,:) = coeffs;
+	
+	for i = 1:size(coeffs,1)
+		RHS_ = RHS(:, 8*i-7:8*i );
+		[~,D1,D2] = simdiag(LHS, RHS_);
+		
+		lhs = real(diag(D1));  assert( all( imag(diag(D1)) < 10e-5 ) );
+		rhs = real(diag(D2));  assert( all( imag(diag(D2)) < 10e-5 ) );
+
+		const = max(lhs - rhs);
+		rhs = rhs + const;
+		mask_preserve = (abs(rhs - lhs) < 10e-5);
+		preserved(checkpoint * perCheck + i) = sum(mask_preserve);
+	end
+
+		%{
+		fprintf('Nice! %d\n',size(coeffs_all,1));
+		[~,D1,D2] = simdiag(LHS,allbits*kron(coeffs_all(end,:)',eye(8)));
+		d1 = diag(D1);
+		d2 = diag(D2);
+		const = max(d1-d2);
+		d2 = d2 + const;
+		mask_preserve = (d2-d1 < 10e-5);
+		%}
+	
+	%{
+	
+	if ~all(flag)
+		idx = find(flag == 0);
+		coeffs_new = coeffs(idx,:);
+		coeffs_all = [coeffs_all ; coeffs_new];
+		
+		RHS_unfolded = allbits_unfolded * coeffs_new';
+		RHS = reshape( RHS_unfolded , 2^n, []);
+		
+		for i = 1:numel(idx)
+			RHS_ = RHS(:, 8*i-7:8*i );
+			[~,D1,D2] = simdiag(LHS, RHS_);
+			
+			lhs = real(diag(D1));  assert( all( imag(diag(D1)) < 10e-5 ) );
+			rhs = real(diag(D2));  assert( all( imag(diag(D2)) < 10e-5 ) );
+
+			const = max(lhs - rhs);
+			rhs = rhs + const;
+			mask_preserve = (abs(rhs - lhs) < 10e-5);
+			%preserved{checkpoint}(pre_idx) = sum(mask_preserve);
+			preserved(pre_idx) = sum(mask_preserve);
+			pre_idx = pre_idx + 1;
+		end
+
+		%{
+		fprintf('Nice! %d\n',size(coeffs_all,1));
+		[~,D1,D2] = simdiag(LHS,allbits*kron(coeffs_all(end,:)',eye(8)));
+		d1 = diag(D1);
+		d2 = diag(D2);
+		const = max(d1-d2);
+		d2 = d2 + const;
+		mask_preserve = (d2-d1 < 10e-5);
+		%}
+	end
+	%}
+	
+	%{
+	if min(dist) < dist_threshold
+		coeffs_all = [coeffs_all ; coeffs(dist < dist_threshold,:)];
+		%fprintf('Nice! %d\n',size(coeffs_all,1));
+	end
+
+	conflicts_percent = mean( RHS ~= LHS , 2 ) * 100; % percentage of overall conflicts
+	index_good = (conflicts_percent <= conflicts_threshold);
+
+	difference = RHS - LHS;
+	flag = (sum(difference < 0,2) ~= 0);
+
+	index_good = logical(index_good.*flag);
+	%input(checkpoint*perCheck+1:min( floor(data_size), int64((checkpoint+1)*perCheck)),:) = coeffs; %for sampling
+	%target(checkpoint*perCheck+1:min( floor(data_size), int64((checkpoint+1)*perCheck))) = index_good; %for sampling
+	if any(index_good)
+		good_coeffs = [good_coeffs; coeffs(index_good,:)];
+		good_prcntg = [good_prcntg; conflicts_percent(index_good)];
+		good_count = good_count + sum(index_good);
+	end
+	%}
+	if mod(checkpoint,1) == 0
+		fprintf('progress %.4f%%, restart id = %d, step time = %.3f, total time = %.3f, found = %d\n',...
+			min((checkpoint+1)*progress_const, 100), checkpoint, cputime - t,cputime - t_init, sum(preserved >= 6));
+		t = cputime;
+	end
+
+	%{
+	if (size(coeffs_all,1) > 1500) || (cputime - t_init > 60)
+		break;
+	end
+	%}
+end
+
+%{
+input = coeffs_all(randperm(size(coeffs_all,1),min(1000,size(coeffs_all,1))),:);
+
+accuracy_percent = mean( RHS == LHS , 2 ) * 100; % percentage of overall conflicts
+index_good = (accuracy_percent >= 60);
+if sum(index_good) == 0
+	index_good = (accuracy_percent >= 40);
+end
+
+temp = good_coeffs(index_good,:);
+reset_state = temp(randperm(size(temp,1),1),:);
+%save('data.mat','input','LHS','allbits','reset_state');
+
+reset_state = input(1,:);
+%}
+
+quantum_envelopes_matching
