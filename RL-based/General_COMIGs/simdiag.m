@@ -1,4 +1,4 @@
-function [Q,varargout] = simdiag(varargin)
+function [Q,varargout] = simdiag(Q, IE, varargin)
 %
 % [Q,D1,...,Dm] = simdiag(A1,...,Am,options);
 %	Simultaneously diagonalize all input matrices
@@ -24,7 +24,7 @@ end
 n = size(varargin{1},1);
 
 % preprocessing step
-Q = dodo(varargin{:});
+Q = dodo(Q, IE, varargin{:});
 for j=1:length(varargin)
 	varargin{j} = Q'*varargin{j}*Q;
 end
@@ -151,12 +151,8 @@ s = exp(1i*phi)*sin(theta);
 
 %% "DODO" (diagonalize one then diagonalize the other) preprocessing step
 % note: this is instable in general!
-function Q = dodo(varargin)
-
-Q = eye(size(varargin{1}));
-IE = [ones(1,length(Q)-1),0];
-
-for m=1:nargin
+function Q = dodo(Q, IE, varargin)
+for m = 2:nargin-2
 	A = varargin{m};
 	% handle degenerate eigenspaces
 	A = Q'*A*Q;
@@ -165,12 +161,13 @@ for m=1:nargin
 		k = j+find(IE(j:end)==0,1,'first')-1;
 		[V,d] = schur(A(j:k,j:k)); d = diag(d);
 		% handle case d = [1, i, (1-eps)*i]
-		[t,IS] = sort(roundn10(d,round(log10(epsilon))+3));
+		[~,IS] = sort(roundn10(d,round(log10(epsilon))+3));
 		d = d(IS).';
 		Q(:,j:k) = Q(:,j:k)*V(:,IS);
 		IE(j:k) = [abs(d(1:end-1)-d(2:end)) < epsilon,0];
 	end
 end
+
 
 %%
 % Replace the 'roundn' function from the mapping toolbox

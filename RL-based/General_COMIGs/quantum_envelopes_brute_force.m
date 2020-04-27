@@ -1,45 +1,38 @@
-%function [input,LHS,allbits,reset_state,n] = pretrain_general()
-
+%function quantum_envelopes_brute_force(alpha)
 warning('off');
 
-H = {'ZZX'};
+c = 5;
+H = {'ZZX', 'ZXZ', 'ZXX'};
 alpha = [1, 1, 1];
 N_of_terms = size(H,2);
-n = 3;
-%n = max(strlength(H));
+%n = 3;
+n = max(strlength(H));
 
-sigma = cell(4,1);
-sigma{1} = [0 1 ; 1 0];
-sigma{2} = [0 -1i ; 1i 0];
-sigma{3} = [1 0 ; 0 -1];
-sigma{4} = eye(2);
+[allbits, terms] = get_all_possible_quadratics(n, 'y');
 
-[allbits, terms] = get_all_possible_quadratics(n); % with x, z matrices
-
-LHS = zeros(2^n,2^n);
+LHS = zeros(2^n);
 for t = 1:N_of_terms
-	LHS = LHS + alpha(t)*kron(sigma{H{t}(1)-87},...
-		kron(sigma{H{t}(2)-87},sigma{H{t}(3)-87}));
+	LHS = LHS + alpha(t) * get_term(H{t}, n);
 end
+
+[Q,IE] = initialize_sim_diag(LHS);
 
 %allbits = sparse(allbits);
 allbits_unfolded = reshape( allbits, 2^(2*n), []);
 
 LHS_allbits_unfolded = reshape( LHS  * allbits, 2^(2*n), []);
-%allbits_LHS_unfolded = reshape( allbits' * LHS, 2^(2*n), [])';
 allbits_LHS  = cell2mat( mat2cell( allbits' * LHS, ones(1,size(allbits_unfolded,2))*2^n, 2^n )' );
 allbits_LHS_unfolded = reshape( allbits_LHS, 2^(2*n), []);
 
 commutator_unfolded = LHS_allbits_unfolded - allbits_LHS_unfolded;
 
 null_space = null(commutator_unfolded,'r');
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-allbits_unfolded = allbits_unfolded * null_space; %%%%%%%Don't forget to change 'terms' to fit with the null space%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+if isempty(null_space), fprintf('Nothing commutes with the LHS! The Null Space is empty.\n'), return, end
+allbits_unfolded = allbits_unfolded * null_space;
 allbits_size = size(allbits_unfolded,2);
 
+fprintf('%d\n',size(null_space,2));
+if ~ishermitian(LHS), fprintf("Error! The LHS is not Hermitian!\n"), return, end
 
 %{
 [U,V] = eig(LHS);
@@ -50,11 +43,6 @@ LHS_prime = U*V*U';
 
 dist_threshold = 6;
 %}
-
-if ~ishermitian(LHS)
-	fprintf("ERROR!!!!!! LHS is not Hermitian!");
-end
-
 %{
     for checkpoint = restartId : floor( (((2*N1+1)*(2*N2+1))^N_of_terms(T)-1)/perCheck )
         for k = checkpoint*perCheck : min( ((2*N1+1)*(2*N2+1))^N_of_terms(T) - 1, (checkpoint+1)*perCheck - 1)
@@ -217,9 +205,9 @@ warning('on', 'all');
 
 %}
 
-coeffs_range = -1:1;
+coeffs_range = -c:c;
 base = size(coeffs_range,2);
-init = int2str((base-1)/2);
+init = int2str(abs(coeffs_range(1)));
 coeffs_size = allbits_size;
 
 restartId = 0;
@@ -237,10 +225,17 @@ t_init = t;
 for checkpoint = restartId : floor( (data_size-1)/perCheck )
 	k = int64(checkpoint*perCheck) : min( floor(data_size-1), int64((checkpoint+1)*perCheck) - 1 );
 	%k = randperm( data_size-1 , perCheck); % use this for random sample
-	coeffs = ndec2base(k,base,coeffs_size) - init;
-	coeffs( coeffs == 2 ) = -1;
+	coeffs = ndec2base(k,base,coeffs_size) - '0';%init;
+	coeffs(coeffs > 9) = coeffs(coeffs > 9) - 7; % this is a fix in case base > 10
+	for i = 2:2*c
+		if mod(i,2)
+			coeffs(coeffs == i) = (coeffs(coeffs == i) + 1)/2;
+		else
+			coeffs(coeffs == i) = -coeffs(coeffs == i)/2;
+		end
+	end
 	%coeffs = sparse(coeffs);
-	
+	%{
 	%commutator_unfolded_ = commutator_unfolded * coeffs';
 	
 	%LHS_RHS = coeffs * LHS_allbits_unfolded';
@@ -259,14 +254,15 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 	
 	%LHS_RHS = reshape( permute( reshape(LHS_RHS,2^n,2^n,[]), [1,3,2] ), [], 2^n );
 	
-	%flag = any( abs( LHS_RHS - RHS_LHS ) > 10e-5 , 2);
 	%{
+	flag = any( abs( LHS_RHS - RHS_LHS ) > 10e-5 , 2);
 	for i = 1:n
 		flag = flag(1:2:end) + flag(2:2:end);
 	end
 	%}
 	
 	%dist = cellfun(@(x) norm(LHS_prime - x),RHS_cell);
+	%}
 	
 	RHS_unfolded = allbits_unfolded * coeffs';
 	RHS = reshape( RHS_unfolded , 2^n, []);
@@ -274,19 +270,18 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 	coeffs_all(k + 1,:) = coeffs;
 	
 	for i = 1:size(coeffs,1)
-		RHS_ = RHS(:, 8*i-7:8*i );
-		[~,D1,D2] = simdiag(LHS, RHS_);
+		RHS_ = RHS(:, 2^n*(i-1)+1:2^n*i );
+		[~,D1,D2] = simdiag(Q, IE, LHS, RHS_);
 		
 		lhs = real(diag(D1));  assert( all( imag(diag(D1)) < 10e-5 ) );
 		rhs = real(diag(D2));  assert( all( imag(diag(D2)) < 10e-5 ) );
 
-		const = max(lhs - rhs);
-		rhs = rhs + const;
+		rhs = rhs + max(lhs - rhs);
 		mask_preserve = (abs(rhs - lhs) < 10e-5);
 		preserved(checkpoint * perCheck + i) = sum(mask_preserve);
 	end
 
-		%{
+	%{
 		fprintf('Nice! %d\n',size(coeffs_all,1));
 		[~,D1,D2] = simdiag(LHS,allbits*kron(coeffs_all(end,:)',eye(8)));
 		d1 = diag(D1);
@@ -295,7 +290,6 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 		d2 = d2 + const;
 		mask_preserve = (d2-d1 < 10e-5);
 		%}
-	
 	%{
 	
 	if ~all(flag)
@@ -332,7 +326,6 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 		%}
 	end
 	%}
-	
 	%{
 	if min(dist) < dist_threshold
 		coeffs_all = [coeffs_all ; coeffs(dist < dist_threshold,:)];
@@ -355,8 +348,8 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 	end
 	%}
 	if mod(checkpoint,1) == 0
-		fprintf('progress %.4f%%, restart id = %d, step time = %.3f, total time = %.3f, found = %d\n',...
-			min((checkpoint+1)*progress_const, 100), checkpoint, cputime - t,cputime - t_init, sum(preserved >= 6));
+		fprintf('progress %.4f%%, restart id = %d, step time = %.3f, total time = %.3f, found4+ = %d, found6+ = %d\n',...
+			min((checkpoint+1)*progress_const, 100), checkpoint, cputime - t,cputime - t_init, sum(preserved >= 4), sum(preserved >= 6));
 		t = cputime;
 	end
 
@@ -383,4 +376,10 @@ reset_state = temp(randperm(size(temp,1),1),:);
 reset_state = input(1,:);
 %}
 
-quantum_envelopes_matching
+for runs = 2:3
+	if quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, alpha)
+		break;
+	end
+end
+
+%end

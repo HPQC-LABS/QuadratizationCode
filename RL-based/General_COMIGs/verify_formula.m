@@ -22,8 +22,7 @@ for i=1:4
 				lhs   = real(diag(D3));   assert( all( imag(diag(D3)) < 10e-5 ) );
 				
 				envelope  = min(quad1,quad2);
-				preserved = (envelope - lhs) < 10e-5;
-				if sum(preserved) == 2^n
+				if all( (envelope - lhs) < 10e-5 )
 					fprintf("Hooray!!! %d,%d,%d,%d\n", i,j,k,l);
 				else
 					fprintf("%d,%d,%d,%d :( :( :(\n", i,j,k,l);

@@ -1,3 +1,3 @@
 function flag = commutes(RHS)
-	flag = all(all( abs( RHS{1} * RHS{2} - RHS{2} * RHS{1} ) < 10e-5));
+	flag = all (cellfun(@(x) all( all( abs( RHS{end}*x - x*RHS{end} ) < 10e-5 ) ), RHS(1:end-1)) );
 end

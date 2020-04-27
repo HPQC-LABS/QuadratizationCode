@@ -1,18 +1,21 @@
-function [] = print_quad(quad, const, terms)
+function [] = print_quad(quad, const, terms, null_space, file)
 	for i = 1:numel(quad)
-		if quad(i) == 1
-			fprintf(' + %s',terms{i});
-		elseif quad(i) == -1
-			fprintf(' - %s',terms{i});
-		elseif quad(i) > 0
-			fprintf(' + %d%s',quad(i),terms{i});
-		elseif quad(i) < 0
-			fprintf(' - %d%s',-quad(i),terms{i});
+		for j = 1:size(terms,2)
+			coef = quad(i) * null_space(j,i);
+			if coef == 1
+				fprintf(file, ' + %s',terms{j});
+			elseif coef == -1
+				fprintf(file, ' - %s',terms{j});
+			elseif coef > 0
+				fprintf(file, ' + %d%s',coef, terms{j});
+			elseif coef < 0
+				fprintf(file, ' - %d%s',-coef, terms{j});
+			end
 		end
 	end
 	if const > 0
-		fprintf(' + %d',const);
-	elseif const < 0
-		fprintf(' - %d',-const);
+			fprintf(file, ' + %d',const);
+		elseif const < 0
+			fprintf(file, ' - %d',-const);
 	end
 end
