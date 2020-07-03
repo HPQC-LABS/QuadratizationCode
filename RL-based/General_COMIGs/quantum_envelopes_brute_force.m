@@ -1,14 +1,12 @@
 %function quantum_envelopes_brute_force(alpha)
-warning('off');
 
 c = 5;
-H = {'ZZX', 'ZXZ', 'ZXX'};
-alpha = [1, 1, 1];
+H = {'XZZY', 'YYZY', 'XXZY', 'YXZY'};
+alpha = [1, 1, 1, 1, 1];
 N_of_terms = size(H,2);
-%n = 3;
 n = max(strlength(H));
 
-[allbits, terms] = get_all_possible_quadratics(n, 'y');
+[allbits, terms] = get_all_possible_quadratics(n);
 
 LHS = zeros(2^n);
 for t = 1:N_of_terms
@@ -43,6 +41,7 @@ LHS_prime = U*V*U';
 
 dist_threshold = 6;
 %}
+
 %{
     for checkpoint = restartId : floor( (((2*N1+1)*(2*N2+1))^N_of_terms(T)-1)/perCheck )
         for k = checkpoint*perCheck : min( ((2*N1+1)*(2*N2+1))^N_of_terms(T) - 1, (checkpoint+1)*perCheck - 1)
@@ -348,7 +347,7 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 	end
 	%}
 	if mod(checkpoint,1) == 0
-		fprintf('progress %.4f%%, restart id = %d, step time = %.3f, total time = %.3f, found4+ = %d, found6+ = %d\n',...
+		fprintf('progress %.2f%%, restart id = %d, step time = %.2f, total time = %.0f, found4+ = %d, found6+ = %d\n',...
 			min((checkpoint+1)*progress_const, 100), checkpoint, cputime - t,cputime - t_init, sum(preserved >= 4), sum(preserved >= 6));
 		t = cputime;
 	end
@@ -376,10 +375,9 @@ reset_state = temp(randperm(size(temp,1),1),:);
 reset_state = input(1,:);
 %}
 
-for runs = 2:3
+for runs = 2:5
 	if quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, alpha)
 		break;
 	end
 end
 
-%end

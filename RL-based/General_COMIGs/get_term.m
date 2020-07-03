@@ -5,8 +5,16 @@ function term = get_term(str, n)
 	sigma{3} = [1 0 ; 0 -1];
 	sigma{4} = eye(2);
 	
-	term = sigma{str(1) - 87};
+	if str(1) == 'I'
+		term = sigma{4};
+	else
+		term = sigma{str(1) - 87};
+	end
 	for i = 2:n
-		term = kron(term, sigma{str(i) - 87});
+		if str(i) == 'I'
+			term = kron(term, sigma{4});
+		else
+			term = kron(term, sigma{str(i) - 87});
+		end
 	end
 end
