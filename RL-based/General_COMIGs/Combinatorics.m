@@ -31,9 +31,23 @@ idx = get_idx(coeffs_all, n, T);
 coeffsfinal = coeffs_all(idx,:);
 
 [factors, s1, s2, s3, s4, s5, flag] = find_factors(coeffsfinal, n, T);
+fprintf('There are %d unique deg-%d polynomials with %d terms', size(coeffsfinal,1), n, T);
+%fprintf(', %d of which are factorizable.\n', factors);
 
-fprintf('There are %d unique deg-%d polynomials with %d terms, ', size(coeffsfinal,1), n, T);
-fprintf('%d of which are factorizable.\n', factors);
+%str = char(coeffsfinal+40);
+str = char(coeffsfinal(logical(flag),:)+40);
+sizes = [];
+for i = 1:size(str,1)
+	if mod(i,10) == 1, fprintf('i = %d\n', i); end
+	switch T
+		case 1, sizes = [sizes, Find_nullspaces( { str(i,1:n) } ) ];
+		case 2, sizes = [sizes, Find_nullspaces( { str(i,1:n), str(i,n+1:2*n) } ) ];
+		case 3, sizes = [sizes, Find_nullspaces( { str(i,1:n), str(i,n+1:2*n), str(i,2*n+1:3*n) } ) ];
+		case 4, sizes = [sizes, Find_nullspaces( { str(i,1:n), str(i,n+1:2*n), str(i,2*n+1:3*n), str(i,3*n+1:4*n) } ) ];
+	end
+end
+fprintf('avg nullspace = %3.1f, std = %3.1f\n', mean(sizes), std(sizes));
+
 
 function idx_bool = get_idx(coef, n, T)
 	idx = zeros(size(coef,1),1);
@@ -50,21 +64,24 @@ function [factors, sum1, sum2, sum3, sum4, sum5, flag_] = find_factors(coeffs_al
 		factors = 0;sum1=0;sum2=0;sum3=0;sum4=0;sum5=0;
 	else
 		sum1 = 0;
+		flag_ = 0;
 		for i = 1:n
 			sum1 = sum1 + factorizable(coeffs_all, n, T, i);
+			[~, flag] = factorizable(coeffs_all, n, T, i);
+			flag_ = flag_ + flag;
 		end
 		sum2 = 0;
-		flag_ = 0;
+		%flag_ = 0;
 		for i = 1:n-1
 			for j = i+1:n
 				sum2 = sum2 + factorizable(coeffs_all, n, T, [i,j]);
-				[~, flag] = factorizable(coeffs_all, n, T, [i,j]);
-				flag_ = flag_ + flag;
+				%[~, flag] = factorizable(coeffs_all, n, T, [i,j]);
+				%flag_ = flag_ + flag;
 			end
 		end
 		sum3 = 0;
-		flag_ = 0;
-		if n >= 3
+		if n > 3
+			flag_ = 0;
 			for i = 1:n-2
 				for j = i+1:n-1
 					for k = j+1:n
@@ -76,8 +93,8 @@ function [factors, sum1, sum2, sum3, sum4, sum5, flag_] = find_factors(coeffs_al
 			end
 		end
 		sum4 = 0;
-		flag_ = 0;
-		if n >= 4
+		if n > 4
+			flag_ = 0;
 			for i = 1:n-3
 				for j = i+1:n-2
 					for k = j+1:n-1
@@ -91,8 +108,8 @@ function [factors, sum1, sum2, sum3, sum4, sum5, flag_] = find_factors(coeffs_al
 			end
 		end
 		sum5 = 0;
-		flag_ = 0;
-		if n >= 5
+		if n > 5
+			flag_ = 0;
 			for i = 1:n-4
 				for j = i+1:n-3
 					for k = j+1:n-2
@@ -112,24 +129,18 @@ function [factors, sum1, sum2, sum3, sum4, sum5, flag_] = find_factors(coeffs_al
 end
 
 function [out, flg] = factorizable(coeffs, n, T, qubit)
-	flag  =  ones(size(coeffs,1),numel(qubit));
-	flag2 = zeros(size(coeffs,1),numel(qubit));
+	flag = ones(size(coeffs,1),numel(qubit));
 	for i = 1:T-1
 		for j = i+1:T
-			temp = coeffs(:, qubit + (i-1)*n ) == coeffs(:, qubit + (j-1)*n);
-			flag  = flag .* temp;
-			flag2 = flag2 + temp;
+			flag = flag .* ( coeffs(:, qubit + (i-1)*n ) == coeffs(:, qubit + (j-1)*n) );
 		end
 	end
 	
-	flg  = ones(size(coeffs,1),1);
-	flg2 = ones(size(coeffs,1),1);
+	flg = ones(size(coeffs,1),1);
 	for i = 1:numel(qubit)
-		flg  = flg  .* flag (:,i);
-		flg2 = flg2 .* flag2(:,i);
+		flg = flg .* flag(:,i);
 	end
-	out = sum(flg );
-	%out = sum(logical(flg2));
+	out = sum(flg);
 end
 
 % non-factorizable

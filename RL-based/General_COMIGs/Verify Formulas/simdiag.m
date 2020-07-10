@@ -152,20 +152,19 @@ s = exp(1i*phi)*sin(theta);
 %% "DODO" (diagonalize one then diagonalize the other) preprocessing step
 % note: this is instable in general!
 function Q = dodo(Q, IE, varargin)
-for m = 2:nargin-2
-	A = varargin{m};
-	% handle degenerate eigenspaces
-	A = Q'*A*Q;
-	epsilon = 10*max(size(A))*eps(normest(A));
-	for j=find((IE==1).*[1,IE(1:end-1)==0])	% unaffected by 'IE' update
-		k = j+find(IE(j:end)==0,1,'first')-1;
-		[V,d] = schur(A(j:k,j:k)); d = diag(d);
-		% handle case d = [1, i, (1-eps)*i]
-		[~,IS] = sort(roundn10(d,round(log10(epsilon))+3));
-		d = d(IS).';
-		Q(:,j:k) = Q(:,j:k)*V(:,IS);
-		IE(j:k) = [abs(d(1:end-1)-d(2:end)) < epsilon,0];
-	end
+
+A = varargin{nargin-2};
+% handle degenerate eigenspaces
+A = Q'*A*Q;
+epsilon = 10*max(size(A))*eps(normest(A));
+for j=find((IE==1).*[1,IE(1:end-1)==0])	% unaffected by 'IE' update
+	k = j+find(IE(j:end)==0,1,'first')-1;
+	[V,d] = schur(A(j:k,j:k)); d = diag(d);
+	% handle case d = [1, i, (1-eps)*i]
+	[~,IS] = sort(roundn10(d,round(log10(epsilon))+3));
+	d = d(IS).';
+	Q(:,j:k) = Q(:,j:k)*V(:,IS);
+	IE(j:k) = [abs(d(1:end-1)-d(2:end)) < epsilon,0];
 end
 
 

@@ -1,8 +1,14 @@
-function [Q,IE] = initialize_sim_diag(LHS)
-	Q = eye(size(LHS));
-	IE = [ones(1,length(Q)-1),0];
-
-	A = LHS;
+function [Q,IE] = initialize_sim_diag(varargin)
+	if nargin == 1
+		Q = eye(size(varargin{1}));
+		IE = [ones(1,length(Q)-1),0];
+		A = varargin{1};
+	else
+		Q  = varargin{1};
+		IE = varargin{2};
+		A = varargin{3};
+	end
+	
 	A = Q'*A*Q;
 	epsilon = 10*max(size(A))*eps(normest(A));
 	for j=find((IE==1).*[1,IE(1:end-1)==0])	% unaffected by 'IE' update

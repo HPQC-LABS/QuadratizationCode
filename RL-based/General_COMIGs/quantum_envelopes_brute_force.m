@@ -1,7 +1,9 @@
-%function quantum_envelopes_brute_force(alpha)
+%function quantum_envelopes_brute_force(H)
+combos = nchoosek([1,2,3,4,5,22,23,24,25,42,43,44,51,52,55],5);
 
-c = 5;
-H = {'XZZY', 'YYZY', 'XXZY', 'YXZY'};
+flag = true;
+c = 3;
+H = {'XXYYZ'};%, 'ZXZ', 'ZXX'};
 alpha = [1, 1, 1, 1, 1];
 N_of_terms = size(H,2);
 n = max(strlength(H));
@@ -24,13 +26,38 @@ allbits_LHS_unfolded = reshape( allbits_LHS, 2^(2*n), []);
 
 commutator_unfolded = LHS_allbits_unfolded - allbits_LHS_unfolded;
 
+%for comb_i = 1:size(combos,1)
 null_space = null(commutator_unfolded,'r');
+
+%print_nullspace(null_space, terms);
+%null_space = null_space(:,[1,2,3,4,5,22,23,24,25,42,43,44,51,52,55]); % restrict the nullspace
+%null_space = null_space(:,combos(comb_i ,:)); % restrict the nullspace
+print_nullspace(null_space, terms);
+
 if isempty(null_space), fprintf('Nothing commutes with the LHS! The Null Space is empty.\n'), return, end
+%allbits_unfolded = reshape( allbits, 2^(2*n), []);
 allbits_unfolded = allbits_unfolded * null_space;
 allbits_size = size(allbits_unfolded,2);
 
-fprintf('%d\n',size(null_space,2));
+%fprintf('%d Hamiltonians commute with LHS\n',size(null_space,2));
 if ~ishermitian(LHS), fprintf("Error! The LHS is not Hermitian!\n"), return, end
+
+%{
+switch size(null_space,2)
+	case 1, c = 15;
+	case 2, c = 15;
+	case 3, c = 15;
+	case 4, c = 10;
+	case 5, c = 5;
+	case 6, c = 3;
+	case 7, c = 2;
+	case 8, c = 1;
+	case 9, c = 1;
+	otherwise, flag = false;
+end
+
+if flag
+%}
 
 %{
 [U,V] = eig(LHS);
@@ -347,8 +374,8 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 	end
 	%}
 	if mod(checkpoint,1) == 0
-		fprintf('progress %.2f%%, restart id = %d, step time = %.2f, total time = %.0f, found4+ = %d, found6+ = %d\n',...
-			min((checkpoint+1)*progress_const, 100), checkpoint, cputime - t,cputime - t_init, sum(preserved >= 4), sum(preserved >= 6));
+		fprintf('progress %.2f%%, restart id = %d, step time = %.2f, total time = %.0f, found(half) = %d, found(1/3) = %d, found(1/4) = %d\n',...
+			min((checkpoint+1)*progress_const, 100), checkpoint, cputime - t,cputime - t_init, sum(preserved >= 2^n/2), sum(preserved >= 2^n/3), sum(preserved >= 2^n/4));
 		t = cputime;
 	end
 
@@ -375,9 +402,12 @@ reset_state = temp(randperm(size(temp,1),1),:);
 reset_state = input(1,:);
 %}
 
-for runs = 2:5
-	if quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, alpha)
+for runs = 2:3
+	if quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, H, c)
 		break;
 	end
 end
+
+%end
+%end
 
