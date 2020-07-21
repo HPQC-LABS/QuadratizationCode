@@ -1,6 +1,11 @@
 function [allbits, terms] = get_all_possible_quadratics(n, skip_pauli)
 	if nargin < 2
 		skip_pauli = 'n';
+		file = ['all_possible_quadratics_', int2str(n), '.mat'];
+		if exist(file, 'file')
+			load(file, 'allbits', 'terms');
+			return;
+		end
 	elseif (skip_pauli ~= 'x') && (skip_pauli ~= 'y') && (skip_pauli ~= 'z')
 		fprintf(2,'Error! Wrong input on get_all_possible_quadratics(n, skip_pauli)\n');
 	end
@@ -11,7 +16,7 @@ function [allbits, terms] = get_all_possible_quadratics(n, skip_pauli)
 	sigma{3} = [1 0 ; 0 -1];
 	sigma{4} = eye(2);
 	
-	terms = cell(1,1000);
+	terms = cell(1,4^n);
 	term_idx = 0;
 	allbits = zeros(2^n,0);
 	
@@ -92,6 +97,8 @@ function [allbits, terms] = get_all_possible_quadratics(n, skip_pauli)
 		end
 	end
 	[allbits, terms] = KeepQuadratics(allbits, terms, skip_pauli);
+	file = ['all_possible_quadratics_', int2str(n), '.mat'];
+	save(file, 'allbits', 'terms');
 end
 
 function [allbits_, terms_] = KeepQuadratics(allbits, terms, skip_pauli)

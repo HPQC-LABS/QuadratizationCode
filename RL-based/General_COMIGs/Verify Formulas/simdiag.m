@@ -1,4 +1,4 @@
-function [Q,varargout] = simdiag(Q, IE, varargin)
+function [Q,varargout] = simdiag(param, varargin)
 %
 % [Q,D1,...,Dm] = simdiag(A1,...,Am,options);
 %	Simultaneously diagonalize all input matrices
@@ -24,7 +24,7 @@ end
 n = size(varargin{1},1);
 
 % preprocessing step
-Q = dodo(Q, IE, varargin{:});
+Q = dodo(param.Q, param.IE, param.J, param.K, param.epsilon, varargin{end});
 for j=1:length(varargin)
 	varargin{j} = Q'*varargin{j}*Q;
 end
@@ -150,15 +150,12 @@ s = exp(1i*phi)*sin(theta);
 
 
 %% "DODO" (diagonalize one then diagonalize the other) preprocessing step
-% note: this is instable in general!
-function Q = dodo(Q, IE, varargin)
-
-A = varargin{nargin-2};
+% note: this is unstable in general!
+function Q = dodo(Q, IE, J, K, epsilon, A)
 % handle degenerate eigenspaces
 A = Q'*A*Q;
-epsilon = 10*max(size(A))*eps(normest(A));
-for j=find((IE==1).*[1,IE(1:end-1)==0])	% unaffected by 'IE' update
-	k = j+find(IE(j:end)==0,1,'first')-1;
+for i = 1:numel(J)
+	j = J(i); k = K(i);
 	[V,d] = schur(A(j:k,j:k)); d = diag(d);
 	% handle case d = [1, i, (1-eps)*i]
 	[~,IS] = sort(roundn10(d,round(log10(epsilon))+3));

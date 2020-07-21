@@ -1,6 +1,6 @@
-function [count] = get_and_print_envelope(LHS, RHS, runs, Q, IE, count, coeffs, preserved, terms, null_space, n, file)
+function [count] = get_and_print_envelope(LHS, RHS, runs, param, count, coeffs, preserved, terms, null_space, n, file)
 	
-	[flag, const] = get_envelope(LHS, RHS, runs, Q, IE);
+	[flag, const] = get_envelope(LHS, RHS, runs, param);
 	if flag
 		print_envelope(coeffs, preserved, int8(const), terms, null_space, n, file);
 		print_envelope(coeffs, preserved, int8(const), terms, null_space, n, 1); %std output
@@ -10,15 +10,15 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [flag, const] = get_envelope(LHS, RHS, runs, Q, IE)
+function [flag, const] = get_envelope(LHS, RHS, runs, param)
 	D = cell(1,runs+1);
 	d = cell(1,runs+1);
 	const = zeros(1,runs);
 	
-	[~, D{:}] = simdiag(Q, IE, LHS, RHS{:});
+	[~, D{:}] = simdiag(param, LHS, RHS{:});
 	for i = 1:runs+1
-		d{i} = real(diag(D{i}));
-		assert( all( imag(diag(D{i})) < 10e-5 ) );
+		d{i} = real(D{i});
+		assert( all( imag(D{i}) < 10e-5 ) );
 	end
 	
 	for i = 1:runs

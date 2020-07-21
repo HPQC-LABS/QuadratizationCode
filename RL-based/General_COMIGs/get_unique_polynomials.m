@@ -1,22 +1,25 @@
-n = 3; % # of Qubits
-T = 3; % # of Terms
+function polys = get_unique_polynomials(n,T)
+%	Inputs:
+%		n - number of Qubits
+%		T - number of Terms
+%
+%	Outputs:
+%		polys - All unique degree-n polynomials with T terms
+%
 
 sz = 3^(n*T);
 Hall = -1*ones(1,sz);
-k = 0:sz - 1;
-coeffs = ndec2base(k,3,n*T);
-perm = perms(1:n);
+polys = ndec2base(0:sz-1, 3, n*T);
 
-switch T
-	case 1, permutations = perm;
-	case 2, permutations = [ [perm, n + perm]; [perm + n, perm] ];
-	case 3, permutations = [ [perm, n + perm, 2*n + perm]; [perm, 2*n + perm, n + perm]; [n + perm, perm, 2*n + perm]; [n + perm, 2*n + perm, perm]; [2*n + perm, n + perm, perm]; [2*n + perm, perm, n + perm] ];
-end
+perm = perms(1:n);
+term_perm = cell(1,T);
+for i = 1:T, term_perm{i} = perm + (i-1)*n; end
+permutations = cell2mat(term_perm(perms(1:T)));
 
 for i = 1:sz
 	if ~mod(i,10000), fprintf('progress = %6.2f%%\n', double(i)/sz*100 ); end
 	if Hall(i) == -1
-		coef = coeffs(i,:);
+		coef = polys(i,:);
 		tern = coef(permutations);
 		idx = unique(base2dec(tern,3) + 1);
 		Hall(idx(1)) = 1;
@@ -26,37 +29,40 @@ for i = 1:sz
 	end
 end
 assert(all(Hall ~= -1)); fprintf('progress = %6.2f%%\n',100);
-coeffs_all = coeffs(logical(Hall),:);
-idx = get_idx(coeffs_all, n, T);
-coeffsfinal = coeffs_all(idx,:);
+polys = polys(logical(Hall),:);
+polys = remove_duplicate_terms(polys, n, T);
 
-[factors, s1, s2, s3, s4, s5, flag] = find_factors(coeffsfinal, n, T);
-fprintf('There are %d unique deg-%d polynomials with %d terms', size(coeffsfinal,1), n, T);
-%fprintf(', %d of which are factorizable.\n', factors);
-
-%str = char(coeffsfinal+40);
-str = char(coeffsfinal(logical(flag),:)+40);
-sizes = [];
-for i = 1:size(str,1)
-	if mod(i,10) == 1, fprintf('i = %d\n', i); end
-	switch T
-		case 1, sizes = [sizes, Find_nullspaces( { str(i,1:n) } ) ];
-		case 2, sizes = [sizes, Find_nullspaces( { str(i,1:n), str(i,n+1:2*n) } ) ];
-		case 3, sizes = [sizes, Find_nullspaces( { str(i,1:n), str(i,n+1:2*n), str(i,2*n+1:3*n) } ) ];
-		case 4, sizes = [sizes, Find_nullspaces( { str(i,1:n), str(i,n+1:2*n), str(i,2*n+1:3*n), str(i,3*n+1:4*n) } ) ];
-	end
+fprintf('There are %d unique deg-%d polynomials with %d terms\n', size(polys,1), n, T);
+%{
+[factors, s1, s2, s3, s4, s5, flag] = find_factors(polys, n, T);
+fprintf('%d of which are factorizable.\n', factors);
+coeffs_not_factorizable = polys(~logical(flag),:);
+sizes = get_nullspaces(coeffs_not_factorizable, n, T);
+[~, I] = sort(sizes);
+coeffs_final = coeffs_not_factorizable(I,:);
+%}
 end
-fprintf('avg nullspace = %3.1f, std = %3.1f\n', mean(sizes), std(sizes));
 
+function sizes = get_nullspaces(coeffs, n, T)
+	str = char(coeffs+40);
+	sizes = zeros(1,size(str,1));
+	for i = 1:size(str,1)
+		if mod(i,10) == 1,	fprintf('progress = %.2f%%\n',	double(i)/size(str,1)*100);	end
+		H = cell(1,T);
+		for k = 1:T,	H{k} = str(i,(k-1)*n+1:k*n);	end
+		sizes(i) = Find_nullspaces(H);
+	end
+	fprintf('avg nullspace = %3.1f, std = %3.1f\n', mean(sizes), std(sizes));
+end
 
-function idx_bool = get_idx(coef, n, T)
+function coeffs = remove_duplicate_terms(coef, n, T)
 	idx = zeros(size(coef,1),1);
 	for i = 1:T-1
 		for j = i+1:T
 			idx = idx + all( coef(:, ((i-1)*n+1) : i*n) == coef(:, ((j-1)*n+1) : j*n), 2);
 		end
 	end
-	idx_bool = ~logical(idx);
+	coeffs = coef(~logical(idx), :);
 end
 
 function [factors, sum1, sum2, sum3, sum4, sum5, flag_] = find_factors(coeffs_all, n, T)

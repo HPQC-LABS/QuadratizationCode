@@ -1,9 +1,15 @@
-for i = -2:2
-	if i == 0, continue, end
-	for j = i:2
-		if (j==-2) || ( i == -2 && j == -1 ) || (j==0), continue, end
-		for k = -2:2
-			quantum_envelopes_brute_force([i, j, k]);
-		end
-	end
+n = 3;
+T = 2;
+
+coeffs = get_unique_polynomials(n,T);
+for i = 1:size(coeffs,1)
+	H = get_H(coeffs(i,:), n, T);
+	quantum_envelopes_brute_force(H);
+end
+
+function H = get_H(coef, n, T)
+
+	str = char(coef+40);
+	H = cell(1,T);
+	for i = 1:T, H{i} = str((i-1)*n+1:i*n); end
 end
