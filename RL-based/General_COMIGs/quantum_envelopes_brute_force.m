@@ -1,10 +1,16 @@
-function quantum_envelopes_brute_force(H)
+function quantum_envelopes_brute_force(H, c, X)
+%	Inputs:
+%		H - a Hamiltonian to get quadratized
+%		c - coefficient constant (coeffs for the quadratic terms in [-c,c])
+%		X - optional variable, discard quads that preserve < X states
+%
+
 warning('off');
 
 [LHS, n] = get_LHS(H);
 [allbits, terms] = get_all_possible_quadratics(n);
 param = initialize_sim_diag(LHS);
-lhs = param.d;
+lhs = param.d;	rhs = zeros(size(lhs));
 J = param.J;
 K = param.K;
 cutoff = param.cutoff;
@@ -16,17 +22,19 @@ allbits_LHS_unfolded = reshape( allbits_LHS, 2^(2*n), []);
 commutator_unfolded = LHS_allbits_unfolded - allbits_LHS_unfolded;
 null_space = null(commutator_unfolded,'r');
 
+print(H);
+%print_nullspace(null_space, terms);
 %null_space = null_space(:,[1,3,4]); % restrict the nullspace
-print(H); print_nullspace(null_space, terms);
 
 if isempty(null_space), fprintf('Nothing commutes with the LHS! The Null Space is empty.\n'), return, end
 allbits_unfolded = allbits_unfolded * null_space;
 allbits_size = size(allbits_unfolded,2);
 
-%fprintf('%d Hamiltonians commute with LHS\n',size(null_space,2));
+fprintf('%d Hamiltonians commute with LHS\n',size(null_space,2));
 if size(null_space,2) > 15, return, end
 if ~ishermitian(LHS), fprintf("Error! The LHS is not Hermitian!\n"); return, end
 
+%{
 switch size(null_space,2)
 	case 1, c = 15;
 	case 2, c = 15;
@@ -38,11 +46,12 @@ switch size(null_space,2)
 	case 8, c = 2;
 	otherwise, c = 1;
 end
+%}
 base = size(-c:c,2);
 coeffs_size = allbits_size;
 
 restartId = 0;
-perCheck = 10000;
+perCheck = 100000;
 
 data_percentage = 1;
 data_size = floor(data_percentage*base^coeffs_size);
@@ -74,15 +83,11 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 		RHS_ = RHS(:, 2^n*(i-1)+1:2^n*i );
 		
 		% handle degenerate eigenspaces
-		Q = param.Q;
-		A = Q'*RHS_*Q;
+		A = param.Q'*RHS_*param.Q;
 		for it = 1:numel(J)
 			j = J(it); k = K(it);
-			[V,d] = schur(A(j:k,j:k));
-			[~,IS] = sort(round(diag(d),cutoff)); % handle case d = [1, i, (1-eps)*i]
-			Q(:,j:k) = Q(:,j:k)*V(:,IS);
+			rhs(j:k) = real(eig(A(j:k,j:k)));
 		end
-		rhs = real( diag( Q'*RHS_*Q ) );
 		
 		rhs = rhs + max(lhs - rhs);
 		mask_preserve = (abs(rhs - lhs) < 10e-5);
@@ -97,7 +102,7 @@ for checkpoint = restartId : floor( (data_size-1)/perCheck )
 end
 
 for runs = 2:4
-	if quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, H, c)
+	if quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, H, c, X)
 		break;
 	end
 end
@@ -118,7 +123,11 @@ function print(H, alpha)
 	
 	for i = 1:size(H,2)
 		if alpha(i) == 1
-			fprintf(' + %s', H{i});
+			if i ~= 1
+				fprintf(' + %s', H{i});
+			else
+				fprintf('%s', H{i});
+			end
 		else
 			fprintf(' %2d%s', alpha(i), H{i});
 		end

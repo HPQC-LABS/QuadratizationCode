@@ -1,4 +1,4 @@
-function out = Find_nullspaces(H)
+function null_space = find_nullspace(H)
 	[LHS, n] = get_LHS(H);
 	[allbits, ~] = get_all_possible_quadratics(n);
 	
@@ -8,8 +8,6 @@ function out = Find_nullspaces(H)
 	allbits_LHS_unfolded = reshape( allbits_LHS, 2^(2*n), []);
 	commutator_unfolded = LHS_allbits_unfolded - allbits_LHS_unfolded;
 	null_space = null(commutator_unfolded,'r');
-
-	out = size(null_space,2);
 end
 
 function [LHS, n] = get_LHS(H, alpha)

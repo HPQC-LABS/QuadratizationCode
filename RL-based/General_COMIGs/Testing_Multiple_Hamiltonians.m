@@ -1,15 +1,13 @@
-n = 3;
-T = 2;
+function Testing_Multiple_Hamiltonians(n, T, c, X)
+%	Inputs:
+%		n - number of Qubits
+%		T - number of Terms
+%		c - coefficient constant (coeffs for the quadratic terms in [-c,c])
+%		X - optional variable, discard quads that preserve < X states
+%
 
-coeffs = get_unique_polynomials(n,T);
-for i = 1:size(coeffs,1)
-	H = get_H(coeffs(i,:), n, T);
-	quantum_envelopes_brute_force(H);
-end
-
-function H = get_H(coef, n, T)
-
-	str = char(coef+40);
-	H = cell(1,T);
-	for i = 1:T, H{i} = str((i-1)*n+1:i*n); end
+	H = get_unique_polynomials(n,T);
+	for i = 1:size(H,1)
+		quantum_envelopes_brute_force(H(i,:), c, X);
+	end
 end

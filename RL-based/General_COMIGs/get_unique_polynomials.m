@@ -1,68 +1,88 @@
-function polys = get_unique_polynomials(n,T)
+function [H, sizes] = get_unique_polynomials(n,T)
 %	Inputs:
 %		n - number of Qubits
 %		T - number of Terms
-%
+%	
 %	Outputs:
-%		polys - All unique degree-n polynomials with T terms
-%
+%		H - all unique Hamiltonians with n qubits and T degree-n terms
+%		sizes - the sizes of the null spaces of the Hamiltonians in H
+%	
+
+file = ['polynomialsDeg-', int2str(n), '_Terms-', int2str(T), '.mat'];
+if exist(file,'file'),	load(file, 'H', 'sizes');	return,	end
 
 sz = 3^(n*T);
-Hall = -1*ones(1,sz);
-polys = ndec2base(0:sz-1, 3, n*T);
+Hall = 2*ones(1,sz,'uint8');
 
 perm = perms(1:n);
 term_perm = cell(1,T);
 for i = 1:T, term_perm{i} = perm + (i-1)*n; end
 permutations = cell2mat(term_perm(perms(1:T)));
 
-for i = 1:sz
-	if ~mod(i,10000), fprintf('progress = %6.2f%%\n', double(i)/sz*100 ); end
-	if Hall(i) == -1
-		coef = polys(i,:);
-		tern = coef(permutations);
-		idx = unique(base2dec(tern,3) + 1);
-		Hall(idx(1)) = 1;
-		for k = 2:numel(idx)
-			Hall(idx(k)) = 0;
+perCheck = 10000;
+progress = 0;
+for checkpoint = 0:floor((sz-1)/perCheck)
+	k = int64(checkpoint*perCheck) : min(sz-1, int64((checkpoint+1)*perCheck) - 1 );
+	polys = ndec2base(k, 3, n*T);
+	for i = k+1
+		if Hall(i) == 2
+			progress = progress + 1;
+			poly = polys(mod(i-1,perCheck)+1,:);
+			poly_perms = poly(permutations);
+			idx = unique(base2dec(poly_perms,3) + 1);
+			Hall(idx)    = 0;
+			Hall(idx(1)) = 1;
 		end
 	end
 end
-assert(all(Hall ~= -1)); fprintf('progress = %6.2f%%\n',100);
-polys = polys(logical(Hall),:);
+assert(all(Hall ~= 2)); fprintf('progress = %6.2f%%\n',100);
+polys = ndec2base(find(Hall)-1, 3, n*T);
 polys = remove_duplicate_terms(polys, n, T);
+H = get_H(polys, n, T);
+save(file, 'H');
 
 fprintf('There are %d unique deg-%d polynomials with %d terms\n', size(polys,1), n, T);
-%{
-[factors, s1, s2, s3, s4, s5, flag] = find_factors(polys, n, T);
-fprintf('%d of which are factorizable.\n', factors);
-coeffs_not_factorizable = polys(~logical(flag),:);
-sizes = get_nullspaces(coeffs_not_factorizable, n, T);
-[~, I] = sort(sizes);
-coeffs_final = coeffs_not_factorizable(I,:);
-%}
+
+%[factors, s1, s2, s3, s4, s5, flag] = find_factors(polys, n, T);
+%fprintf('%d of which are factorizable.\n', factors);
+%coeffs_not_factorizable = polys(~logical(flag),:);
+
+sizes = get_nullspace_sizes(H);
+save(file, 'sizes', '-append');
 end
 
-function sizes = get_nullspaces(coeffs, n, T)
-	str = char(coeffs+40);
-	sizes = zeros(1,size(str,1));
-	for i = 1:size(str,1)
-		if mod(i,10) == 1,	fprintf('progress = %.2f%%\n',	double(i)/size(str,1)*100);	end
-		H = cell(1,T);
-		for k = 1:T,	H{k} = str(i,(k-1)*n+1:k*n);	end
-		sizes(i) = Find_nullspaces(H);
+function H = get_H(polys, n, T)
+%	Splits each poly from a continuous string of Pauli operators
+%	into a cell of T terms
+
+	str = char(polys + 40);
+	H = cell(size(polys,1),T);
+	for poly = 1:size(polys,1)
+		for i = 1:T, H{poly,i} = str(poly,(i-1)*n+1:i*n); end
 	end
+end
+
+function sizes = get_nullspace_sizes(H)
+%	Prints the mean null space size of the Hamiltonians in H
+
+	sizes = zeros(1,size(H,1));
+	t = cputime;
+	for i = 1:size(H,1)
+		if ~mod(i,100),	fprintf('progress = %6.2f%%, total time = %4.1f\n',	double(i)/size(H,1)*100, cputime - t);	end
+		sizes(i) = size( find_nullspace(H(i,:)), 2);
+	end
+	fprintf('progress = %6.2f%%\n', 100);
 	fprintf('avg nullspace = %3.1f, std = %3.1f\n', mean(sizes), std(sizes));
 end
 
-function coeffs = remove_duplicate_terms(coef, n, T)
-	idx = zeros(size(coef,1),1);
+function polys = remove_duplicate_terms(polys, n, T)
+	idx = zeros(size(polys,1),1);
 	for i = 1:T-1
 		for j = i+1:T
-			idx = idx + all( coef(:, ((i-1)*n+1) : i*n) == coef(:, ((j-1)*n+1) : j*n), 2);
+			idx = idx + all( polys(:, ((i-1)*n+1) : i*n) == polys(:, ((j-1)*n+1) : j*n), 2);
 		end
 	end
-	coeffs = coef(~logical(idx), :);
+	polys = polys(~logical(idx), :);
 end
 
 function [factors, sum1, sum2, sum3, sum4, sum5, flag_] = find_factors(coeffs_all, n, T)

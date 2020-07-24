@@ -1,9 +1,11 @@
-function count = quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, H, c)
+function count = quantum_envelopes_matching(runs, n, LHS, coeffs_all, preserved, allbits_unfolded, terms, null_space, H, c, X)
 
 [preserved, I] = sort(preserved(preserved ~= 0),'descend');
-if preserved(1) < 2^n/runs, count = 0; return; end
+if preserved(1) < 2^n/runs, count = 0; fprintf('Found %d envelopes with %d runs!\n', count, runs);	return;	end
 coeffs = coeffs_all(I,:);
-RHS_cell = mat2cell( reshape( allbits_unfolded * coeffs', 2^n, []), 2^n, ones(1,length(I))*2^n );
+I = 1:find(preserved >= X, 1,'last');
+if numel(I) < 10000, checkpoint = false; else checkpoint = true; end
+RHS_cell = mat2cell( reshape( allbits_unfolded * coeffs(I,:)', 2^n, []), 2^n, ones(1,length(I))*2^n );
 
 file_label = 'envelopes_Partially_Factorizable_Trinomials';
 %for i = 1:size(alpha,2), file_label = [file_label, '_', int2str(alpha(i))]; end
@@ -19,6 +21,9 @@ param = initialize_sim_diag(LHS);
 lhs = param.d;
 for i1 = 1:length(I)
 	if runs*preserved(i1) < threshold, break, end
+	if checkpoint
+		if mod(i1, 1) == 0, fprintf('run1 = %d\n',i1), end
+	end
 	RHS{1} = RHS_cell{i1};
 	param1 = initialize_sim_diag(param, RHS{1}); rhs = param1.d;
 	rhs = rhs + max(lhs - rhs);
@@ -26,9 +31,11 @@ for i1 = 1:length(I)
 	sum_mask(1) = sum(mask{1});
 	
 	for i2 = i1+1:length(I)
-		if mod(i2, 10) == 0, fprintf('i1 = %d, i2 = %d\n',i1, i2), end
 		idx = [i1, i2];
 		if sum_mask(1) + (runs-1)*preserved(i2) < threshold, break, end
+		if checkpoint
+			if mod(i2, 100) == 0, fprintf('run1 = %d, run2 = %d\n',i1, i2), end
+		end
 		RHS{2} = RHS_cell{i2};
 		idx_return = commutes_not(RHS(1:2), hashmap, idx, 1);
 		if idx_return, continue, end
@@ -41,9 +48,11 @@ for i1 = 1:length(I)
 			sum_mask(2) = sum(mask{2});
 			
 			for i3 = i2+1:length(I)
-				if ~mod(i3, 10000), fprintf('i1 = %d, i2 = %d, i3 = %d\n',i1, i2, i3), end
 				idx = [i1, i2, i3];
 				if sum_mask(2) + (runs-2)*preserved(i3) < threshold, break, end
+				if checkpoint
+					if ~mod(i3, 10000), fprintf('run1 = %d, run2 = %d, run3 = %d\n',i1, i2, i3), end
+				end
 				RHS{3} = RHS_cell{i3};
 				idx_return = commutes_not(RHS(1:3), hashmap, idx, 2);
 				if idx_return > 0
@@ -70,9 +79,11 @@ for i1 = 1:length(I)
 					sum_mask(3) = sum(mask{3});
 					
 					for i4 = i3+1:length(I)
-						if mod(i4, 1000) == 1, fprintf('i1 = %d, i2 = %d, i3 = %d, i4 = %d\n',i1, i2, i3, i4), end
 						idx = [i1, i2, i3, i4];
 						if sum_mask(3) + (runs-3)*preserved(i4) < threshold, break, end
+						if checkpoint
+							if mod(i4, 10000) == 1, fprintf('run1 = %d, run2 = %d, run3 = %d, run4 = %d\n',i1, i2, i3, i4), end
+						end
 						RHS{4} = RHS_cell{i4};
 						idx_return = commutes_not(RHS(1:4), hashmap, idx, 3);
 						if idx_return > 0
@@ -101,6 +112,9 @@ for i1 = 1:length(I)
 							for i5 = i4+1:length(I)
 								idx = [i1, i2, i3, i4, i5];
 								if sum_mask(4) + (runs-4)*preserved(i5) < threshold, break, end
+								if checkpoint
+									if mod(i5, 100000) == 1, fprintf('run1 = %d, run2 = %d, run3 = %d, run4 = %d, run5 = %d\n',i1, i2, i3, i4, i5), end
+								end
 								RHS{5} = RHS_cell{i5};
 								idx_return = commutes_not(RHS(1:5), hashmap, idx, 4);
 								if idx_return > 0
@@ -172,6 +186,6 @@ function print(H, file, alpha)
 			fprintf(file, ' %2d%s', alpha(i), H{i});
 		end
 	end
-	fprintf(':\n');
+	fprintf(file,':\n');
 end
 
