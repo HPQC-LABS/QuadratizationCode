@@ -3,12 +3,10 @@ function [count] = get_and_print_envelope(LHS, RHS, runs, param, count, coeffs, 
 	[flag, const] = get_envelope(LHS, RHS, runs, param);
 	if flag
 		print_envelope(coeffs, preserved, int8(const), terms, null_space, n, file);
-		print_envelope(coeffs, preserved, int8(const), terms, null_space, n, 1); %std output
+		%print_envelope(coeffs, preserved, int8(const), terms, null_space, n, 1); %std output
 		count = count + 1;
 	end
 end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [flag, const] = get_envelope(LHS, RHS, runs, param)
 	D = cell(1,runs+1);
@@ -32,8 +30,6 @@ function [flag, const] = get_envelope(LHS, RHS, runs, param)
 	
 	flag = all( (d{2} - d{1}) < 10e-5 );
 end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function [] = print_envelope(quads, pres, const, terms, null_space, n, file)
 	fprintf(file,"LHS = min(");
