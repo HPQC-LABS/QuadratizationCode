@@ -1,0 +1,8 @@
+b1b2b3b4 + b3b4b5b6:
+
+( 76.56%)   +2 b_{3}b_{4}
+(100.00%)   + b_{1}b_{2} + b_{5}b_{6}
+
+Pre-training Runtime:  12.25 seconds
+  Envelope's Runtime:  72.97 seconds
+       Total Runtime: 312.73 seconds

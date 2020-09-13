@@ -1,0 +1,69 @@
+used 2019.3 Intel compiler.
+
+/home/nike/projects/rrg-mcrowley/nike/QuadratizationCode/LRS-based/5var_all_neg/job_2aux_test on Beluga shows that using srun doesn't give much benefit over running it normally. Normally got to 24M temp_1.ext in somewhere between 10-11 minutes, and srun gave 25M in 10 minutes 19 seconds.
+
+regular run (without srun) took ~33 mubutes to get here with "watch" always running and often even being the main window:
+
+total 9.0M
+-rw-rw-r-- 1 nike rrg-mcrowley  33M Oct  6 03:25 temp_1.ext
+-rw-rw-r-- 1 nike rrg-mcrowley  318 Oct  6 03:25 0READMEEEEEEE
+-rw-rw-r-- 1 nike rrg-mcrowley 7.7K Oct  6 02:52 temp_1.ine
+
+I ran job_2aux_test2 with srun AND not using the "watch -l -t -h" command. Between 10-11 minutes I found it at 25M whihch is the same as srun with watch and probably also the same as ./quadGruber.sh > out.1 with watch (we can figure out how much time was actually spent by figuring out what second the files at the beginning  were created and using the fact that I recorded that the file was 24M immediately after I saw the minute hand on "watch" indicate 10 minutes. I kept the test2 running (now with watch, but only after 03:37) to see when it would turn to 26M and it turned to 26M at 03:42. here's what it looked like at 3:38:
+
+total 6.5M
+-rw-rw-r-- 1 nike rrg-mcrowley  25M Oct  6 03:38 temp_1.ext
+-rw-rw-r-- 1 nike rrg-mcrowley 7.7K Oct  6 03:27 temp_1.ine
+
+So no significant benefit from turning off "watch ls -l -t" either. 
+Now running it for the remainder of the ~33 minutes to see if using "srun" AND having watch off might make any difference.
+SHOOT I scheduled the job to end after 35 minutes not 33... anyway the number of megabytes of the file shouldn't change much in 2 minutes, based on how long it took the above case to go from 25M to 26M. It also happens to be 32 minutes right now so I don't have to delay my shower and risk getting late to meet Fran from Oxford Materials! 
+
+total 8.6M
+-rw-rw-r-- 1 nike rrg-mcrowley  33M Oct  6 03:29 temp_1.ext
+-rw-rw-r-- 1 nike rrg-mcrowley 7.7K Oct  6 03:27 temp_1.ine
+
+*****This shows almost certainly that "watch" and "srun" won't give noticable gains.******
+
+Why is first one 8.0M and last one is 8.6M ?
+
+Because of the core dump:
+
+total 13M
+-rw-rw-r-- 1 nike rrg-mcrowley  47M Oct  6 04:02 temp_1.ext
+-rw-rw-r-- 1 nike rrg-mcrowley 1.6K Oct  6 03:50 0READMEEEEEEE
+-rw-rw-r-- 1 nike rrg-mcrowley 7.7K Oct  6 02:52 temp_1.ine
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:52 out.1
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:52 slurm-3228705.out
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:52 tjob.err.3228705
+-rwxrwxr-x 1 nike rrg-mcrowley 1.8K Oct  6 02:51 quadGruber.sh
+-rw-rw-r-- 1 nike rrg-mcrowley   16 Oct  6 02:49 hasquad.txt
+-rw------- 1 nike rrg-mcrowley 4.6M Oct  6 02:49 core.82403
+-rw-rw-r-- 1 nike rrg-mcrowley   16 Oct  6 02:49 temp_1.bd
+-rw-rw-r-- 1 nike rrg-mcrowley   16 Oct  6 02:49 temp_1.gd
+-rw-rw-r-- 1 nike rrg-mcrowley   74 Oct  6 02:49 temp_1.vtx
+-rw-rw-r-- 1 nike rrg-mcrowley    2 Oct  6 02:49 temp_1.vtx0
+-rw-rw-r-- 1 nike rrg-mcrowley  388 Oct  6 02:49 tjob.err.3228690
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:49 slurm-3228690.out
+-rw-r----- 1 nike rrg-mcrowley 1.2K Oct  6 02:49 0submit
+-rw-rw-r-- 1 nike rrg-mcrowley   68 Oct  6 02:29 input_coeff.txt
+
+total 13M
+-rw-rw-r-- 1 nike rrg-mcrowley  47M Oct  6 04:02 temp_1.ext
+-rw-rw-r-- 1 nike rrg-mcrowley 1.6K Oct  6 03:50 0READMEEEEEEE
+-rw-rw-r-- 1 nike rrg-mcrowley 7.7K Oct  6 02:52 temp_1.ine
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:52 out.1
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:52 slurm-3228705.out
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:52 tjob.err.3228705
+-rwxrwxr-x 1 nike rrg-mcrowley 1.8K Oct  6 02:51 quadGruber.sh
+-rw-rw-r-- 1 nike rrg-mcrowley   16 Oct  6 02:49 hasquad.txt
+-rw------- 1 nike rrg-mcrowley 4.6M Oct  6 02:49 core.82403
+-rw-rw-r-- 1 nike rrg-mcrowley   16 Oct  6 02:49 temp_1.bd
+-rw-rw-r-- 1 nike rrg-mcrowley   16 Oct  6 02:49 temp_1.gd
+-rw-rw-r-- 1 nike rrg-mcrowley   74 Oct  6 02:49 temp_1.vtx
+-rw-rw-r-- 1 nike rrg-mcrowley    2 Oct  6 02:49 temp_1.vtx0
+-rw-rw-r-- 1 nike rrg-mcrowley  388 Oct  6 02:49 tjob.err.3228690
+-rw-rw-r-- 1 nike rrg-mcrowley    0 Oct  6 02:49 slurm-3228690.out
+-rw-r----- 1 nike rrg-mcrowley 1.2K Oct  6 02:49 0submit
+-rw-rw-r-- 1 nike rrg-mcrowley   68 Oct  6 02:29 input_coeff.txt
+
