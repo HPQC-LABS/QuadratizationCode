@@ -1,0 +1,20 @@
+XXX, id = 1
+18 Hamiltonians commute with LHS
+XXY, id = 2
+18 Hamiltonians commute with LHS
+XXZ, id = 3
+18 Hamiltonians commute with LHS
+XYY, id = 4
+18 Hamiltonians commute with LHS
+XYZ, id = 5
+18 Hamiltonians commute with LHS
+XZZ, id = 6
+18 Hamiltonians commute with LHS
+YYY, id = 7
+18 Hamiltonians commute with LHS
+YYZ, id = 8
+18 Hamiltonians commute with LHS
+YZZ, id = 9
+18 Hamiltonians commute with LHS
+ZZZ, id = 10
+18 Hamiltonians commute with LHS
