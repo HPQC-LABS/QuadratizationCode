@@ -2,62 +2,49 @@ XXX + XXY + XXZ, id = 1
 18 Hamiltonians commute with LHS
 XXX + XXY + XYX, id = 2
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.73, total time = 1, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.41, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXY + XYY, id = 3
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.33, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 44, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.21, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 44, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXY + XYZ, id = 4
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.38, total time = 0, found(4/8) = 0, found(3/8) = 3, found(2/8) = 98, max: 3/8
+progress 100.00%, restart id = 0, step time = 0.32, total time = 0, found(4/8) = 0, found(3/8) = 3, found(2/8) = 98, max: 3/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
-run1 = 3, run2 = 6, run3 = 67, run4 = 68
-run1 = 5, run2 = 11, run3 = 25, run4 = 26
-run1 = 5, run2 = 25, run3 = 61, run4 = 62
-run1 = 5, run2 = 41, run3 = 73, run4 = 74
-run1 = 5, run2 = 65, run3 = 86, run4 = 87
-run1 = 6, run2 = 11, run3 = 76, run4 = 77
-run1 = 6, run2 = 26, run3 = 39, run4 = 40
-run1 = 6, run2 = 42, run3 = 67, run4 = 68
-run1 = 6, run2 = 67, run3 = 72, run4 = 73
-run1 = 12, run2 = 46, run3 = 47, run4 = 48
-run1 = 24, run2 = 93, run3 = 94, run4 = 95
-run1 = 40, run2 = 46, run3 = 47, run4 = 48
-run1 = 60, run2 = 97, run3 = 98, run4 = 99
 Found 0 envelopes with 4 runs!
 XXX + XXY + XZX, id = 5
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.75, total time = 1, found(4/8) = 0, found(3/8) = 0, found(2/8) = 44, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.60, total time = 1, found(4/8) = 0, found(3/8) = 0, found(2/8) = 44, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXY + XZY, id = 6
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.64, total time = 1, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.28, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXY + XZZ, id = 7
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.47, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 15, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.22, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 15, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXY + YYX, id = 8
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.08, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.14, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXY + YYY, id = 9
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.09, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.07, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
@@ -65,13 +52,13 @@ XXX + XXY + YYZ, id = 10
 15 Hamiltonians commute with LHS
 XXX + XXY + YZX, id = 11
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.06, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.07, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXY + YZY, id = 12
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.06, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.09, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
@@ -79,7 +66,7 @@ XXX + XXY + YZZ, id = 13
 15 Hamiltonians commute with LHS
 XXX + XXY + ZZX, id = 14
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.09, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.10, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
@@ -93,50 +80,37 @@ XXX + XXY + ZZZ, id = 16
 15 Hamiltonians commute with LHS
 XXX + XXZ + XYY, id = 17
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.39, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 15, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.44, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 15, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXZ + XYZ, id = 18
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.20, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.28, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXZ + XZX, id = 19
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.38, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.40, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 37, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXZ + XZY, id = 20
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.16, total time = 0, found(4/8) = 0, found(3/8) = 3, found(2/8) = 98, max: 3/8
+progress 100.00%, restart id = 0, step time = 0.23, total time = 0, found(4/8) = 0, found(3/8) = 3, found(2/8) = 98, max: 3/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
-run1 = 3, run2 = 6, run3 = 67, run4 = 68
-run1 = 5, run2 = 11, run3 = 28, run4 = 29
-run1 = 5, run2 = 25, run3 = 62, run4 = 63
-run1 = 5, run2 = 41, run3 = 73, run4 = 74
-run1 = 5, run2 = 65, run3 = 86, run4 = 87
-run1 = 6, run2 = 11, run3 = 76, run4 = 77
-run1 = 6, run2 = 26, run3 = 37, run4 = 38
-run1 = 6, run2 = 42, run3 = 64, run4 = 65
-run1 = 6, run2 = 67, run3 = 69, run4 = 70
-run1 = 12, run2 = 43, run3 = 44, run4 = 45
-run1 = 24, run2 = 90, run3 = 91, run4 = 92
-run1 = 40, run2 = 43, run3 = 44, run4 = 45
-run1 = 60, run2 = 94, run3 = 95, run4 = 96
 Found 0 envelopes with 4 runs!
 XXX + XXZ + XZZ, id = 21
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.20, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 44, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.25, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 44, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXZ + YYX, id = 22
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.05, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.06, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
@@ -144,13 +118,13 @@ XXX + XXZ + YYY, id = 23
 15 Hamiltonians commute with LHS
 XXX + XXZ + YYZ, id = 24
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.09, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.07, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXZ + YZX, id = 25
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.06, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.08, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
@@ -158,13 +132,13 @@ XXX + XXZ + YZY, id = 26
 15 Hamiltonians commute with LHS
 XXX + XXZ + YZZ, id = 27
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.05, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.07, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 29, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XXZ + ZZX, id = 28
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.06, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.07, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
@@ -172,15 +146,31 @@ XXX + XXZ + ZZY, id = 29
 15 Hamiltonians commute with LHS
 XXX + XXZ + ZZZ, id = 30
 7 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.05, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.07, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 19, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XYY + XYZ, id = 31
 8 Hamiltonians commute with LHS
-progress 100.00%, restart id = 0, step time = 0.30, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 15, max: 2/8
+progress 100.00%, restart id = 0, step time = 0.22, total time = 0, found(4/8) = 0, found(3/8) = 0, found(2/8) = 15, max: 2/8
 Found 0 envelopes with 2 runs!
 Found 0 envelopes with 3 runs!
 Found 0 envelopes with 4 runs!
 XXX + XYY + XZZ, id = 32
 13 Hamiltonians commute with LHS
+progress 6.27%, restart id = 0, step time = 2.47, total time = 2, found(4/8) = 73, found(3/8) = 85, found(2/8) = 22027, max: 6/8
+progress 12.54%, restart id = 1, step time = 2.41, total time = 5, found(4/8) = 76, found(3/8) = 95, found(2/8) = 24755, max: 6/8
+progress 18.82%, restart id = 2, step time = 2.45, total time = 7, found(4/8) = 81, found(3/8) = 103, found(2/8) = 27606, max: 6/8
+progress 25.09%, restart id = 3, step time = 2.58, total time = 10, found(4/8) = 82, found(3/8) = 104, found(2/8) = 30696, max: 6/8
+progress 31.36%, restart id = 4, step time = 2.52, total time = 12, found(4/8) = 84, found(3/8) = 106, found(2/8) = 32106, max: 6/8
+progress 37.63%, restart id = 5, step time = 2.50, total time = 15, found(4/8) = 89, found(3/8) = 118, found(2/8) = 34925, max: 6/8
+progress 43.91%, restart id = 6, step time = 2.44, total time = 17, found(4/8) = 92, found(3/8) = 124, found(2/8) = 37022, max: 6/8
+progress 50.18%, restart id = 7, step time = 2.68, total time = 20, found(4/8) = 99, found(3/8) = 135, found(2/8) = 38781, max: 6/8
+progress 56.45%, restart id = 8, step time = 2.46, total time = 23, found(4/8) = 103, found(3/8) = 142, found(2/8) = 39973, max: 6/8
+progress 62.72%, restart id = 9, step time = 2.48, total time = 25, found(4/8) = 105, found(3/8) = 145, found(2/8) = 41762, max: 6/8
+progress 68.99%, restart id = 10, step time = 2.45, total time = 28, found(4/8) = 106, found(3/8) = 146, found(2/8) = 44540, max: 6/8
+progress 75.27%, restart id = 11, step time = 2.44, total time = 30, found(4/8) = 106, found(3/8) = 146, found(2/8) = 45680, max: 6/8
+progress 81.54%, restart id = 12, step time = 2.45, total time = 32, found(4/8) = 109, found(3/8) = 149, found(2/8) = 47623, max: 6/8
+progress 87.81%, restart id = 13, step time = 2.48, total time = 35, found(4/8) = 111, found(3/8) = 152, found(2/8) = 49243, max: 6/8
+progress 94.08%, restart id = 14, step time = 2.47, total time = 37, found(4/8) = 114, found(3/8) = 155, found(2/8) = 50410, max: 6/8
+progress 100.00%, restart id = 15, step time = 2.32, total time = 40, found(4/8) = 117, found(3/8) = 158, found(2/8) = 51881, max: 6/8
