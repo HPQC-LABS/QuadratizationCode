@@ -8,14 +8,14 @@ function quantum_envelopes_octave(n, T, c, X)
 
 	if nargin == 3, X = 0; end
 	file = fopen('progress.txt', 'w');
-	
-	H = get_unique_polynomials(n, T);
-	for i = 1:size(H,1)
-		quantum_envelopes_brute_force(H(i,:), c, X, i, file);
+  
+  load(['Polynomials/polynomialsDeg-', int2str(n), '_Terms-', int2str(T), '_octave.mat'], 'H', 'nullspaces');
+    for i = 1:int64(size(H,1)/T)
+		quantum_envelopes_brute_force(H( T*(i-1)+1 : T*i, : ), nullspaces{i}, n, T, c, X, i, file);
 	end
 end
 
-function quantum_envelopes_brute_force(H, c, X, Hidx, file)
+function quantum_envelopes_brute_force(H, null_space, n, T, c, X, Hidx, file)
 %	Inputs:
 %		H - a Hamiltonian to get quadratized
 %		c - coefficient constant (coeffs for the quadratic terms in [-c,c])
@@ -23,36 +23,28 @@ function quantum_envelopes_brute_force(H, c, X, Hidx, file)
 %		
 
 	warning('off');
-
-	[LHS, n, T] = get_LHS(H);
-	[allbits, terms] = get_all_possible_quadratics(n);
+  
+	LHS = get_LHS(H);
+  [allbits, terms] = get_all_possible_quadratics(n);
 	param = initialize_sim_diag(LHS);
 	lhs = param.d;	rhs = zeros(size(lhs));
-	J = param.J;
-	K = param.K;
 
 	allbits_unfolded = reshape( allbits, 2^(2*n), []);
-	LHS_allbits_unfolded = reshape( LHS  * allbits, 2^(2*n), []);
-	allbits_LHS = reshape(permute(reshape( allbits' * LHS, 2^n, [], 2^n), [1,3,2] ), 2^(2*n), []);
-	allbits_LHS_unfolded = reshape( allbits_LHS, 2^(2*n), []);
-	commutator_unfolded = LHS_allbits_unfolded - allbits_LHS_unfolded;
-	null_space = null(commutator_unfolded,'r');
 
 	print(H, Hidx, file);
-	%print_nullspace(null_space, terms);
-	%null_space = null_space(:,[1,3,4]); % restrict the nullspace
-
+  %print_nullspace(null_space, terms);
+  %null_space = null_space(:,[1,3,4]); % restrict the nullspace
 	if isempty(null_space)
 		fprintf(file, 'Nothing commutes with the LHS! The Null Space is empty.\n');
 		return;
 	end
-	allbits_unfolded = allbits_unfolded * null_space;
+	allbits_unfolded = allbits_unfolded * full(null_space);
 	allbits_size = size(allbits_unfolded,2);
 
 	fprintf(file, '%d Hamiltonians commute with LHS\n',size(null_space,2));
 	if size(null_space,2) >= 15, return, end
 	%if ~ishermitian(LHS), fprintf("Error! The LHS is not Hermitian!\n"); return, end
-
+  
 	%{
 	switch size(null_space,2)
 		case 1, c = 15;
@@ -102,13 +94,9 @@ function quantum_envelopes_brute_force(H, c, X, Hidx, file)
 		for i = 1:size(coeffs,1)
 			RHS_ = RHS(:, 2^n*(i-1)+1:2^n*i );
 
-			% handle degenerate eigenspaces
-			A = param.Q'*RHS_*param.Q;
-			for it = 1:numel(J)
-				j = J(it); k = K(it);
-				rhs(j:k) = real(eig(A(j:k,j:k)));
-			end
-
+      temp = initialize_sim_diag(param, RHS_);
+      rhs = temp.d;
+      
 			rhs = rhs + max(lhs - rhs);
 			mask_preserve = (abs(rhs - lhs) < 10e-5);
 			preserved(checkpoint * perCheck + i) = sum(mask_preserve);
@@ -265,7 +253,7 @@ function [allbits, terms] = get_all_possible_quadratics(n, skip_pauli)
 		end
 	end
 	[allbits, terms] = KeepQuadratics(allbits, terms, skip_pauli);
-	file = ['all_possible_quadratics_', int2str(n), '.mat'];
+	file = ['Quadratics/all_possible_quadratics_', int2str(n), '.mat'];
 	save(file, 'allbits', 'terms');
 	
 	function [allbits_, terms_] = KeepQuadratics(allbits, terms, skip_pauli)
@@ -291,12 +279,13 @@ end
 
 function print(H, Hidx, file)
 
-	for i = 1:size(H,2)
+	for i = 1:size(H,1)
 		if i ~= 1
-			fprintf(file, ' + %s', H{i});
-		else
-			fprintf(file, '%s', H{i});
-		end
+			fprintf(file, ' + ');
+    end
+    for j = 1:size(H,2)
+      fprintf(file, '%c', H(i,j));
+    end
 	end
 	fprintf(file, ', id = %d\n', Hidx);
 end
@@ -310,7 +299,7 @@ function param = initialize_sim_diag(varargin)
 		K = [];
 		for j = J, K = [K, j+find(IE(j:end)==0,1,'first')-1 ]; end
 		epsilon = 10*max(size(A))*eps(normest(A));
-		cutoff  = -round(log10(epsilon))-3;
+		cutoff  = 10^(-round(log10(epsilon))-3);
 	else
 		Q  = varargin{1}.Q;
 		IE = varargin{1}.IE;
@@ -325,7 +314,7 @@ function param = initialize_sim_diag(varargin)
 	for i = 1:numel(J)
 		j = J(i); k = K(i);
 		[V,d] = schur(A(j:k,j:k)); d = diag(d);
-		[~,IS] = sort(round(d,cutoff)); % handle case d = [1, i, (1-eps)*i]
+		[~,IS] = sort(round(d*cutoff)/cutoff); % handle case d = [1, i, (1-eps)*i]
 		d = d(IS).';
 		Q(:,j:k) = Q(:,j:k)*V(:,IS);
 		IE(j:k) = [abs(d(1:end-1)-d(2:end)) < epsilon,0];
@@ -676,7 +665,7 @@ function [H, polys, sizes] = get_unique_polynomials(n,T)
 %		sizes - the sizes of the null spaces of the Hamiltonians in H
 %		
 
-	file = ['Polynomials/polynomialsDeg-', int2str(n), '_Terms-', int2str(T), '.mat'];
+	file = ['Polynomials/polynomialsDeg-', int2str(n), '_Terms-', int2str(T), '_octave.mat'];
 	if exist(file,'file')
 		load(file, 'H');
 		if nargout  > 1,	polys = char(char(join(H,'',2)) - 40);	end
@@ -1004,14 +993,14 @@ end
 function [LHS, n, T] = get_LHS(H, terms)
 
 	if nargin == 1
-		n = max(length(H));
-		T = size(H,2);
+		n = size(H,2);
+		T = size(H,1);
 		
-		LHS = get_term(H{1}, n);
-		for t = 2:T,	LHS = LHS + get_term(H{t}, n);	end
+		LHS = get_term(H(1,:), n);
+		for t = 2:T,	LHS = LHS + get_term(H(t,:), n);	end
 	else
 		LHS = terms(H{1});
-		for t = 2:size(H,2),	LHS = LHS + terms(H{t});	end
+		for t = 2:size(H,1),	LHS = LHS + terms(H{t});	end
 	end
 end
 
@@ -1189,7 +1178,7 @@ function Q = dodo(Q, J, K, cutoff, A)
 	for i = 1:numel(J)
 		j = J(i); k = K(i);
 		[V,d] = schur(A(j:k,j:k));
-		[~,IS] = sort(round(diag(d),cutoff)); % handle case d = [1, i, (1-eps)*i]
+		[~,IS] = sort(round(diag(d)*cutoff)/cutoff); % handle case d = [1, i, (1-eps)*i]
 		Q(:,j:k) = Q(:,j:k)*V(:,IS);
 	end
 end
